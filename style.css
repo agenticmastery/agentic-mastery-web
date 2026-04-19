@@ -539,3 +539,49 @@ footer {
         order: -1;
     }
 }
+
+/* Challenge Post Styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.mentor-guidance, .refresher, .challenge, .pro-tip, .watch-out, .knowledge-check, .preview {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.mentor-guidance {
+    border-left: 4px solid var(--accent-blue);
+}
+
+.challenge {
+    border-left: 4px solid var(--accent-purple);
+}
+
+.pro-tip {
+    border-left: 4px solid #10b981; /* Green */
+}
+
+.watch-out {
+    border-left: 4px solid #f59e0b; /* Yellow */
+}
+
+.knowledge-check h3 {
+    color: var(--accent-blue);
+    margin-bottom: 1rem;
+}
+
+.preview a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+.preview a:hover {
+    color: var(--accent-purple);
+}
