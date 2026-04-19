@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 1: Console Navigation &amp; Setup</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 1: The Evolved Agent Development Lifecycle &amp; Console Navigation</h1>
+</header>
+<div class="mentor-guidance">
+<h3>👨‍🏫 Mentor Guidance</h3>
+<ul>
+<li><strong>Motivation</strong>: Welcome to Day 1! Today you take your first step into the future of customer experience. You will learn to navigate the CX Agent Studio console and understand how generative AI changes the way we build virtual agents.</li>
+<li><strong>Achievement</strong>: By the end of today, you will have created your first CXAS application and understand where every core component lives.</li>
+<li><strong>Customer Value</strong>: Mastering the console allows you to prototype solutions in minutes instead of days, bringing value to your clients faster than ever.</li>
+<li><strong>Milestones</strong>: Create your first agent application.</li>
+<li><strong>Goals</strong>: Understand the layout and find the Instructions, Tools, and Simulator sections.</li>
+</ul>
+</div>
+<div class="refresher">
+<h3>🔄 Yesterday's Refresher</h3>
+<p><em>(Since this is Day 1, consider this your orientation!)</em> Before we start, remember the golden rule of CX Agent Studio: <strong>Forget the word "Intent".</strong> In legacy systems, you spent weeks mapping user phrases to specific intents. In CXAS, we focus on <strong>Customer User Journeys (CUJs)</strong> guided by natural language instructions.</p>
+</div>
+<h2>📚 Today's Lesson: The Command Center &amp; The LLM's Eye</h2>
+<p>Today, we are going to explore the console and set up your environment. CX Agent Studio is a paradigm shift from legacy bot builders. Instead of mapping intents, you define the agent's behavior using natural language instructions and give it tools to interact with the world.</p>
+<h3>Step-by-Step: Accessing the Console</h3>
+<p>To ensure you don't get confused, follow these exact steps to access the environment:</p>
+<ol>
+<li>Open a new browser tab and navigate to the **CX Agent Studio Console** at <a href="https://ces.cloud.google.com" target="_blank">https://ces.cloud.google.com</a>.</li>
+<li>Sign in with your Google account (corporate or personal).</li>
+<li><strong>The Project Selector</strong>: At the top of the page, you will see a project dropdown. You <strong>must</strong> select a valid Google Cloud Project where CX Agent Studio is enabled.
+                <ul>
+<li><em>If you don't have a project</em>: Go to the <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a>, sign up for the Free Trial, and create a new project. Then return to the CES link.</li>
+</ul>
+</li>
+<li>Once a project is selected, you will see the main dashboard where you can create new applications.</li>
+</ol>
+<h3>Deep Dive: The Core Components</h3>
+<p>When you create or open an app, the interface is divided into four critical sections. Let's understand them through the lens of <strong>how the underlying LLM sees them</strong>:</p>
+<h4>1. The Agent Workspace (The Brain)</h4>
+<p>This is where you define the "DNA" of your agent. Instead of building complex state machines, you write <strong>Instructions</strong>.</p>
+<ul>
+<li><strong>The 'Why' from the LLM Perspective</strong>: The LLM reads your instructions as its system prompt. It uses them to constrain its vast knowledge and focus only on your rules. If you don't provide constraints, it will rely on its general training, leading to hallucinations.</li>
+</ul>
+<h4>2. The Secret Sauce: The Agent Description</h4>
+<p>When you create an agent, you will see a field for the <strong>Description</strong>. Many developers leave this blank or write generic text. <strong>This is a mistake.</strong></p>
+<ul>
+<li><strong>The 'Why' from the LLM Perspective</strong>: In a multi-agent system, a root "Steering Agent" acts as an intelligent switchboard. It does not read the full instructions of every sub-agent (that would be too slow and expensive). Instead, <strong>it reads the descriptions</strong> to decide where to route the user. If Agent A is described as <em>"Handles retail order returns"</em> and Agent B is <em>"Handles billing disputes"</em>, the LLM can instantly route the user correctly. If the description is blank, the LLM is blind.</li>
+</ul>
+<h3>3. Tools (The Capabilities)</h3>
+<p>An agent without tools is just a chatbot. In the console, you will find Data Stores, Extensions, and Function tools. The LLM sees tools as functions it can call, reading their descriptions to decide when to use them.</p>
+<h3>4. The Simulator (The Testing Ground)</h3>
+<p>Located on the right side, the Simulator shows you the <strong>Execution Trace</strong>. It shows you exactly which instructions the model activated and which tools it invoked, allowing you to see "inside the mind" of the LLM.</p>
+<div class="challenge">
+<h3>🏋️‍♂️ Today's Challenge: Your First Agent</h3>
+<p>Let's get hands-on. Follow these steps to create your first sandbox agent:</p>
+<ol>
+<li>Log into the console using the steps above.</li>
+<li>Click the <strong>Create Application</strong> button in the dashboard.</li>
+<li>Name your application <code>EcoShop-Sandbox</code>.</li>
+<li><strong>Crucial Step</strong>: In the <strong>Description</strong> field, write: <em>"A general assistant for EcoShop that answers FAQs and suggests recycling tips."</em> (Remember, this is what the LLM uses to understand the agent's purpose!).</li>
+<li>In the Agent Workspace, paste this simple instruction:
+                    <pre><code>&lt;role&gt;You are a helpful support agent for EcoShop, a brand selling eco-friendly products.&lt;/role&gt;
+&lt;persona&gt;Be polite, enthusiastic, and always suggest recycling tips.&lt;/persona&gt;</code></pre>
+</li>
+<li>Click <strong>Save</strong>.</li>
+<li>Open the <strong>Simulator</strong> on the right and type: <em>"Hi, what do you sell?"</em></li>
+<li>Observe the response and the execution trace. Does it mention recycling?</li>
+</ol>
+<p>Stuck or want to compare? <a href="day_001_solution.html">View the Solution for Day 1</a>.</p></div>
+<div class="pro-tip">
+<h3>💡 Pro-Tip &amp; Best Practice</h3>
+<p><strong>Docstrings are Code</strong>: Treat your tool and agent descriptions as core instructions. Provide a comprehensive, unambiguous explanation. If the LLM understands <em>why</em> a tool exists, it will use it correctly.</p>
+</div>
+<div class="watch-out">
+<h3>⚠️ Watch Out! (Pitfalls)</h3>
+<p><strong>Vague Naming</strong>: Naming a tool <code>check_data</code> or an agent <code>Agent_1</code> gives the LLM no semantic meaning. It will guess arbitrarily, leading to incorrect routing and high latency.</p>
+</div>
+<div class="knowledge-check">
+<h3>❓ Knowledge Check</h3>
+<p><strong>Question</strong>: Why is the Agent Description field critical in a multi-agent CXAS setup?</p>
+<ul>
+<li>A) It is just for human documentation.</li>
+<li>B) The parent "Steering Agent" reads it to decide which sub-agent to route the conversation to.</li>
+<li>C) It makes the page load faster.</li>
+</ul>
+<p><em>(Answer: B. The LLM uses descriptions as the map for routing!)</em></p>
+</div>
+<div class="preview">
+<p>🌅 <strong>What to expect tomorrow</strong>: Tomorrow, we are going to write the actual DNA of your agent. We will master the <strong>PIF (Persona-Instruction-Flow) structure</strong> using XML tags to build an agent that never goes off-script. Get ready to become a prompt engineer!</p>
+<p>👉 <strong>Ready for more?</strong> <a href="day_002.html">Proceed to Day 2</a></p>
+</div>
+</div>
+</body>
+</html>
