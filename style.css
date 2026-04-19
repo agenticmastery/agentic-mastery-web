@@ -412,6 +412,26 @@ pre {
     margin-bottom: 1rem;
 }
 
+.about-text ul.impact-list {
+    list-style: none;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+}
+
+.about-text ul.impact-list li {
+    position: relative;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    padding-left: 1.5rem;
+}
+
+.about-text ul.impact-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent-blue);
+}
+
 .stats {
     display: flex;
     gap: 3rem;

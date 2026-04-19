@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1: Setup & Structured Prompts - CXAS 30-Day Challenge</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Day 1: Setup & Structured Prompts</h1>
+            <p>Welcome to the first day of your journey to mastering CX Agent Studio!</p>
+        </header>
+
+        <div class="mentor-guidance">
+            <h3>Super Mentor Guidance</h3>
+            <p><strong>Motivation:</strong> Welcome to Day 1! You are about to embark on a journey to master the art of conversational AI design. Today, we lay the foundation. By mastering structured prompts, you're not just giving instructions; you're architecting the agent's mind. Great agents start with great structure.</p>
+            <p><strong>Achievement:</strong> By the end of today, you will have access to the console and will have built your first production-ready structured prompt.</p>
+            <p><strong>Customer Value:</strong> Structured prompts ensure that customers get precise, reliable answers, not robotic guesses or hallucinations. This directly translates to higher customer satisfaction.</p>
+            <p><strong>Milestones:</strong> Setup your workspace and learn XML tag architecture.</p>
+            <p><strong>Goals:</strong> Create a structured prompt for EcoShop's customer service handling a simple return Customer User Journey (CUJ).</p>
+        </div>
+
+        <div class="refresher">
+            <h3>Refresher & Orientation</h3>
+            <p>Welcome to the challenge! As this is Day 1, there are no previous solutions to review. Let's dive straight into the future of CX.</p>
+        </div>
+
+        <section class="lesson">
+            <h2>Lesson: Prompt Architecture vs. Engineering</h2>
+            <p>In the early days of Large Language Models (LLMs), "prompt engineering" was often treated as a dark art—a process of trial and error to find the magic incantation that made the model behave. We are moving beyond that. In CX Agent Studio, we practice <strong>Prompt Architecture</strong>.</p>
+            <p>Prompt Architecture is about designing a robust, scalable, and maintainable structure for your instructions. Instead of a monolithic block of text, we use a structured approach to separate concerns. This makes it easier for the model to understand and easier for you to maintain as your agent grows in complexity.</p>
+
+            <h3>The Power of XML Tags</h3>
+            <p>One of the most effective ways to architect a prompt is by using XML-like tags. LLMs are trained on massive amounts of data, including code and structured text. They are exceptionally good at understanding the hierarchy and boundaries defined by tags.</p>
+            <p>By wrapping different parts of your prompt in tags, you provide clear boundaries. Common tags we use include:</p>
+            <ul>
+                <li><code>&lt;instructions&gt;</code>: The core directives for the agent.</li>
+                <li><code>&lt;context&gt;</code>: Background information or the current state of the conversation.</li>
+                <li><code>&lt;constraints&gt;</code>: What the agent must NOT do.</li>
+                <li><code>&lt;examples&gt;</code>: Few-shot examples to guide tone and format.</li>
+            </ul>
+            
+            <div class="the-why-llm">
+                <h3>The 'Why' from the LLM Perspective</h3>
+                <p>Why do XML tags work so well? From the perspective of the model's attention mechanism, explicit boundaries reduce "prompt bleed." This occurs when a model confuses the data it is supposed to process with the instructions it is supposed to follow. Tags create distinct semantic regions, allowing the model to pay attention to the instructions while processing the context, without confusing the two.</p>
+            </div>
+
+            <p>In CX Agent Studio, you will use these tags to define the behavior of your agents. This structure is not just for the model; it's for you. It allows you to update the persona without breaking the tools, or update the constraints without rewriting the entire prompt.</p>
+        </section>
+
+        <div class="challenge">
+            <h3>The Day 1 Challenge: EcoShop Return Agent</h3>
+            <p><strong>Scenario:</strong> EcoShop, an eco-friendly e-commerce store, wants to automate their return process. They need an agent that can handle basic return inquiries politely and efficiently.</p>
+            <p><strong>Task:</strong> Write a structured prompt for the EcoShop Return Agent using XML tags. Your prompt must include:</p>
+            <ul>
+                <li>A clear persona (friendly, helpful, eco-conscious).</li>
+                <li>Instructions to check if the item is within the 30-day return window (assume the user will provide the date or you will ask for it).</li>
+                <li>Instructions to provide a return label link (<code>https://ecoshop.com/returns/label</code>) if eligible.</li>
+                <li>Instructions to offer store credit if the item is outside the 30-day window.</li>
+                <li>Do NOT use the word "Intent". Focus on the Customer User Journey (CUJ) of returning an item.</li>
+            </ul>
+            <p><em>Do not worry about connecting data stores or tools yet. Focus solely on the prompt structure in the text editor.</em></p>
+            <p><strong>Difficulty:</strong> Medium. Focus on clear separation of concerns using tags.</p>
+        </div>
+
+        <div class="pro-tip">
+            <h3>Pro-Tip: Best Practice</h3>
+            <p>Always close your XML tags! While some advanced models can infer missing closing tags, explicitly closing them (e.g., <code>&lt;/instructions&gt;</code>) ensures consistent behavior across different model versions and reduces edge-case failures.</p>
+        </div>
+
+        <div class="watch-out">
+            <h3>Watch-Out: Common Pitfall</h3>
+            <p>Avoid placing dynamic data or user input directly inside the <code>&lt;instructions&gt;</code> tag. Keep your instructions static and use a separate <code>&lt;context&gt;</code> or <code>&lt;user_input&gt;</code> tag for data that changes with each turn. This prevents prompt injection and confusion.</p>
+        </div>
+
+        <div class="knowledge-check">
+            <h3>Knowledge Check</h3>
+            <p>Select the best answer for each question to test your understanding:</p>
+            <ol>
+                <li>
+                    <strong>Why are XML tags preferred over plain text paragraphs for complex prompts?</strong><br/>
+                    <small>
+                    A) They make the prompt look like code.<br/>
+                    B) They provide explicit boundaries that guide the model's attention mechanism and reduce prompt bleed.<br/>
+                    C) They are required by the console.
+                    </small>
+                </li>
+                <li>
+                    <strong>What is the risk of "prompt bleed"?</strong><br/>
+                    <small>
+                    A) The model generates too much text.<br/>
+                    B) The model confuses user data/context with the instructions it is supposed to follow.<br/>
+                    C) The model forgets the persona.
+                    </small>
+                </li>
+                <li>
+                    <strong>In our challenge, what is the specific Customer User Journey (CUJ) we are designing for?</strong><br/>
+                    <small>
+                    A) Product Search.<br/>
+                    B) Item Returns.<br/>
+                    C) Customer Authentication.
+                    </small>
+                </li>
+            </ol>
+            <p><em>(Answers: 1-B, 2-B, 3-B)</em></p>
+        </div>
+
+        <div class="preview">
+            <p>Up Next: Day 2 - Data Store Tools. We will learn how to give our agent a memory and access to external knowledge. <a href="day_002.html">Preview Day 2</a></p>
+        </div>
+    </div>
+</body>
+</html>
