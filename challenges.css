@@ -1,0 +1,140 @@
+body {
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #3c4043;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+}
+
+header {
+    border-bottom: 1px solid #dadce0;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #1a73e8;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+h2 {
+    color: #202124;
+    font-size: 1.8rem;
+    margin-top: 30px;
+    border-bottom: 1px solid #e8eaed;
+    padding-bottom: 8px;
+    font-weight: 400;
+}
+
+h3 {
+    color: #1a73e8;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.mentor-guidance {
+    background-color: #e8f0fe;
+    border-left: 4px solid #1a73e8;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.refresher {
+    background-color: #f1f3f4;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.challenge {
+    background-color: #e6f4ea;
+    border-left: 4px solid #137333;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.pro-tip {
+    background-color: #fef7e0;
+    border-left: 4px solid #f9ab00;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.watch-out {
+    background-color: #fce8e6;
+    border-left: 4px solid #d93025;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.knowledge-check {
+    background-color: #f8f9fa;
+    border: 1px solid #dadce0;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.industry-news {
+    background-color: #fcedf9;
+    border-left: 4px solid #a142f4;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+code {
+    background-color: #f1f3f4;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+}
+
+pre {
+    background-color: #f1f3f4;
+    padding: 15px;
+    border-radius: 4px;
+    overflow-x: auto;
+    border: 1px solid #dadce0;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.preview {
+    text-align: center;
+    margin-top: 40px;
+    color: #5f6368;
+    font-size: 0.9rem;
+    border-top: 1px solid #dadce0;
+    padding-top: 20px;
+}
+
+.the-why-llm {
+    background-color: #f3e5f5;
+    border-left: 4px solid #9c27b0;
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}

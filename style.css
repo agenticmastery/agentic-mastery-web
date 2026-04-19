@@ -545,15 +545,18 @@ footer {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
+    position: relative;
+    z-index: 2;
 }
 
 .mentor-guidance, .refresher, .challenge, .pro-tip, .watch-out, .knowledge-check, .preview {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(12px);
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .mentor-guidance {
