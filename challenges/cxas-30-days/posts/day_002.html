@@ -1,116 +1,108 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2: Data Store Tools - CXAS 30-Day Challenge</title>
-    <link rel="stylesheet" href="../../../challenges.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 2: Data Store Tools - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Day 2: Data Store Tools & RAG Basics</h1>
-            <p>Give your agent access to ground truth data.</p>
-        </header>
-
-        <div class="mentor-guidance">
-            <h3>Super Mentor Guidance</h3>
-            <p><strong>Motivation:</strong> Welcome to Day 2! Yesterday, you built a great prompt structure. But a prompt alone is just a shell. Today, we give your agent a brain—access to a library of facts. By mastering Data Stores and Retrieval-Augmented Generation (RAG), you ensure your agent speaks with authority and accuracy, grounded in your company's specific data.</p>
-            <p><strong>Achievement:</strong> By the end of today, you will understand how RAG works and how to correctly configure a Data Store tool by creating it in the correct Google Cloud console first.</p>
-            <p><strong>Customer Value:</strong> Customers get accurate, up-to-date answers directly from your official documents, reducing frustration and building trust.</p>
-            <p><strong>Milestones:</strong> Understand the mechanics of RAG and create your first Data Store reference.</p>
-            <p><strong>Goals:</strong> Configure a Data Store tool for EcoShop's return policy and reference it correctly in your prompt.</p>
-        </div>
-
-        <div class="refresher">
-            <h3>Refresher & Orientation</h3>
-            <p>On Day 1, we learned about Prompt Architecture and the power of XML tags to structure our instructions. We built a return agent for EcoShop by hardcoding the rules. Check your solution to yesterday's challenge <a href="day_001_solution.html">here</a>.</p>
-        </div>
-
-        <section class="lesson">
-            <h2>Lesson: Data Stores & RAG in CXAS</h2>
-            <p>Large Language Models (LLMs) are incredibly powerful, but they only know what they were trained on. They don't know your company's specific policies or real-time data. To solve this, we use **Retrieval-Augmented Generation (RAG)**.</p>
-            
-            <h3>The Pre-requisite: Vertex AI Agent Builder</h3>
-            <p>Here is a critical technical detail many get wrong: **You do not create the Data Store content inside CX Agent Studio.**</p>
-            <p>Data Stores are part of the broader Google Cloud ecosystem (specifically **Vertex AI Agent Builder**, formerly Generative AI App Builder). The workflow is as follows:</p>
-            <ol>
-                <li>You first create and ingest data into a Data Store in the **Vertex AI Search and Conversation** console.</li>
-                <li>Once the data is ingested and indexed there, you then go to **CX Agent Studio** and create a **Tool** that references that existing Data Store.</li>
-            </ol>
-            <p>This separation ensures that data management and conversational logic are kept separate, allowing you to update documents without breaking the agent's prompt.</p>
-
-            <h3>Other Tool Types in CXAS</h3>
-            <p>While Data Stores are powerful for your own data, CX Agent Studio also supports other tool types to extend capabilities:</p>
-            <ul>
-                <li><strong>Google Search Tool</strong>: Allows the agent to perform live Google searches to answer general knowledge questions or find public information.</li>
-                <li><strong>File Search</strong>: For searching content directly within uploaded files without setting up a full website crawl.</li>
-            </ul>
-
-            <div class="pro-tip">
-                <p><strong>Mentor Tip: Real-World Practice</strong><br/>
+<div class="container">
+<header>
+<h1>Day 2: Data Store Tools &amp; RAG Basics</h1>
+<p>Give your agent access to ground truth data.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 2! Yesterday, you built a great prompt structure. But a prompt alone is just a shell. Today, we give your agent a brain—access to a library of facts. By mastering Data Stores and Retrieval-Augmented Generation (RAG), you ensure your agent speaks with authority and accuracy, grounded in your company's specific data.</p>
+<p><strong>Achievement:</strong> By the end of today, you will understand how RAG works and how to correctly configure a Data Store tool by creating it in the correct Google Cloud console first.</p>
+<p><strong>Customer Value:</strong> Customers get accurate, up-to-date answers directly from your official documents, reducing frustration and building trust.</p>
+<p><strong>Milestones:</strong> Understand the mechanics of RAG and create your first Data Store reference.</p>
+<p><strong>Goals:</strong> Configure a Data Store tool for EcoShop's return policy and reference it correctly in your prompt.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 1, we learned about Prompt Architecture and the power of XML tags to structure our instructions. We built a return agent for EcoShop by hardcoding the rules. Check your solution to yesterday's challenge <a href="day_001_solution.html">here</a>.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Data Stores &amp; RAG in CXAS</h2>
+<p>Large Language Models (LLMs) are incredibly powerful, but they only know what they were trained on. They don't know your company's specific policies or real-time data. To solve this, we use **Retrieval-Augmented Generation (RAG)**.</p>
+<h3>The Pre-requisite: Vertex AI Agent Builder</h3>
+<p>Here is a critical technical detail many get wrong: **You do not create the Data Store content inside CX Agent Studio.**</p>
+<p>Data Stores are part of the broader Google Cloud ecosystem (specifically **Vertex AI Agent Builder**, formerly Generative AI App Builder). The workflow is as follows:</p>
+<ol>
+<li>You first create and ingest data into a Data Store in the **Vertex AI Search and Conversation** console.</li>
+<li>Once the data is ingested and indexed there, you then go to **CX Agent Studio** and create a **Tool** that references that existing Data Store.</li>
+</ol>
+<p>This separation ensures that data management and conversational logic are kept separate, allowing you to update documents without breaking the agent's prompt.</p>
+<h3>Other Tool Types in CXAS</h3>
+<p>While Data Stores are powerful for your own data, CX Agent Studio also supports other tool types to extend capabilities:</p>
+<ul>
+<li><strong>Google Search Tool</strong>: Allows the agent to perform live Google searches to answer general knowledge questions or find public information.</li>
+<li><strong>File Search</strong>: For searching content directly within uploaded files without setting up a full website crawl.</li>
+</ul>
+<div class="pro-tip">
+<p><strong>Mentor Tip: Real-World Practice</strong><br/>
                 You don't need a live corporate website to master Data Stores. You can practice by indexing any public documentation site or a specific Wikipedia page. Better yet, simulate an enterprise setup by uploading a mock return policy document to a Google Cloud Storage bucket and pointing your Data Store there. This is exactly how real-world enterprise implementations are built!</p>
-            </div>
-
-
-            <div class="the-why-llm">
-
-                <h3>The 'Why' from the LLM Perspective</h3>
-                <p>Why do we do this? From the perspective of the LLM, it transforms the task from "recall from memory" to "open-book exam." LLMs are prone to hallucination when they try to remember specific facts. By injecting the precise, relevant context directly into the prompt (via the Data Store retrieval), we reduce the need for the model to guess. The attention mechanism focuses on the provided context, leading to dramatically higher accuracy.</p>
-            </div>
-        </section>
-
-        <div class="challenge">
-            <h3>The Day 2 Challenge: Knowledge-Grounded Return Agent</h3>
-            <p><strong>Scenario:</strong> EcoShop has stored its return policy in a document. They no longer want the rules hardcoded in the prompt. They want you to use a Data Store tool.</p>
-            
-            <p><strong>Task:</strong> 
+</div>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why do we do this? From the perspective of the LLM, it transforms the task from "recall from memory" to "open-book exam." LLMs are prone to hallucination when they try to remember specific facts. By injecting the precise, relevant context directly into the prompt (via the Data Store retrieval), we reduce the need for the model to guess. The attention mechanism focuses on the provided context, leading to dramatically higher accuracy.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 2 Challenge: Knowledge-Grounded Return Agent</h3>
+<p><strong>Scenario:</strong> EcoShop has stored its return policy in a document. They no longer want the rules hardcoded in the prompt. They want you to use a Data Store tool.</p>
+<p><strong>Task:</strong> 
             1. First, refer to the official documentation on how to create and ingest data into a Data Store in Vertex AI Agent Builder: <a href="https://docs.cloud.google.com/generative-ai-app-builder/docs/create-datastore-ingest" target="_blank">Create Data Store Documentation</a>. (You don't need to create one if you don't have a project, but understand the flow).
             2. Now, update the EcoShop Return Agent prompt from Day 1. Instead of hardcoding the 30-day rule, instruct the agent to use a Data Store tool named <code>return_policy_store</code> to find the answers.
             3. In the instructions for the return Customer User Journey (CUJ), explicitly reference the tool using the correct syntax: <code>{@TOOL: return_policy_store}</code>.
             4. Do NOT hardcode the policy details in the prompt. Let the tool handle that.</p>
-            
-            <p><em>Note: The solution guide with the correct prompt structure and tool reference will be linked in tomorrow's lesson!</em></p>
-            <p><strong>Difficulty:</strong> Medium. Focus on correct tool referencing syntax and understanding the data store creation flow.</p>
-        </div>
-
-        <div class="pro-tip">
-            <h3>Pro-Tip: Best Practice</h3>
-            <p>When referencing tools in instructions, be specific about *why* and *when* the agent should use them. Instead of just saying "Use the tool," say "Use <code>{@TOOL: return_policy_store}</code> to find the return window and eligibility criteria." This helps the model make better decisions.</p>
-        </div>
-
-        <div class="watch-out">
-            <h3>Watch-Out: Pitfall</h3>
-            <p>A common pitfall is trying to create the Data Store directly inside the agent flow. Remember to follow the top-down approach: Create in Agent Builder first, then reference in CXAS.</p>
-        </div>
-
-        <div class="knowledge-check">
-            <h3>Knowledge Check</h3>
-            <p>Select the best answer for each question to test your understanding:</p>
-            <ol>
-                <li>
-                    <strong>Where do you create and ingest data for a Data Store before using it in CXAS?</strong><br/>
-                    <small>
+<p><em>Note: The solution guide with the correct prompt structure and tool reference will be linked in tomorrow's lesson!</em></p>
+<p><strong>Difficulty:</strong> Medium. Focus on correct tool referencing syntax and understanding the data store creation flow.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>When referencing tools in instructions, be specific about *why* and *when* the agent should use them. Instead of just saying "Use the tool," say "Use <code>{@TOOL: return_policy_store}</code> to find the return window and eligibility criteria." This helps the model make better decisions.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>A common pitfall is trying to create the Data Store directly inside the agent flow. Remember to follow the top-down approach: Create in Agent Builder first, then reference in CXAS.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>Where do you create and ingest data for a Data Store before using it in CXAS?</strong><br/>
+<small>
                     A) Directly inside the CX Agent Studio Workspace.<br/>
                     B) In the Vertex AI Search and Conversation (Agent Builder) console.<br/>
                     C) In the Google Docs editor.
                     </small>
-                </li>
-                <li>
-                    <strong>What is the correct syntax to reference a tool named `my_tool` in CXAS instructions?</strong><br/>
-                    <small>
+</li>
+<li>
+<strong>What is the correct syntax to reference a tool named `my_tool` in CXAS instructions?</strong><br/>
+<small>
                     A) {my_tool}<br/>
                     B) {@TOOL: my_tool}<br/>
                     C) #my_tool
                     </small>
-                </li>
-            </ol>
-            <p><em>(Answers: 1-B, 2-B)</em></p>
-        </div>
+</li>
+</ol>
+<p><em>(Answers: 1-B, 2-B)</em></p>
+</div>
 
-        <div class="preview">
-            <p>Up Next: Day 3 - Simulator & Tracing. We will learn how to see inside the LLM's mind and debug its decisions. <a href="day_003.html">Preview Day 3</a></p>
-        </div>
-    </div>
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 3 - Simulator &amp; Tracing. We will learn how to see inside the LLM's mind and debug its decisions. <a href="day_003.html">Preview Day 3</a></p>
+</div>
+</div>
 </body>
 </html>

@@ -1,39 +1,34 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2 Solution: Data Store Tools - CXAS 30-Day Challenge</title>
-    <link rel="stylesheet" href="../../../challenges.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 2 Solution: Data Store Tools - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Day 2 Solution: Data Store Tools & RAG Basics</h1>
-            <p>Here is the recommended solution for the Day 2 Challenge.</p>
-        </header>
-
-        <div class="mentor-guidance">
-            <h3>Super Mentor Feedback</h3>
-            <p>Fantastic job on completing Day 2! You've successfully transitioned your agent from a hardcoded script to a dynamic, knowledge-grounded assistant. By separating data management (in Agent Builder) from conversation logic (in CXAS), you are building scalable enterprise agents.</p>
-            <p><strong>Key Achievement:</strong> You have successfully integrated a Data Store tool reference into your structured prompt, ensuring the agent relies on ground truth data.</p>
-        </div>
-
-        <div class="refresher">
-            <h3>Orientation</h3>
-            <p>This is the solution file for Day 2. Use this reference to verify your prompt structure and tool referencing syntax.</p>
-        </div>
-
-        <section class="solution">
-            <h2>The Solution: Knowledge-Grounded Prompt</h2>
-            
-            <h3>1. Tool Configuration (Prerequisite)</h3>
-            <p>Before writing the prompt, you should have understood that the Data Store named <code>return_policy_store</code> must be created first in the **Vertex AI Search and Conversation** console, and then referenced as a tool in CX Agent Studio.</p>
-
-            <h3>2. The Prompt Structure</h3>
-            <p>Here is the updated prompt for the EcoShop Return Agent. Notice how we removed the hardcoded rules and replaced them with a dynamic tool call reference <code>{@TOOL: return_policy_store}</code>.</p>
-
-            <pre><code>&lt;role&gt;
+<div class="container">
+<header>
+<h1>Day 2 Solution: Data Store Tools &amp; RAG Basics</h1>
+<p>Here is the recommended solution for the Day 2 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Fantastic job on completing Day 2! You've successfully transitioned your agent from a hardcoded script to a dynamic, knowledge-grounded assistant. By separating data management (in Agent Builder) from conversation logic (in CXAS), you are building scalable enterprise agents.</p>
+<p><strong>Key Achievement:</strong> You have successfully integrated a Data Store tool reference into your structured prompt, ensuring the agent relies on ground truth data.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 2. Use this reference to verify your prompt structure and tool referencing syntax.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Knowledge-Grounded Prompt</h2>
+<h3>1. Tool Configuration (Prerequisite)</h3>
+<p>Before writing the prompt, you should have understood that the Data Store named <code>return_policy_store</code> must be created first in the **Vertex AI Search and Conversation** console, and then referenced as a tool in CX Agent Studio.</p>
+<h3>2. The Prompt Structure</h3>
+<p>Here is the updated prompt for the EcoShop Return Agent. Notice how we removed the hardcoded rules and replaced them with a dynamic tool call reference <code>{@TOOL: return_policy_store}</code>.</p>
+<pre><code>&lt;role&gt;
 You are a friendly and eco-conscious customer service agent for EcoShop.
 &lt;/role&gt;
 
@@ -59,23 +54,27 @@ Assist customers with their return inquiries accurately.
 - Do not rely on pre-trained knowledge for policies; always use the tool.
 - If the tool returns no data or the answer is not found, politely offer to connect to a human agent.
 &lt;/constraints&gt;</code></pre>
+<h3>Why This Solution Works</h3>
+<ul>
+<li><strong>Dynamic Grounding:</strong> By using <code>{@TOOL: return_policy_store}</code>, the agent will always fetch the latest policy from the Data Store you created in Agent Builder.</li>
+<li><strong>Correct Syntax:</strong> The platform's runtime requires the <code>{@TOOL: ...}</code> format to trigger the function call.</li>
+<li><strong>Strict Constraints:</strong> The constraint to not rely on pre-trained knowledge prevents hallucination.</li>
+</ul>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Tool Description</h3>
+<p>Make sure your tool description in the UI is clear! E.g., *"Use this tool to search for EcoShop's return policy, return windows, and eligibility criteria."* This helps the LLM know when to trigger the tool.</p>
+</div>
 
-            <h3>Why This Solution Works</h3>
-            <ul>
-                <li><strong>Dynamic Grounding:</strong> By using <code>{@TOOL: return_policy_store}</code>, the agent will always fetch the latest policy from the Data Store you created in Agent Builder.</li>
-                <li><strong>Correct Syntax:</strong> The platform's runtime requires the <code>{@TOOL: ...}</code> format to trigger the function call.</li>
-                <li><strong>Strict Constraints:</strong> The constraint to not rely on pre-trained knowledge prevents hallucination.</li>
-            </ul>
-        </section>
-
-        <div class="pro-tip">
-            <h3>Pro-Tip: Tool Description</h3>
-            <p>Make sure your tool description in the UI is clear! E.g., *"Use this tool to search for EcoShop's return policy, return windows, and eligibility criteria."* This helps the LLM know when to trigger the tool.</p>
-        </div>
-
-        <div class="preview">
-            <p><a href="day_002.html">Back to Day 2 Challenge</a> | <a href="day_003.html">Continue to Day 3</a></p>
-        </div>
-    </div>
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_002.html">Back to Day 2 Challenge</a> | <a href="day_003.html">Continue to Day 3</a></p>
+</div>
+</div>
 </body>
 </html>

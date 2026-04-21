@@ -1,34 +1,31 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 1 Solution: Setup & Structured Prompts - CXAS 30-Day Challenge</title>
-    <link rel="stylesheet" href="../../../challenges.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 1 Solution: Setup &amp; Structured Prompts - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Day 1 Solution: Setup & Structured Prompts</h1>
-            <p>Here is the recommended solution for the Day 1 Challenge.</p>
-        </header>
-
-        <div class="mentor-guidance">
-            <h3>Super Mentor Feedback</h3>
-            <p>Excellent work on completing Day 1! You've taken the first step towards thinking like a Prompt Architect. Let's look at a solution that balances structure, clarity, and effectiveness by using advanced XML tags like <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code>.</p>
-            <p><strong>Key Achievement:</strong> You have successfully separated instructions from constraints and persona, and broken down the taskflow into logical subtasks.</p>
-        </div>
-
-        <div class="refresher">
-            <h3>Orientation</h3>
-            <p>This is the solution file for Day 1. You can use this to compare with your own attempt or as a reference for future challenges.</p>
-        </div>
-
-        <section class="solution">
-            <h2>The Solution: Structured Prompt with Subtasks</h2>
-            <p>Here is a structured prompt that fulfills all the requirements of the challenge, following the best practices for CX Agent Studio by using <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags inside the taskflow.</p>
-
-            <pre><code>&lt;persona&gt;
+<div class="container">
+<header>
+<h1>Day 1 Solution: Setup &amp; Structured Prompts</h1>
+<p>Here is the recommended solution for the Day 1 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Excellent work on completing Day 1! You've taken the first step towards thinking like a Prompt Architect. Let's look at a solution that balances structure, clarity, and effectiveness by using advanced XML tags like <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code>.</p>
+<p><strong>Key Achievement:</strong> You have successfully separated instructions from constraints and persona, and broken down the taskflow into logical subtasks.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 1. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Structured Prompt with Subtasks</h2>
+<p>Here is a structured prompt that fulfills all the requirements of the challenge, following the best practices for CX Agent Studio by using <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags inside the taskflow.</p>
+<pre><code>&lt;persona&gt;
 You are a friendly, helpful, and eco-conscious customer service agent for EcoShop. Your goal is to assist customers with their returns while maintaining a positive and green-focused brand image.
 &lt;/persona&gt;
 
@@ -37,7 +34,7 @@ Process item returns efficiently according to EcoShop policy.
 &lt;/primary_goal&gt;
 
 &lt;taskflow&gt;
-  &lt;subtask name="Initial Greeting & Data Gathering"&gt;
+  &lt;subtask name="Initial Greeting &amp; Data Gathering"&gt;
     &lt;step&gt;Greet the customer warmly and ask for their order number.&lt;/step&gt;
     &lt;step&gt;Ask for the date they received the item.&lt;/step&gt;
   &lt;/subtask&gt;
@@ -58,23 +55,27 @@ Process item returns efficiently according to EcoShop policy.
 - Keep the tone helpful and aligned with EcoShop's values.
 - Always ask for both order number and date before assessing eligibility.
 &lt;/constraints&gt;</code></pre>
+<h3>Why This Works Better</h3>
+<ul>
+<li><strong>Maximum Granularity:</strong> By breaking the flow into <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code>, you give the model explicit markers for where it is in the conversation. This is the gold standard for complex multi-turn interactions.</li>
+<li><strong>No "Intents":</strong> We focused on the CUJ (Customer User Journey) of returns.</li>
+<li><strong>Clear Separation:</strong> Persona, Goals, Taskflow, and Constraints are distinct, preventing prompt bleed.</li>
+</ul>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Iteration</h3>
+<p>Don't be afraid to iterate on your prompt. If you find the agent is still confusing instructions with data, try increasing the separation between blocks or adding few-shot examples (which we will cover later!).</p>
+</div>
 
-            <h3>Why This Works Better</h3>
-            <ul>
-                <li><strong>Maximum Granularity:</strong> By breaking the flow into <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code>, you give the model explicit markers for where it is in the conversation. This is the gold standard for complex multi-turn interactions.</li>
-                <li><strong>No "Intents":</strong> We focused on the CUJ (Customer User Journey) of returns.</li>
-                <li><strong>Clear Separation:</strong> Persona, Goals, Taskflow, and Constraints are distinct, preventing prompt bleed.</li>
-            </ul>
-        </section>
-
-        <div class="pro-tip">
-            <h3>Pro-Tip: Iteration</h3>
-            <p>Don't be afraid to iterate on your prompt. If you find the agent is still confusing instructions with data, try increasing the separation between blocks or adding few-shot examples (which we will cover later!).</p>
-        </div>
-
-        <div class="preview">
-            <p><a href="day_001.html">Back to Day 1 Challenge</a> | <a href="day_002.html">Continue to Day 2</a></p>
-        </div>
-    </div>
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_001.html">Back to Day 1 Challenge</a> | <a href="day_002.html">Continue to Day 2</a></p>
+</div>
+</div>
 </body>
 </html>
