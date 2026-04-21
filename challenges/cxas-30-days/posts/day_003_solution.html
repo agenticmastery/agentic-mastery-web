@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 3 Solution: Simulator &amp; Tracing - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 3 Solution: Simulator &amp; Execution Tracing</h1>
+<p>Here is the recommended solution for the Day 3 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Fantastic job on tackling Day 3! Debugging traces is one of the most critical skills for an AI Engineer. By learning to read the trace, you move from guessing why an agent failed to knowing exactly how to fix it. Let's look at the analysis and the prompt fix.</p>
+<p><strong>Key Achievement:</strong> You have successfully identified a reasoning failure due to narrow instructions and applied a fix using semantic triggers and structured steps.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 3. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Broadening Triggers &amp; Structuring Steps</h2>
+<h3>1. The Analysis</h3>
+<p>In the challenge trace, the user asked: <em>"I received a broken item yesterday. How do I return it?"</em></p>
+<p>The agent's instructions were: <em>"When a customer asks about returning a <strong>standard item</strong>, use the tool <code>{@TOOL: return_policy_store}</code> to check the policy."</em></p>
+<p><strong>The Failure:</strong> The LLM interpreted "broken item" as being distinct from a "standard item" return flow, or it simply didn't match the narrow trigger "standard item". Because it didn't find a matching instruction for broken items, it defaulted to its general knowledge or fallback response: <em>"I cannot help you with returns directly."</em> It failed to call the tool.</p>
+<h3>2. The Prompt Fix</h3>
+<p>To fix this, we need to broaden the trigger to include synonyms and related scenarios (like "damaged" or "broken"), and we should use a structured <code>&lt;taskflow&gt;</code> with <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags to ensure the model follows the correct procedure.</p>
+<pre><code>&lt;instructions&gt;
+You are a helpful customer service agent for EcoShop.
+
+&lt;taskflow&gt;
+  &lt;subtask name="Handle Returns &amp; Damaged Items"&gt;
+    &lt;step&gt;When a customer asks about returns, refunds, or damaged/broken items, call the tool {@TOOL: return_policy_store} to retrieve the relevant policy.&lt;/step&gt;
+    &lt;step&gt;Summarize the policy for the customer clearly and politely based on the retrieved data.&lt;/step&gt;
+  &lt;/subtask&gt;
+&lt;/taskflow&gt;
+
+&lt;constraints&gt;
+- Be polite and concise.
+- Always check the policy using the tool before answering return-related questions.
+- Do not hardcode policy details; rely on the tool output.
+&lt;/constraints&gt;
+&lt;/instructions&gt;</code></pre>
+<h3>Why This Works Better</h3>
+<ul>
+<li><strong>Semantic Triggers:</strong> By listing "returns, refunds, or damaged/broken items", we give the LLM a broader range of concepts to match against the user's intent, making the tool call more reliable.</li>
+<li><strong>Structured Steps:</strong> The <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags provide a clear, linear procedure for the model to follow, reducing the chance of it skipping a step (like calling the tool).</li>
+</ul>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Use the Trace Often</h3>
+<p>Make it a habit to open the Execution Trace for *every* test turn you run in the Simulator during development. It's the only way to verify that the agent is working for the right reasons, rather than just getting lucky with its output.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_003.html">Back to Day 3 Challenge</a> | <a href="day_004.html">Continue to Day 4</a></p>
+</div>
+</div>
+</body>
+</html>

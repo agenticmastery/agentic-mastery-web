@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 3: Simulator &amp; Tracing - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 3: Simulator &amp; Execution Tracing</h1>
+<p>Step inside the mind of your agent and debug its decisions.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 3! You've built prompts and connected data. But how do you know what your agent is <em>actually</em> thinking? Today, we unlock the superpower of observability. By mastering the Simulator and Execution Tracing, you can step inside the mind of the LLM, see exactly where it succeeds, and pinpoint precisely where it fails. This is the key to turning a flaky agent into a production-ready powerhouse.</p>
+<p><strong>Achievement:</strong> By the end of today, you will be able to use the CXAS Simulator to run multi-turn tests and read the Execution Trace to diagnose reasoning failures and tool call errors.</p>
+<p><strong>Customer Value:</strong> Customers get reliable, consistent experiences because you can find and fix edge cases before they ever reach production.</p>
+<p><strong>Milestones:</strong> Run a test in the Simulator and analyze the full execution trace.</p>
+<p><strong>Goals:</strong> Identify the failure point in a simulated conversation trace for EcoShop and propose a fix.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 2, we moved beyond hardcoded rules and gave our agent access to a brain using Data Stores and RAG. We learned to reference tools using the <code>{@TOOL: tool_name}</code> syntax. Check your solution to yesterday's challenge <a href="day_002_solution.html">here</a>.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Simulator &amp; Tracing in CXAS</h2>
+<p>Building an agent is only half the battle. The other half is testing and debugging. In CX Agent Studio, the **Simulator** is your interactive sandbox where you can chat with your agent in real-time to see how it responds.</p>
+<p>But simply seeing the response isn't enough when things go wrong. That's where **Execution Tracing** comes in. For every turn in the Simulator, CXAS generates a detailed trace that allows you to inspect the internal operations of the agent.</p>
+<h3>How to Read a Trace</h3>
+<p>A full execution trace typically reveals the following stages:</p>
+<ol>
+<li><strong>Prompt Assembly</strong>: You can see the final prompt sent to the LLM, including your instructions, few-shot examples, and any retrieved context from tools like Data Stores.</li>
+<li><strong>Model Output (Reasoning)</strong>: You see the raw output from the model. This often includes the model's "Chain of Thought" or internal reasoning before it decides to take an action.</li>
+<li><strong>Tool Calls</strong>: If the model decides it needs external information, the trace shows the specific tool it selected and the arguments it generated for that tool call.</li>
+<li><strong>Tool Execution</strong>: You see the output returned by the tool (e.g., the search results from a Data Store).</li>
+<li><strong>Final Response</strong>: The final text that is sent back to the user.</li>
+</ol>
+<p>By examining these steps, you can see exactly where a breakdown occurred. Did the prompt lack the right instructions? Did the model fail to call the tool? Or did the tool return the wrong data?</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why is tracing so critical? From the LLM's perspective, every response is a result of calculating probabilities based on the input context (the prompt and conversation history). The "attention mechanism" determines which parts of the input the model focuses on. When an agent fails (e.g., hallucinates, calls the wrong tool, or gives a bad answer), it's usually because the attention was misdirected by ambiguous instructions or conflicting context. Tracing allows us to inspect the intermediate steps and see exactly where the attention failed. Without tracing, an LLM is a black box. With tracing, it's a glass box.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 3 Challenge: Debug the Trace</h3>
+<p><strong>Scenario:</strong> EcoShop's return agent is failing in production. A customer asked about returning a damaged item. The agent should have checked the policy using the <code>return_policy_store</code> tool, but instead, it gave a generic apology and said it couldn't help.</p>
+<p><strong>The Trace Data:</strong></p>
+<div class="trace-output" style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; font-family: monospace;">
+                [User]: "I received a broken item yesterday. How do I return it?"<br/>
+<br/>
+                [Internal Trace - Prompt]:<br/>
+                ...<br/>
+                &lt;instructions&gt;<br/>
+                You are a helpful customer service agent for EcoShop.<br/>
+                When a customer asks about returning a standard item, use the tool {@TOOL: return_policy_store} to check the policy.<br/>
+                Be polite and concise.<br/>
+                &lt;/instructions&gt;<br/>
+                ...<br/>
+<br/>
+                [Internal Trace - Model Output]:<br/>
+                "I apologize that your item arrived broken. I cannot help you with returns directly. Please contact human support."<br/>
+<br/>
+                [Internal Trace - Tool Calls]:<br/>
+                None.<br/>
+<br/>
+                [Agent Response]: "I apologize that your item arrived broken. I cannot help you with returns directly. Please contact human support."
+            </div>
+<p><strong>Task:</strong> 
+            1. Analyze the trace provided above.
+            2. Identify why the agent failed to call the <code>return_policy_store</code> tool.
+            3. Propose a specific update to the instructions in the prompt to fix this failure so that it handles "broken" or "damaged" items correctly using the tool.
+            </p>
+<p><em>Note: The solution guide with the correct analysis and prompt fix will be linked in tomorrow's lesson! Do not give away the solution.</em></p>
+<p><strong>Difficulty:</strong> Medium. Requires reading the trace and understanding how LLM instructions map to actions.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>When writing instructions for tools, use broad semantic triggers rather than narrow keywords. Instead of just "Use tool for returns," use "Use tool for returns, refunds, damaged items, or exchanges." This helps the LLM generalize better across different user phrasings.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>A common pitfall is looking only at the final output when debugging. If the agent gives a wrong answer, always check the trace to see if the tool was called and what data it returned. The LLM might be fine, but the data retrieved might be missing the answer.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>What does the Execution Trace in CXAS primarily help you do?</strong><br/>
+<small>
+                    A) Design the visual layout of the chat widget.<br/>
+                    B) See the step-by-step reasoning and tool calls of the agent.<br/>
+                    C) Edit the CSS of the website.
+                    </small>
+</li>
+<li>
+<strong>If an agent fails to call a tool when it should, what is the most effective first step?</strong><br/>
+<small>
+                    A) Increase the model temperature.<br/>
+                    B) Check the trace to see if the prompt instructions were triggered and refine the triggers.<br/>
+                    C) Delete the tool and create it again.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 4 - Advanced RAG &amp; Chunking. We will learn how to optimize data stores for better retrieval. <a href="day_004.html">Preview Day 4</a></p>
+</div>
+</div>
+</body>
+</html>
