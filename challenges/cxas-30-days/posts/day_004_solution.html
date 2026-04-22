@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 4 Solution: Few-Shot Examples - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 4 Solution: Few-Shot Examples &amp; In-Context Learning</h1>
+<p>Here is the recommended solution for the Day 4 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Fantastic job on tackling Day 4! Mastering few-shot examples is a game-changer for agent reliability. By providing clear, concrete examples of how to handle out-of-scope queries, you prevent hallucinations and ensure a smooth user experience. You've successfully applied In-Context Learning principles to draw boundaries for your agent.</p>
+<p><strong>Key Achievement:</strong> You have successfully implemented few-shot examples to handle out-of-scope queries with graceful redirection, using the recommended structured prompt format.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 4. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Structured Prompts and Diverse Examples</h2>
+<h3>1. The Prompt Structure</h3>
+<p>To solve this challenge, we integrate the <code>&lt;examples&gt;</code> tag into our prompt structure, alongside the <code>&lt;taskflow&gt;</code> and <code>&lt;constraints&gt;</code> we've learned about previously. This provides a complete picture for the LLM.</p>
+<pre><code>&lt;instructions&gt;
+You are a helpful customer service agent for EcoShop.
+
+&lt;taskflow&gt;
+  &lt;subtask name="Handle Out-of-Scope Queries"&gt;
+    &lt;step&gt;When a customer asks about physical store locations or competitor prices, recognize that these are out of scope.&lt;/step&gt;
+    &lt;step&gt;Politely inform the customer that EcoShop is online-only or does not price match.&lt;/step&gt;
+    &lt;step&gt;Redirect the customer to a supported journey, such as browsing products or checking the return policy.&lt;/step&gt;
+  &lt;/subtask&gt;
+&lt;/taskflow&gt;
+
+&lt;constraints&gt;
+- Be polite and concise.
+- Do not make up physical store locations.
+- Do not claim to price match competitor products.
+&lt;/constraints&gt;
+
+&lt;examples&gt;
+Example 1: Physical Store Query
+User: "Where is your store in Seattle?"
+Agent: "EcoShop is an online-only store, so we don't have any physical locations. However, you can browse our full catalog and make purchases directly on our website! Is there a specific product you are looking for?"
+
+Example 2: Competitor Price Query
+User: "Do you match the price on Amazon for the eco-friendly water bottle?"
+Agent: "We do not offer price matching with competitors like Amazon. We strive to offer the best value directly through our sustainable sourcing. You can view all our current pricing and products on our site. Can I help you find anything else?"
+&lt;/examples&gt;
+&lt;/instructions&gt;</code></pre>
+<h3>Why This Solution Works</h3>
+<ul>
+<li><strong>Clear Boundaries:</strong> The examples explicitly show the model what is *not* supported and how to respond. This is much more effective than simply saying "don't answer questions about stores."</li>
+<li><strong>Graceful Redirection:</strong> Instead of a dead-end "I can't help you," the agent offers a helpful alternative ("You can browse our full catalog...", "Can I help you find anything else?"). This keeps the conversation moving forward on supported Customer User Journeys (CUJs).</li>
+<li><strong>Format Consistency:</strong> The prompt maintains the XML-like tags, which helps modern LLMs parse instructions and examples more reliably.</li>
+</ul>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Cover the Edges</h3>
+<p>When using examples, try to cover the "edge of the envelope." Show examples of things that are *just* inside the scope and things that are *just* outside the scope. This helps the model draw a sharper boundary between what it should and should not attempt to do.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_004.html">Back to Day 4 Challenge</a> | <a href="day_005.html">Continue to Day 5</a></p>
+</div>
+</div>
+</body>
+</html>

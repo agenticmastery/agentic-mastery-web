@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 4: Few-Shot Examples - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 4: Few-Shot Examples &amp; In-Context Learning</h1>
+<p>Teach your agent by example to handle complex edge cases.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 4! You've built prompts, connected data, and learned to observe your agent. Now, it's time to master the art of teaching by example. Few-shot learning is one of the most potent techniques in prompt engineering. By showing the model exactly how to behave in specific scenarios, you eliminate ambiguity and ensure consistent, high-quality responses. Today, we focus on using examples to handle queries that fall outside your agent's scope.</p>
+<p><strong>Achievement:</strong> By the end of today, you will be able to design and implement effective few-shot examples in your prompts to guide agent behavior and handle out-of-scope queries gracefully.</p>
+<p><strong>Customer Value:</strong> Customers receive clear, polite, and helpful responses even when they ask questions the agent cannot directly answer, maintaining trust in the brand.</p>
+<p><strong>Milestones:</strong> Add few-shot examples for out-of-scope handling to your prompt.</p>
+<p><strong>Goals:</strong> Update the EcoShop agent prompt with few-shot examples to handle queries about competitor comparisons and physical store locations.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 3, we explored the Simulator and Execution Tracing, learning how to step inside the mind of the LLM to debug its decisions and tool calls. We saw how to identify failures in prompt instructions. Check your solution to yesterday's challenge <a href="day_003_solution.html">here</a>.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Few-Shot Learning &amp; In-Context Learning</h2>
+<p>Large Language Models possess a remarkable capability known as **In-Context Learning**. This means they can understand and perform new tasks simply by analyzing the context provided within the prompt, without requiring any updates to their underlying weights (fine-tuning).</p>
+<p>**Few-Shot Learning** leverages this capability by providing the model with a few examples of the task you want it to perform. Instead of just describing the rules (which is "zero-shot" prompting), you show the model the expected input and the corresponding ideal output.</p>
+<h3>Why Examples Work</h3>
+<p>Instructions can be interpreted in multiple ways. For example, telling an agent to "be polite" is subjective. However, providing three examples of polite responses gives the model a concrete pattern to match. Few-shot examples are particularly effective for:</p>
+<ul>
+<li>Enforcing a specific output format (e.g., JSON or a specific text structure).</li>
+<li>Teaching the agent how to handle complex reasoning steps.</li>
+<li>Defining the boundaries of the agent's scope (handling out-of-scope queries).</li>
+</ul>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why are examples so effective? From the LLM's perspective, it is a massive pattern completion engine. When you provide instructions, you are attempting to describe a pattern in high-level language. When you provide few-shot examples, you are directly presenting the pattern itself. These examples act as powerful anchors for the model's attention mechanism. They create a clear mapping in the context window between specific types of inputs and the desired structure and tone of the outputs. This significantly reduces the probability of the model diverging into undesired behaviors or hallucinations.</p>
+</div>
+<h3>Handling Out-of-Scope Queries</h3>
+<p>One of the most critical Customer User Journeys (CUJs) to design is how the agent handles queries it *cannot* answer. Without guidance, an LLM might try to guess, hallucinate, or give a frustrating "I don't know" response. By providing few-shot examples of out-of-scope queries and the ideal graceful redirection, you train the model to recognize its boundaries and guide the user back to supported journeys.</p>
+</section>
+<div class="challenge">
+<h3>The Day 4 Challenge: Handle Out-of-Scope Queries</h3>
+<p><strong>Scenario:</strong> EcoShop is a strictly online-only store and does not track competitor pricing. However, customers frequently ask questions like "Where is your nearest physical store?" or "Can you match the price on Amazon?". Currently, the EcoShop agent either tries to make up a location or gives a blunt refusal.</p>
+<p><strong>Task:</strong> 
+            1. Review the EcoShop agent's core instructions (from previous days).
+            2. Add a new section for <code>&lt;examples&gt;</code> within your prompt structure.
+            3. Create at least two few-shot examples that demonstrate how the agent should handle out-of-scope queries regarding physical stores and competitor pricing.
+            4. The agent should politely inform the customer of EcoShop's online-only nature or inability to price match, and then redirect them to what it *can* do (e.g., check the online catalog or view return policies).
+            </p>
+<p><em>Note: The solution guide with the recommended few-shot examples will be available in the next lesson's refresher!</em></p>
+<p><strong>Difficulty:</strong> Medium. Focus on creating realistic user queries and crafting balanced, helpful redirection responses in the examples.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>When creating few-shot examples, ensure they are diverse. If you show the agent three examples of handling physical store queries, it might not generalize well to competitor price queries. Cover different types of out-of-scope requests to build a robust pattern.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>Avoid "Example Bias." If all your examples show the agent responding with a specific phrase (e.g., "I am sorry, I cannot help with that"), the agent will likely parrot that exact phrase for every out-of-scope query. Keep the responses in your examples varied in phrasing while maintaining the same structural goal.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>What is "In-Context Learning" in the context of LLMs?</strong><br/>
+<small>
+                    A) Training the model on a new dataset to update its weights.<br/>
+                    B) The model's ability to learn how to perform a task simply by seeing examples in the prompt.<br/>
+                    C) The process of retrieving data from a Data Store.
+                    </small>
+</li>
+<li>
+<strong>Why are few-shot examples particularly useful for handling out-of-scope queries?</strong><br/>
+<small>
+                    A) They make the prompt shorter and more efficient.<br/>
+                    B) They provide a clear pattern for the model to recognize boundaries and respond with graceful redirection.<br/>
+                    C) They allow the agent to call external tools more frequently.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 5 - Advanced RAG &amp; Chunking. We will learn how to optimize data stores for better retrieval accuracy. <a href="day_005.html">Preview Day 5</a></p>
+</div>
+</div>
+</body>
+</html>
