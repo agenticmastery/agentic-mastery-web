@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 5: Milestone 1 - The FAQ Agent - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 5: Milestone 1 - The FAQ Agent</h1>
+<p>Putting it all together to build a complete, robust FAQ agent.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Congratulations on reaching Day 5! You have reached the first major milestone of this challenge. Over the past four days, you've learned about prompt structure, connecting data, debugging, and few-shot learning. Today, we are putting all these pieces together. You are going to synthesize everything to build a complete, robust FAQ agent. This is where the magic happens, and you see the real power of what you've learned!</p>
+<p><strong>Achievement:</strong> By the end of today, you will have synthesized the PIF instruction structure, Data Stores, and Few-Shot examples into a single, high-performing FAQ agent.</p>
+<p><strong>Customer Value:</strong> Customers get immediate, accurate, and helpful answers to their questions, delivered with a consistent brand voice, reducing wait times and increasing satisfaction.</p>
+<p><strong>Milestones:</strong> Complete the EcoShop FAQ agent by combining all skills.</p>
+<p><strong>Goals:</strong> Build a complete prompt for the EcoShop FAQ agent using the PIF structure, referencing a Data Store, and including Few-Shot examples for edge cases.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 4, we mastered Few-Shot Examples and In-Context Learning. We learned how to guide the model's behavior by providing concrete examples of expected inputs and outputs, specifically for handling out-of-scope queries gracefully. Check your solution to yesterday's challenge <a href="day_004_solution.html">here</a>.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Synthesizing the FAQ Agent</h2>
+<p>Building a production-ready FAQ agent requires more than just a good prompt or a good data source. It requires a deliberate synthesis of three core elements we've explored so far:</p>
+<ol>
+<li><strong>The PIF Structure:</strong> The skeleton of your agent. It provides the role, persona, goals, constraints, and the step-by-step taskflow that guides the conversation.</li>
+<li><strong>Data Stores:</strong> The brain of your agent for factual queries. This is where the agent goes to find the "ground truth" for customer questions about policies, products, and procedures.</li>
+<li><strong>Few-Shot Examples:</strong> The muscle memory of your agent. They show the model how to handle edge cases, maintain tone, and manage Customer User Journeys (CUJs) that require specific handling, such as out-of-scope requests.</li>
+</ol>
+<h3>The Synthesis in Action</h3>
+<p>When a user asks a question, the agent uses the <strong>PIF structure</strong> to understand its role and constraints. If the question is about a standard policy (e.g., returns), it uses the <strong>Data Store</strong> tool (e.g., <code>{@TOOL: data_store_search}</code>) to retrieve the facts. If the question is complex or out-of-scope, it relies on the patterns established in the <strong>Few-Shot Examples</strong> to craft the perfect response.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>From the LLM's perspective, synthesizing these elements is about managing attention and reducing cognitive load. By using the structured PIF format, you help the model quickly parse the prompt and locate the relevant rules. By offloading factual lookups to a Data Store, you prevent the model from having to memorize vast amounts of information, reducing the risk of hallucination. Finally, the Few-Shot examples serve as high-probability anchors in the attention mechanism, ensuring that even when the model is generating complex responses, it sticks to the desired tone and format. This combination creates a highly stable and reliable agent.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 5 Challenge: Build the Complete EcoShop FAQ Agent</h3>
+<p><strong>Scenario:</strong> You are now ready to build the complete, production-ready FAQ agent for EcoShop. This agent needs to handle general inquiries, check policies using a data store, and handle out-of-scope queries gracefully.</p>
+<p><strong>Task:</strong> 
+            Create a complete instruction set for the EcoShop FAQ agent. Your prompt must include:
+            1. A full <strong>PIF structure</strong> with <code>&lt;role&gt;</code>, <code>&lt;persona&gt;</code>, <code>&lt;primary_goal&gt;</code>, <code>&lt;constraints&gt;</code>, and a <code>&lt;taskflow&gt;</code>.
+            2. A clear instruction in the taskflow or constraints on when and how to use the Data Store tool: <code>{@TOOL: data_store_search}</code> to answer policy questions.
+            3. An <code>&lt;examples&gt;</code> section with at least two few-shot examples: one showing a successful data store lookup and answer, and one showing a graceful redirection for an out-of-scope query (like competitor pricing).
+            </p>
+<p><em>Note: Do not give away the solution! The complete reference instruction set will be available in the next day's refresher.</em></p>
+<p><strong>Difficulty:</strong> Medium. This challenge requires you to combine multiple skills into a single, cohesive prompt.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>Keep your Data Store focused on ground truth facts, and use your prompt instructions to define *how* to use those facts. Don't try to put FAQ answers directly in the prompt if they belong in the Data Store.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>Be careful not to create conflicting instructions between your PIF constraints and your few-shot examples. The examples should always reinforce the rules defined in the constraints.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>What is the primary purpose of the PIF structure in an agent prompt?</strong><br/>
+<small>
+                    A) To store the factual answers to FAQ questions.<br/>
+                    B) To provide a structured skeleton that organizes instructions for better model following.<br/>
+                    C) To execute external API calls.
+                    </small>
+</li>
+<li>
+<strong>When should an FAQ agent rely on a Data Store instead of prompt instructions?</strong><br/>
+<small>
+                    A) For handling tone and persona.<br/>
+                    B) For retrieving dynamic or large-scale factual information like return policies or product details.<br/>
+                    C) For defining the agent's role.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 6 - Advanced RAG &amp; Chunking. We will learn how to optimize data stores for better retrieval accuracy. <a href="day_006.html">Preview Day 6</a></p>
+</div>
+</div>
+</body>
+</html>
