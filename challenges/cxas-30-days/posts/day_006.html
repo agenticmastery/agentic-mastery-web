@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 6: Week 1 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 6: Week 1 Summary &amp; Review</h1>
+<p>Consolidating your foundations and preparing for multi-agent architectures.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Congratulations on completing the first week of the CXAS 30-Day Challenge! You have moved from raw prompts to building a complete, grounded FAQ agent. This is a significant achievement. Today is about consolidation. We are reviewing everything you've learned to ensure your foundations are rock-solid before we dive into multi-agent systems in Week 2.</p>
+<p><strong>Achievement:</strong> Synthesize all Week 1 concepts to ensure deep understanding and readiness for advanced topics.</p>
+<p><strong>Customer Value:</strong> Building agents on solid foundations ensures they are reliable, predictable, and safe for customers, delivering consistent value without behavior drift.</p>
+<p><strong>Milestones:</strong> Review Console Setup, XML Prompt Architecture, Data Stores, RAG, Tracing, and Few-Shot Examples.</p>
+<p><strong>Goals:</strong> Complete the Week 1 reflection exercise and pass the comprehensive knowledge check.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 5, we synthesized everything we learned to build the complete EcoShop FAQ Agent. We combined PIF structure, Data Stores, and Few-Shot Examples into a single prompt. Check your solution to yesterday's milestone challenge <a href="day_005_solution.html">here</a>.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Week 1 Summary - Building the Foundations</h2>
+<p>This week, you've covered the essential building blocks of agentic design in CX Agent Studio. Let's recap the core concepts to solidify your knowledge.</p>
+<h3>1. Console Setup &amp; Prompt Architecture</h3>
+<p>We started by understanding that raw, unstructured prompts lead to unpredictable agent behavior. We introduced the **PIF (Prompt Instruction Format)**, utilizing XML tags to provide clear structure for the LLM:</p>
+<ul>
+<li><code>&lt;role&gt;</code>: Defines who the agent is.</li>
+<li><code>&lt;persona&gt;</code>: Defines the tone and style of communication.</li>
+<li><code>&lt;primary_goal&gt;</code>: The main objective the agent must achieve.</li>
+<li><code>&lt;constraints&gt;</code>: The guardrails and rules the agent must follow.</li>
+<li><code>&lt;taskflow&gt;</code>: The step-by-step execution plan for specific scenarios.</li>
+</ul>
+<h3>2. Data Stores &amp; RAG (Retrieval-Augmented Generation)</h3>
+<p>To prevent hallucinations and ensure accuracy, we learned to ground agents in reality using **Data Stores**. Instead of encoding all knowledge into the prompt, we use tools like <code>{@TOOL: data_store_search}</code> to retrieve facts dynamically. This separation of instructions (prompt) and knowledge (data store) is critical for scalability.</p>
+<h3>3. Execution Tracing &amp; Debugging</h3>
+<p>We explored how to peek into the agent's reasoning process using **Tracing**. By analyzing the thoughts, tool calls, and tool responses, we can understand why an agent behaved in a certain way and debug issues effectively. This is the key to moving from trial-and-error prompting to engineering predictable systems.</p>
+<h3>4. Few-Shot Examples &amp; Out-of-Scope Handling</h3>
+<p>Finally, we learned that some behaviors are hard to describe in pure rules. By providing **Few-Shot Examples** in the <code>&lt;examples&gt;</code> section, we give the model "muscle memory" for how to handle complex interactions. This is particularly useful for managing specific **Customer User Journeys (CUJs)** and handling out-of-scope queries gracefully without relying on rigid, hardcoded classification systems.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why is this foundation so important? LLMs are statistical next-token predictors. Without structure, they can easily go off-track based on subtle changes in user input. The PIF structure creates strong attention anchors. Data Stores reduce the need for the model to "remember" facts, keeping the context window clean and focused. Few-Shot examples provide high-probability paths for the model to follow when generating text. Together, these techniques transform a chaotic predictor into a reliable, enterprise-grade agent.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 6 Challenge: Week 1 Synthesis Reflection</h3>
+<p><strong>Task:</strong> Reflect on the EcoShop FAQ agent you built on Day 5. Consider how you would adapt this architecture for a completely different domain, such as a support agent for a high-tech gadget company.</p>
+<p>Answer the following questions in your own notes (do not submit them here):</p>
+<ol>
+<li>How would the <code>&lt;persona&gt;</code> change from an eco-friendly retailer to a high-tech support agent?</li>
+<li>What new <code>&lt;constraints&gt;</code> might be necessary for a technical support domain?</li>
+<li>How would you structure the Few-Shot examples to demonstrate effective troubleshooting steps instead of simple policy lookups?</li>
+</ol>
+<p><em>Note: Do not give away the solution! The reference answers and reflection guide will be available in the next day's refresher.</em></p>
+<p><strong>Difficulty:</strong> Medium. This requires synthesizing all Week 1 concepts and applying them to a new scenario.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>Always keep your prompt instructions focused on *behavior* and *control flow*, and offload *factual knowledge* to Data Stores. This makes your agent much easier to maintain and scale.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>Avoid the temptation to add more rules to fix edge cases. Often, a single well-crafted few-shot example is more effective than adding five new constraints that might conflict with existing ones.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>Which tag in the PIF structure is used to define the guardrails and rules the agent must follow?</strong><br/>
+<small>
+                    A) <code>&lt;role&gt;</code><br/>
+                    B) <code>&lt;constraints&gt;</code><br/>
+                    C) <code>&lt;taskflow&gt;</code>
+</small>
+</li>
+<li>
+<strong>What is the primary benefit of using a Data Store instead of putting all information in the prompt?</strong><br/>
+<small>
+                    A) It makes the prompt longer and more detailed.<br/>
+                    B) It prevents hallucinations by grounding the agent in factual data retrieved dynamically.<br/>
+                    C) It allows the agent to ignore user instructions.
+                    </small>
+</li>
+<li>
+<strong>When are Few-Shot Examples most useful?</strong><br/>
+<small>
+                    A) For defining the agent's primary goal.<br/>
+                    B) For guiding complex behavior and handling edge cases that are hard to describe with pure rules.<br/>
+                    C) For setting up the console environment.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 7 - The Steering Agent Pattern. We will move beyond single-agent design and learn how to orchestrate a team of specialized agents. <a href="day_007.html">Preview Day 7</a></p>
+</div>
+</div>
+</body>
+</html>

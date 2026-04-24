@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 6 Solution: Week 1 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 6 Solution: Week 1 Summary &amp; Review</h1>
+<p>Reference reflection points and knowledge check answers for Day 6.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Great Job!</strong> You've completed the Week 1 summary and review. Below are the reference reflection points and the answers to the knowledge check. Use these to validate your understanding and identify areas where you might need a quick refresher before moving on to multi-agent architectures.</p>
+</div>
+<section class="lesson">
+<h2>Reference Reflection: Adapting to a High-Tech Support Domain</h2>
+<p>Here are some reference points for how you might adapt the EcoShop FAQ agent architecture for a high-tech gadget company support agent:</p>
+<h3>1. Persona Adaptation</h3>
+<ul>
+<li><strong>EcoShop Persona:</strong> Friendly, professional, and environmentally conscious. Tone is warm and helpful.</li>
+<li><strong>High-Tech Support Persona:</strong> Precise, authoritative, and tech-savvy. Tone is efficient and reassuring. The focus shifts from "eco-conscious" to "expert problem solver."</li>
+</ul>
+<h3>2. New Constraints</h3>
+<p>In a high-tech domain, constraints become even more critical to ensure safety and accuracy:</p>
+<ul>
+<li>"Do not provide instructions for opening the device casing, as this voids the warranty."</li>
+<li>"Always verify the specific model number before providing troubleshooting steps."</li>
+<li>"If the user reports smoke or sparks, immediately stop troubleshooting and provide the emergency safety protocol."</li>
+</ul>
+<h3>3. Few-Shot Examples for Troubleshooting</h3>
+<p>Instead of simple policy lookups, examples should show multi-turn troubleshooting:</p>
+<pre><code>
+&lt;example&gt;
+    &lt;user&gt;My screen is black on my Gizmo X1.&lt;/user&gt;
+    &lt;thought&gt;The user is reporting a common issue. I need to check if they have performed basic troubleshooting first, as per constraints.&lt;/thought&gt;
+    &lt;assistant&gt;I'm sorry to hear that your Gizmo X1 screen is black. Let's try to resolve this. First, have you tried holding down the power button for 10 seconds to perform a hard reset?&lt;/assistant&gt;
+    &lt;user&gt;Yes, I tried that and nothing happened.&lt;/user&gt;
+    &lt;thought&gt;The user tried hard reset. Now I should use the tool to search for advanced troubleshooting steps for 'Gizmo X1 black screen' in the Data Store.&lt;/thought&gt;
+    &lt;call&gt;{@TOOL: data_store_search}(query="Gizmo X1 black screen troubleshooting")&lt;/call&gt;
+    ...
+&lt;/example&gt;
+            </code></pre>
+</section>
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<ol>
+<li>
+<strong>Which tag in the PIF structure is used to define the guardrails and rules the agent must follow?</strong><br/>
+<strong>Answer: B) <code>&lt;constraints&gt;</code></strong><br/>
+<small><em>Explanation: The <code>&lt;constraints&gt;</code> tag is specifically designed to hold the rules, negative constraints, and guardrails that guide the agent's behavior and prevent it from going off-track.</em></small>
+</li>
+<li>
+<strong>What is the primary benefit of using a Data Store instead of putting all information in the prompt?</strong><br/>
+<strong>Answer: B) It prevents hallucinations by grounding the agent in factual data retrieved dynamically.</strong><br/>
+<small><em>Explanation: By offloading factual knowledge to a Data Store, you ensure the agent retrieves current, accurate information rather than relying on the model's parametric memory, which can lead to hallucinations.</em></small>
+</li>
+<li>
+<strong>When are Few-Shot Examples most useful?</strong><br/>
+<strong>Answer: B) For guiding complex behavior and handling edge cases that are hard to describe with pure rules.</strong><br/>
+<small><em>Explanation: Few-shot examples give the model concrete patterns to follow, which is much more effective for complex edge cases and tone maintenance than trying to write exhaustive rules.</em></small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready to start Week 2? Day 7 covers The Steering Agent Pattern. <a href="day_007.html">Go to Day 7</a></p>
+</div>
+</div>
+</body>
+</html>
