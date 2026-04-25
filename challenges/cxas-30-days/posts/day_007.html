@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 7: The Steering Agent Pattern - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 7: The Steering Agent Pattern (Routing without Intents)</h1>
+<p>Orchestrate a team of specialized agents using natural language descriptions.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Congratulations on completing Week 1! You've mastered the basics of single-agent design. Now, we step into the world of advanced multi-agent architectures. As your agent's capabilities grow, a single prompt becomes a bottleneck, leading to instruction overload and behavior drift. Today, you'll learn to orchestrate a team of specialized agents using the Steering Agent Pattern. This is how you build truly scalable and maintainable AI systems that can handle complex, enterprise-scale customer interactions.</p>
+<p><strong>Achievement:</strong> By the end of today, you will understand how to design a Steering Agent that routes conversations to specialized sub-agents based on natural language descriptions, moving beyond rigid, hardcoded classification systems.</p>
+<p><strong>Customer Value:</strong> Customers experience seamless conversations where they are always talking to the most qualified expert for their specific need, without annoying transfers or being asked to repeat information.</p>
+<p><strong>Milestones:</strong> Understand the Steering Agent Pattern and design the routing descriptions for a root agent and a sub-agent.</p>
+<p><strong>Goals:</strong> Define the natural language description for the EcoShop Steering Agent and the Returns sub-agent to ensure accurate routing of Customer User Journeys (CUJs).</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>In Week 1, we covered prompt structure, grounding with data stores, execution tracing, few-shot examples, and handling out-of-scope queries. We've built a solid foundation for a single agent. Yesterday, we tested our knowledge with a comprehensive review. You can check the answers to the Day 6 knowledge check <a href="day_006_solution.html">here</a>.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: The Steering Agent Pattern</h2>
+<p>As you add more capabilities to your virtual agent, the prompt grows longer and more complex. Eventually, the model struggles to follow all instructions reliably. This is where the **Steering Agent Pattern** comes in.</p>
+<p>Instead of one massive agent trying to do everything, you create a network of specialized agents. At the center of this network is the **Steering Agent** (or Root Agent). The Steering Agent acts as the receptionist and traffic cop. It greets the customer, understands their need, and routes them to the appropriate specialized sub-agent.</p>
+<h3>Routing Without Intents</h3>
+<p>Traditional conversational AI systems relied on hardcoded rules or rigid classification models to determine what the user wanted and where to send them. In CX Agent Studio, routing is handled dynamically by the LLM itself, using natural language **descriptions** of each agent.</p>
+<p>Each specialized agent has a description that outlines its capabilities and the specific Customer User Journeys (CUJs) it handles. When the Steering Agent receives a user request, it evaluates the conversation history and compares it against the descriptions of all available sub-agents to make a routing decision.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why does this work so well? From the LLM's perspective, routing based on descriptions is a semantic matching problem. The model isn't just looking for specific keywords or fitting the input into a predefined box. It computes the semantic similarity between the user's query (and the context of the conversation) and the descriptions of the available sub-agents. By providing rich, natural language descriptions, you give the model more semantic hooks to match against, leading to much more robust and flexible routing than traditional rigid systems.</p>
+</div>
+<h3>Benefits of the Steering Agent Pattern</h3>
+<ul>
+<li>**Modularity**: You can update the instructions or tools of one specialized agent without affecting the others.</li>
+<li>**Scalability**: You can easily add new specialized agents as your business grows.</li>
+<li>**Focus**: Each agent has a smaller, more focused prompt, leading to better instruction-following and fewer hallucinations.</li>
+</ul>
+<p>Remember the **Silent Agent Routing Protocol**: Handoffs between agents must be invisible to the user. The receiving agent must not reintroduce itself or ask the user to repeat information.</p>
+</section>
+<div class="challenge">
+<h3>The Day 7 Challenge: Define the Steering Agent and a Sub-Agent</h3>
+<p><strong>Scenario:</strong> EcoShop is expanding its customer service automation. The current monolithic agent is getting too complex. We want to implement the Steering Agent Pattern. We will start by breaking out a specialized agent for handling returns.</p>
+<p><strong>Task:</strong> 
+            1. Draft a natural language description for the **EcoShop Steering Agent** (the Root Agent). What should it handle, and what should it delegate?
+            2. Draft a natural language description for the **EcoShop Returns Sub-Agent**. What specific queries or journeys should it claim?
+            3. Ensure the descriptions are distinct and do not overlap in ways that would confuse the routing mechanism.
+            </p>
+<p><em>Note: The solution guide with the recommended descriptions will be available in the next lesson's refresher!</em></p>
+<p><strong>Difficulty:</strong> Medium. Focus on creating clear, unambiguous descriptions that accurately define the scope of each agent.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>When writing agent descriptions, be specific about the Customer User Journeys (CUJs) handled. Use keywords and phrases that customers are likely to use. For example, instead of just saying "Handles returns," say "Handles customer requests to return items, check return status, or request refunds."</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>Avoid overlapping descriptions. If both the Steering Agent and the Returns Agent claim to handle "customer complaints," the LLM may struggle to decide where to route a complaint. Ensure clear boundaries between agent responsibilities.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>How does the Steering Agent determine which sub-agent to route a conversation to?</strong><br/>
+<small>
+                    A) By matching hardcoded keywords in the user's input.<br/>
+                    B) By evaluating the user's query against the natural language descriptions of the sub-agents.<br/>
+                    C) By randomly selecting a sub-agent to balance the load.
+                    </small>
+</li>
+<li>
+<strong>According to the Silent Agent Routing Protocol, what should the receiving agent do?</strong><br/>
+<small>
+                    A) Introduce itself and ask the user to repeat their request.<br/>
+                    B) Silently continue the conversation without reintroducing itself or asking for repeat information.<br/>
+                    C) Tell the user "Let me transfer you to a specialist."
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 8 - Multi-Agent Orchestration in Practice. We will learn how to configure the handoffs and share context between agents. <a href="day_008.html">Preview Day 8</a></p>
+</div>
+</div>
+</body>
+</html>

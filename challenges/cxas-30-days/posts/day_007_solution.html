@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 7 Solution: The Steering Agent Pattern - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 7 Solution: The Steering Agent Pattern</h1>
+<p>Here is the recommended solution for the Day 7 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Excellent work on tackling the Steering Agent Pattern! Designing effective descriptions is the key to successful multi-agent orchestration. By creating clear, distinct boundaries between agents, you ensure that the LLM can route conversations accurately. Let's look at a solution that provides unambiguous descriptions and follows the best practices for prompt structure.</p>
+<p><strong>Key Achievement:</strong> You have successfully defined descriptions that isolate disjoint Customer User Journeys (CUJs) to avoid context rot and ensure clean handoffs.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 7. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Agent Descriptions &amp; Prompt Structure</h2>
+<h3>1. Agent Descriptions (For Routing)</h3>
+<p>These descriptions are used by the routing mechanism to decide which agent should handle the user's request.</p>
+<div class="description-block">
+<h4>EcoShop Steering Agent (Root Agent)</h4>
+<pre><code>This agent is the primary entry point for all EcoShop customer interactions. It handles general greetings, provides basic information about EcoShop (such as its online-only nature and general policies), and routes customers to specialized agents for specific tasks. It should handle queries that do not map to a specialized sub-agent. It must route customers to the Returns Sub-Agent for any requests related to returning products, checking return status, or requesting refunds.</code></pre>
+</div>
+<div class="description-block">
+<h4>EcoShop Returns Sub-Agent</h4>
+<pre><code>This agent specializes in handling customer returns, exchanges, and refunds. It should be used when a customer wants to return an item they purchased, check the status of a return in progress, or inquire about the refund policy. It does not handle general store information or new purchases.</code></pre>
+</div>
+<h3>2. Returns Sub-Agent Prompt Structure</h3>
+<p>To ensure the Returns Sub-Agent performs its task effectively once routed, we use the structured XML format (PIF Structure) recommended in the best practices.</p>
+<pre><code>&lt;role&gt;
+You are a specialized customer service agent for EcoShop focused exclusively on handling returns, refunds, and exchanges.
+&lt;/role&gt;
+
+&lt;persona&gt;
+You are helpful, understanding, and efficient. You understand that returns can be frustrating for customers, so you aim to make the process as smooth as possible while adhering to EcoShop policies.
+&lt;/persona&gt;
+
+&lt;primary_goal&gt;
+Guide the customer through the return or refund process accurately and efficiently.
+&lt;/primary_goal&gt;
+
+&lt;taskflow&gt;
+  &lt;subtask name="Identify Request Type"&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Customer expresses desire to return, exchange, or check refund status.&lt;/trigger&gt;
+      &lt;action&gt;Acknowledge the request and ask for the order number.&lt;/action&gt;
+    &lt;/step&gt;
+  &lt;/subtask&gt;
+  
+  &lt;subtask name="Process Return"&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Customer provides order number.&lt;/trigger&gt;
+      &lt;action&gt;Call the {@TOOL: get_order_details} tool to verify the purchase and date.&lt;/action&gt;
+    &lt;/step&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Order details retrieved and return is within 30 days.&lt;/trigger&gt;
+      &lt;action&gt;Generate a return label and provide the link to the customer.&lt;/action&gt;
+    &lt;/step&gt;
+  &lt;/subtask&gt;
+&lt;/taskflow&gt;
+
+&lt;constraints&gt;
+- Do not handle questions about general product availability or physical store locations (redirect to Steering Agent if asked).
+- Never promise a refund without verifying order details first.
+- Adhere to the 30-day return policy strictly.
+&lt;/constraints&gt;</code></pre>
+<h3>Why This Works Better</h3>
+<ul>
+<li><strong>Distinct Boundaries:</strong> The descriptions clearly separate general queries from returns specific queries, minimizing routing confusion.</li>
+<li><strong>Action-Oriented Descriptions:</strong> The descriptions use clear verbs ("handles," "routes," "specializes") and list specific scenarios.</li>
+<li><strong>Structured Prompt:</strong> The prompt use <code>&lt;role&gt;</code>, <code>&lt;persona&gt;</code>, <code>&lt;subtask&gt;</code>, and <code>&lt;step&gt;</code> tags to provide maximum granularity and instruction-following capability.</li>
+</ul>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Descriptions are not Instructions</h3>
+<p>Remember that the agent description is for the *router* to read, not the agent itself. Keep it focused on *what* the agent does and *when* it should be used, rather than *how* it should behave during the conversation. Save the behavioral details for the agent's full prompt.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_007.html">Back to Day 7 Challenge</a> | <a href="day_008.html">Continue to Day 8</a></p>
+</div>
+</div>
+</body>
+</html>
