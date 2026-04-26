@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 8 Solution: Advanced Callbacks - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 8 Solution: Advanced Callbacks (Flow Control)</h1>
+<p>Here is the recommended solution for the Day 8 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Excellent work on exploring callbacks! Bridging the gap between probabilistic LLMs and deterministic business rules is a key skill for any advanced AI architect. By using callbacks, you ensure 100% compliance for critical requirements like legal disclaimers, rather than relying on the model to always remember instructions. Let's review the recommended approach.</p>
+<p><strong>Key Achievement:</strong> You have successfully designed a deterministic safety net using callbacks to enforce business rules without relying solely on the LLM's probabilistic generation.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 8. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Callback Strategy for EcoShop</h2>
+<h3>Scenario 1: Enforcing Disclaimer on the First Turn</h3>
+<p>To ensure the disclaimer is shown on the very first turn, the most robust approach is to use an <code>after_model_callback</code>. This allows the model to generate its natural response first, and then we ensure the disclaimer is prepended if missing.</p>
+<div class="description-block">
+<h4>Logic for <code>after_model_callback</code> (Pseudocode)</h4>
+<pre><code>def after_model_callback(session_state, model_response):
+    # Check if this is the first turn of the conversation
+    if session_state.turn_count == 1:
+        disclaimer = "Notice: All returns must be initiated within 30 days of purchase."
+        
+        # Check if the model already included the disclaimer (case-insensitive)
+        if disclaimer.lower() not in model_response.text.lower():
+            # Prepend the disclaimer to the model's response
+            model_response.text = disclaimer + "\n\n" + model_response.text
+            
+    return model_response</code></pre>
+</div>
+<h3>Scenario 2: Enforcing Disclaimer Before Answering Return Questions</h3>
+<p>If the requirement is to show the disclaimer specifically before answering questions about returns, we can use a specialized **Returns Sub-Agent** and attach the callback to it, or use a <code>before_model_callback</code> to inspect the input.</p>
+<p>Here is how you would structure the prompt for the Returns Sub-Agent using the best practices we've learned, assuming the callback handles the actual insertion of the disclaimer but the prompt guides the model to be aware of it or use tools correctly.</p>
+<pre><code>&lt;role&gt;
+You are a specialized customer service agent for EcoShop focused exclusively on handling returns, refunds, and exchanges.
+&lt;/role&gt;
+
+&lt;persona&gt;
+You are helpful, understanding, and efficient.
+&lt;/persona&gt;
+
+&lt;primary_goal&gt;
+Guide the customer through the return or refund process accurately and efficiently, ensuring they are aware of the policy.
+&lt;/primary_goal&gt;
+
+&lt;taskflow&gt;
+  &lt;subtask name="Handle Return Query"&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Customer asks about return policy or starts a return.&lt;/trigger&gt;
+      &lt;action&gt;Acknowledge the request. Call the {@TOOL: check_return_eligibility} tool to verify status if order details are provided, then provide instructions. Note: A system callback will enforce the mandatory disclaimer.&lt;/action&gt;
+    &lt;/step&gt;
+  &lt;/subtask&gt;
+&lt;/taskflow&gt;
+
+&lt;constraints&gt;
+- Do not handle questions about general product availability.
+- Adhere to the 30-day return policy strictly.
+&lt;/constraints&gt;</code></pre>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Leverage Session Variables</h3>
+<p>Use session variables to track whether the disclaimer has already been shown. This prevents annoying the customer by repeating the disclaimer in every turn if they continue to ask about returns. Set a flag like <code>disclaimer_shown = true</code> in the callback after the first time it triggers.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_008.html">Back to Day 8 Challenge</a> | <a href="day_009.html">Continue to Day 9</a></p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 8: Advanced Callbacks (Flow Control) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 8: Advanced Callbacks (Flow Control)</h1>
+<p>Master deterministic hooks to guide agent behavior and enforce business rules.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 8! Yesterday, you learned how to orchestrate specialized agents using descriptions. Today, we dive into the mechanics of deterministic control. While LLMs are fantastic at conversation, enterprise systems require hard guarantees for compliance and safety. Callbacks are your secret weapon to bridge the gap between probabilistic AI and deterministic business rules.</p>
+<p><strong>Achievement:</strong> By the end of today, you will understand how to use <code>before_model_callback</code> and <code>after_model_callback</code> to intercept execution and enforce critical rules like mandatory disclaimers.</p>
+<p><strong>Customer Value:</strong> Customers receive safe, compliant, and accurate information every time, building trust in the AI system.</p>
+<p><strong>Milestones:</strong> Learn the difference between pre- and post-model callbacks and design a flow to enforce a mandatory legal disclaimer.</p>
+<p><strong>Goals:</strong> Design a callback strategy for EcoShop to ensure a disclaimer is always presented on the first turn or before answering sensitive queries.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we explored the Steering Agent Pattern, learning how to route conversations without rigid classification systems. You can check the solution for Day 7's description design challenge <a href="day_007_solution.html">here</a>. Today, we move from routing to fine-grained execution control.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Advanced Callbacks in CXAS</h2>
+<p>Generative AI models are powerful but inherently probabilistic. They are excellent at understanding context and generating natural language, but they can occasionally fail to follow strict rules, especially when it comes to negative constraints (e.g., "never do X") or mandatory actions (e.g., "always say Y first").</p>
+<p>To solve this, CX Agent Studio provides **Callbacks**. Callbacks are hooks that allow you to execute custom code or logic at specific points in the agent's execution lifecycle, outside the core LLM generation loop. This gives you deterministic control over the conversation flow.</p>
+<h3>Types of Callbacks</h3>
+<ul>
+<li><strong>before_model_callback</strong>: This hook fires *before* the model processes the user input and conversation history. It is ideal for:
+                    <ul>
+<li>Inspecting and sanitizing user input.</li>
+<li>Modifying the agent's prompt dynamically based on session variables.</li>
+<li>Intercepting execution entirely to force a specific tool call or handoff (Handoff Intercept Pattern).</li>
+</ul>
+</li>
+<li><strong>after_model_callback</strong>: This hook fires *after* the model has generated a response but *before* it is sent back to the user. It is ideal for:
+                    <ul>
+<li>Inspecting the model's output for compliance or safety violations.</li>
+<li>Prepending or appending mandatory text (like disclaimers).</li>
+<li>Updating session variables based on the model's response.</li>
+</ul>
+</li>
+</ul>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why are callbacks necessary? From the LLM's perspective, every turn is a new generation task based on the provided prompt and history. While we can give it strong instructions like "Always include a disclaimer in your first response," the model's attention mechanism might prioritize other parts of the prompt or the user's immediate query. Callbacks act as a hard, deterministic wrapper around the LLM. They don't rely on the model's "understanding" or "attention"; they operate on the data flowing into or out of the model, ensuring that critical business rules are enforced with 100% reliability.</p>
+</div>
+<h3>Common Patterns</h3>
+<p>1. **Always Read Disclaimer as First Message**: An <code>after_model_callback</code> checks if this is the first turn of the conversation. If it is, and the model did not include the mandatory disclaimer, the callback inserts it automatically.</p>
+<p>2. **Dynamic Prompts**: A <code>before_model_callback</code> reads session variables (e.g., the user's loyalty tier) and injects specific instructions into the prompt before it is sent to the LLM.</p>
+</section>
+<div class="challenge">
+<h3>The Day 8 Challenge: Enforce the EcoShop Disclaimer</h3>
+<p><strong>Scenario:</strong> EcoShop wants to ensure that all users are aware of the return policy limitations before they get deep into a conversation. Specifically, a legal disclaimer must be presented either on the **very first turn** of the chat or **immediately before** the agent answers any specific questions about returns or refunds.</p>
+<p><strong>Task:</strong> 
+            1. Determine whether you should use a <code>before_model_callback</code>, an <code>after_model_callback</code>, or both to solve this.
+            2. Describe the logic your callback would use to detect the condition (first turn or return-related query) and how it would modify the flow or message to ensure the disclaimer is shown.
+            3. Do not provide the full code, but outline the algorithmic steps or pseudocode for the logic.
+            </p>
+<p><strong>Difficulty:</strong> Medium. Focus on the logic of intercepting the flow and the appropriate hook to use.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Best Practice</h3>
+<p>Use callbacks for *deterministic* rules and LLMs for *probabilistic* understanding. Don't try to make the LLM a rigid rule-follower via prompt engineering alone if a callback can do it with 100% reliability. Keep your callbacks focused and lightweight to avoid introducing latency.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Pitfall</h3>
+<p>Be careful not to create infinite loops or break the conversation flow in callbacks. For example, if an <code>after_model_callback</code> always prepends a message and triggers another model turn, it might loop indefinitely. Always ensure clear exit conditions.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>Which callback hook is most appropriate for dynamically changing the agent's instructions based on a user's account type before the LLM generates a response?</strong><br/>
+<small>
+                    A) <code>after_model_callback</code><br/>
+                    B) <code>before_model_callback</code><br/>
+                    C) <code>on_session_start</code>
+</small>
+</li>
+<li>
+<strong>Why are callbacks preferred over prompt engineering for enforcing critical legal disclaimers?</strong><br/>
+<small>
+                    A) Prompt engineering makes the prompt too long and expensive.<br/>
+                    B) LLMs are probabilistic and might occasionally fail to follow instructions; callbacks offer deterministic guarantees.<br/>
+                    C) Callbacks are faster to execute than LLM generation.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 9 - Multi-Agent Orchestration in Practice. We will learn how to configure handoffs and share context between agents. <a href="day_009.html">Preview Day 9</a></p>
+</div>
+</div>
+</body>
+</html>
