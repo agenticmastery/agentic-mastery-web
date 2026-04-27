@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 9 Solution: OpenAPI &amp; Connector Tools - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 9 Solution: OpenAPI &amp; Connector Tools</h1>
+<p>Here is the recommended solution for the Day 9 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Fantastic job! Defining clear, descriptive APIs is the cornerstone of building capable agents. Remember, the LLM reads your OpenAPI spec just like a developer reads documentation. The more explicit you are about what the tool does and what parameters it expects, the more reliable your agent will be. Let's look at a good way to structure this spec.</p>
+<p><strong>Key Achievement:</strong> You have successfully defined an OpenAPI specification snippet that provides the necessary context for an LLM to reliably identify and use an external tool.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 9. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Mock OpenAPI Spec &amp; Agent Prompt</h2>
+<h3>1. Mock OpenAPI Spec (YAML)</h3>
+<p>Here is a recommended YAML snippet for the <code>GET /orders/{order_id}</code> endpoint. Notice the detailed descriptions for both the operation and the parameter, which are crucial for the LLM.</p>
+<div class="description-block">
+<pre><code>paths:
+  /orders/{order_id}:
+    get:
+      summary: Get order status
+      description: Retrieves the current status and delivery information for a specific order. Use this tool when a customer asks about their order status, tracking, or delivery date.
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: The unique identifier for the order. It is a string of characters provided by the customer. Usually looks like ES12345.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with order details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: The current status of the order (e.g., Processing, Shipped, Delivered).
+                  delivery_date:
+                    type: string
+                    format: date
+                    description: The estimated or actual delivery date.</code></pre>
+</div>
+<h3>2. Agent Prompt Using the Tool</h3>
+<p>Here is how you would structure the prompt for a specialized **Tracking Agent** that uses this tool, following the best practices structure we've established.</p>
+<pre><code>&lt;role&gt;
+You are a specialized customer service agent for EcoShop focused on order tracking and status inquiries.
+&lt;/role&gt;
+
+&lt;persona&gt;
+You are helpful, precise, and efficient.
+&lt;/persona&gt;
+
+&lt;primary_goal&gt;
+Provide accurate order status and delivery information to customers by using the available tools.
+&lt;/primary_goal&gt;
+
+&lt;taskflow&gt;
+  &lt;subtask name="Check Order Status"&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Customer asks about their order status or tracking.&lt;/trigger&gt;
+      &lt;action&gt;Ask the customer for their order ID if they haven't provided it. Once you have the order ID, call the {@TOOL: get_order_status} tool.&lt;/action&gt;
+    &lt;/step&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Tool returns the order status.&lt;/trigger&gt;
+      &lt;action&gt;Summarize the status and delivery date for the customer in a friendly manner.&lt;/action&gt;
+    &lt;/step&gt;
+  &lt;/subtask&gt;
+&lt;/taskflow&gt;
+
+&lt;constraints&gt;
+- Do not make up order details. Always use the tool to look up information.
+- If the tool returns an error or no order is found, politely ask the customer to double-check the order ID.
+&lt;/constraints&gt;</code></pre>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Handle Missing Parameters Gracefully</h3>
+<p>If a user asks "Where is my order?" but doesn't provide the order ID, the LLM should not try to guess the ID or call the tool with a dummy value. Your prompt should explicitly instruct the agent to ask for missing required parameters before attempting to use the tool, as shown in the taskflow above.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_009.html">Back to Day 9 Challenge</a> | <a href="day_010.html">Continue to Day 10</a></p>
+</div>
+</div>
+</body>
+</html>

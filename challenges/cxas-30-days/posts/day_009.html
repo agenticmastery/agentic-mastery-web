@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 9: OpenAPI &amp; Connector Tools - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 9: OpenAPI &amp; Connector Tools</h1>
+<p>Connect your agent to external APIs using OpenAPI specifications and pre-built connectors.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 9! An agent that can only talk is just a chatbot. An agent that can *act* is a true digital worker. Today, we unlock the power of external integrations. By connecting your agent to APIs, you transform it from a static knowledge base into a dynamic problem solver.</p>
+<p><strong>Achievement:</strong> By the end of today, you will understand how to define tools using OpenAPI specifications and leverage pre-built connectors to bridge the gap between your agent and enterprise systems.</p>
+<p><strong>Customer Value:</strong> Customers get immediate, accurate answers to specific questions (like "Where is my order?") without needing to wait for a human agent to look it up.</p>
+<p><strong>Milestones:</strong> Learn the structure of tools in CXAS, how OpenAPI specs are interpreted by the LLM, and how to configure a tool for checking order status.</p>
+<p><strong>Goals:</strong> Design a mock OpenAPI spec snippet for a <code>check_order_status</code> tool for EcoShop.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we mastered Advanced Callbacks to enforce deterministic business rules, ensuring safety and compliance. You can check the solution for Day 8's callback challenge <a href="day_008_solution.html">here</a>. Today, we shift from internal flow control to external data integration.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: OpenAPI &amp; Connector Tools in CXAS</h2>
+<p>To make an agent useful in the real world, it needs to interact with external systems—CRMs, ERPs, databases, and custom APIs. In CX Agent Studio (CXAS), these capabilities are exposed to the agent as **Tools**.</p>
+<p>There are two primary ways to connect external APIs in CXAS:</p>
+<ul>
+<li><strong>OpenAPI Tools</strong>: You provide an OpenAPI specification (formerly Swagger) that describes your API's endpoints, methods, parameters, and schemas. CXAS uses this spec to understand how to call your API.</li>
+<li><strong>Pre-built Connectors</strong>: For common enterprise systems like Salesforce, ServiceNow, or Jira, CXAS provides pre-built connectors that simplify the authentication and configuration process, allowing you to quickly expose specific functionalities as tools.</li>
+</ul>
+<h3>Defining Tools with OpenAPI</h3>
+<p>An OpenAPI spec is a JSON or YAML document that describes a RESTful API. When you create an OpenAPI tool in CXAS, you upload this spec. The platform parses it and creates a tool for each operation defined in the spec.</p>
+<p>To make a tool available to an agent, you must explicitly attach it to the agent's configuration. Once attached, the agent can decide to call it based on the conversation context.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>How does the LLM know which tool to call and what parameters to pass? The LLM doesn't actually "execute" the API call. Instead, the OpenAPI specification is provided to the LLM as part of its context. When the LLM determines that a tool is needed to fulfill a Customer User Journey (CUJ), it generates a special structured output (a tool call) containing the name of the operation and the required arguments, mapped from the user's input.</p>
+<p>This is why **descriptions** in your OpenAPI spec are critical. The LLM relies on the summary, description, and parameter descriptions to understand *what* the endpoint does and *when* to use it. If your descriptions are vague, the LLM may fail to call the tool or pass the wrong parameters.</p>
+</div>
+<h3>Using Pre-built Connectors</h3>
+<p>For systems like Salesforce, instead of writing a full OpenAPI spec for the entire Salesforce API, you can use a CXAS Connector. You authenticate with the service, and then select the specific actions (e.g., "Create Lead", "Get Account Details") you want to expose as tools to your agent. This drastically reduces development time and maintenance overhead.</p>
+</section>
+<div class="challenge">
+<h3>The Day 9 Challenge: Define the Order Status Tool</h3>
+<p><strong>Scenario:</strong> EcoShop wants to enable customers to check the status of their orders. They have a REST API with an endpoint <code>GET /orders/{order_id}</code> that returns order details.</p>
+<p><strong>Task:</strong> 
+            Define a mock OpenAPI spec snippet (in YAML or JSON) for this endpoint. Your definition must include:
+            1. A clear summary and description so the LLM knows when to use it.
+            2. The <code>order_id</code> parameter, specified as a path parameter, with a description that helps the LLM extract it from user input.
+            3. A successful response (200 OK) schema containing at least <code>status</code> and <code>delivery_date</code> fields.
+            </p>
+<p>Do not give away the full implementation, but focus on providing the structure that the LLM would need to understand this tool.</p>
+<p><strong>Difficulty:</strong> Medium. Focus on writing clear descriptions for the LLM.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Be Explicit in Descriptions</h3>
+<p>Treat parameter descriptions in your OpenAPI spec as instructions for the LLM. For example, instead of just saying "Order ID", say "The 10-digit alphanumeric order ID provided by the customer, usually starting with 'ES'." This helps the LLM extract the correct value reliably.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Avoid Exposing Too Many Tools</h3>
+<p>While it's tempting to expose every API endpoint as a tool, doing so can confuse the LLM and increase latency. Only expose the specific tools needed for the Customer User Journeys (CUJs) that the agent is designed to handle.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>What is the primary role of descriptions in an OpenAPI spec when used by CXAS?</strong><br/>
+<small>
+                    A) They are only used for generating documentation for human developers.<br/>
+                    B) They provide context for the LLM to understand when and how to use the tool.<br/>
+                    C) They are ignored by the LLM and only used by the runtime executor.
+                    </small>
+</li>
+<li>
+<strong>Why might you choose a pre-built Connector over a custom OpenAPI tool for a system like Salesforce?</strong><br/>
+<small>
+                    A) Connectors are always faster to execute.<br/>
+                    B) Connectors simplify authentication and allow you to quickly expose specific actions without writing full specs.<br/>
+                    C) Custom OpenAPI tools do not support authentication.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 10 - Testing and Evaluation. We will learn how to use scenarios and golden datasets to evaluate agent performance. <a href="day_010.html">Preview Day 10</a></p>
+</div>
+</div>
+</body>
+</html>
