@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 10: Python Code Tools (Logic in Console) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 10: Python Code Tools (Logic in Console)</h1>
+<p>Empower your agent with deterministic logic and precise calculations by writing custom Python code directly in the console.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 10! You've mastered connecting to external APIs, but sometimes you need to perform complex logic or calculations that don't require an external API call. Today, we give your agent the ability to run precise, deterministic code. When language fails, logic wins!</p>
+<p><strong>Achievement:</strong> By the end of today, you will know how to create custom Python functions in CXAS to solve complex math and logic problems reliably.</p>
+<p><strong>Customer Value:</strong> Customers get precise answers to complex queries (like exact shipping costs or customized discounts) instantly, without errors.</p>
+<p><strong>Milestones:</strong> Learn how to offload logic to Python, understand the sandbox environment, and write your first custom tool function.</p>
+<p><strong>Goals:</strong> Write a Python function to calculate shipping fees based on multi-factor rules for EcoShop.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we explored OpenAPI and Connector Tools to link our agent to external systems like order databases. You can check the Day 9 solution <a href="day_009_solution.html">here</a>. Today, we look at internal computation capabilities using Python Code Tools.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Python Code Tools in CXAS</h2>
+<p>Large Language Models (LLMs) are incredibly powerful at understanding natural language, identifying user intent, and generating human-like responses. However, they are probabilistic models. They are not calculators. When asked to perform complex math or evaluate multi-step logical rules, they can hallucinate or make subtle errors.</p>
+<p>To address this, CX Agent Studio (CXAS) allows you to create **Python Code Tools**. You can write custom Python functions directly in the CXAS console. These functions can be called by the agent when it needs to perform precise calculations or data transformations.</p>
+<h3>How it Works</h3>
+<p>When you define a Python Code Tool, you provide a function definition and the code itself. You also provide a description for the tool, just like you do for OpenAPI tools. This description is crucial for the LLM to understand when to use the tool.</p>
+<p>To make a tool available to an agent, you attach it and can reference it in your prompts or instructions using the syntax: <code>{@TOOL: tool_name}</code>.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why not just tell the LLM the rules in the prompt and ask it to calculate? Because LLMs predict the next most likely word, not the mathematically correct answer. For example, calculating a 15% discount on a cart total of $123.45 might lead to an incorrect result if the LLM relies solely on its training data.</p>
+<p>By offloading this to a Python Code Tool, the LLM's role changes from *calculator* to *orchestrator*. The LLM extracts the necessary parameters from the conversation (e.g., cart total, discount code), calls the Python tool, and receives the exact, correct answer back from the secure sandbox execution environment. This guarantees accuracy and builds trust with the user.</p>
+</div>
+<h3>Secure Sandbox Execution</h3>
+<p>The Python code you write in the CXAS console does not run on the user's device or directly within the LLM. It executes in a secure, isolated server-side sandbox. This protects the platform and ensures that the code cannot access unauthorized resources or cause harm.</p>
+</section>
+<div class="challenge">
+<h3>The Day 10 Challenge: EcoShop Shipping Calculator</h3>
+<p><strong>Scenario:</strong> EcoShop needs a reliable way to calculate shipping fees for their agents to quote to customers. The rules are too complex to trust the LLM to calculate them directly in every turn of the Customer User Journey (CUJ).</p>
+<p><strong>Task:</strong> 
+            Write a Python function that calculates the shipping fee based on the following business rules:
+            </p>
+<ul>
+<li>Base fee: $5.00</li>
+<li>Weight surcharge: If the package weight is greater than 5 lbs, add $2.00 for every pound (or fraction thereof) above 5 lbs.</li>
+<li>Destination surcharge: International shipping adds a flat $15.00 to the total.</li>
+<li>Loyalty discount: Gold members get 20% off the total shipping fee. Silver members get 10% off. Regular members get no discount.</li>
+</ul>
+<p>
+            Your function should accept parameters for <code>weight</code>, <code>destination_type</code> (e.g., 'domestic' or 'international'), and <code>loyalty_tier</code> (e.g., 'regular', 'silver', 'gold').
+            </p>
+<p>Write the Python code snippet that you would enter into the CXAS console. Do not provide the answer here; focus on implementing the logic correctly in code.</p>
+<p><strong>Difficulty:</strong> Medium. Ensure you handle the weight surcharge calculation correctly for weights above 5 lbs.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Keep Functions Pure</h3>
+<p>Ensure your Python functions are deterministic (pure). Given the same inputs, they should always return the same output. Avoid relying on external state or random number generators within these tool functions to ensure consistent agent behavior.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Sandbox Limitations</h3>
+<p>The secure sandbox environment has limitations. You cannot import arbitrary third-party libraries that are not pre-approved by the platform. Stick to standard Python libraries for your logic to ensure it runs without errors.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>Why should you use Python Code Tools for math instead of letting the LLM calculate in the prompt?</strong><br/>
+<small>
+                    A) LLMs are too slow at generating numbers.<br/>
+                    B) LLMs are probabilistic and can make errors in calculation; Python provides deterministic accuracy.<br/>
+                    C) Python code tools are required for all customer interactions in CXAS.
+                    </small>
+</li>
+<li>
+<strong>Where does the Python code written in the CXAS console execute?</strong><br/>
+<small>
+                    A) In the user's browser.<br/>
+                    B) Directly within the LLM's weights.<br/>
+                    C) In a secure, isolated server-side sandbox.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 11 - Testing &amp; Evaluation. We will learn how to use scenarios and golden datasets to evaluate agent performance. <a href="day_011.html">Preview Day 11</a></p>
+</div>
+</div>
+</body>
+</html>

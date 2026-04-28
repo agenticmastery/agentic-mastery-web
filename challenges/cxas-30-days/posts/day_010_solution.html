@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 10 Solution: Python Code Tools (Logic in Console) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 10 Solution: Python Code Tools (Logic in Console)</h1>
+<p>Here is the recommended solution for the Day 10 Challenge.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Feedback</h3>
+<p>Brilliant! By offloading the math to a Python script, you've ensured that your agent will never hallucinate shipping costs. This is a critical pattern for enterprise agents: let the LLM handle the conversation and parameter extraction, and let deterministic code handle the business logic. You've mastered a key technique for building reliable agents!</p>
+<p><strong>Key Achievement:</strong> You have successfully written a deterministic Python function to handle complex business rules and integrated it into an agent's workflow via instructions.</p>
+</div>
+<div class="refresher">
+<h3>Orientation</h3>
+<p>This is the solution file for Day 10. You can use this to compare with your own attempt or as a reference for future challenges.</p>
+</div>
+<section class="solution">
+<h2>The Solution: Python Function &amp; Agent Prompt</h2>
+<h3>1. Python Function (to be entered in CXAS Console)</h3>
+<p>Here is the Python code to implement the EcoShop shipping calculation rules. Notice the use of <code>math.ceil</code> to handle the "or fraction thereof" part of the weight surcharge rule.</p>
+<div class="description-block">
+<pre><code>import math
+
+def calculate_shipping_fee(weight, destination_type, loyalty_tier):
+    """
+    Calculates the shipping fee based on weight, destination, and loyalty tier.
+    
+    Parameters:
+    weight (float): Weight of the package in lbs.
+    destination_type (str): 'domestic' or 'international'.
+    loyalty_tier (str): 'regular', 'silver', or 'gold'.
+    
+    Returns:
+    float: The calculated shipping fee.
+    """
+    base_fee = 5.00
+
+    # Weight surcharge: $2.00 for every pound (or fraction thereof) above 5 lbs
+    weight_surcharge = 0.0
+    if weight &gt; 5:
+        excess_weight = weight - 5
+        weight_surcharge = math.ceil(excess_weight) * 2.00
+
+    total_fee = base_fee + weight_surcharge
+
+    # Destination surcharge
+    if destination_type == 'international':
+        total_fee += 15.00
+
+    # Loyalty discount
+    if loyalty_tier == 'gold':
+        total_fee *= 0.8  # 20% off
+    elif loyalty_tier == 'silver':
+        total_fee *= 0.9  # 10% off
+        
+    return round(total_fee, 2)</code></pre>
+</div>
+<h3>2. Agent Instructions Using the Tool</h3>
+<p>Here is how you would structure the instructions for the agent to use this tool, following the best practices structure with <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags.</p>
+<pre><code>&lt;role&gt;
+You are a specialized customer service agent for EcoShop focused on quoting shipping costs.
+&lt;/role&gt;
+
+&lt;persona&gt;
+You are precise, helpful, and professional.
+&lt;/persona&gt;
+
+&lt;primary_goal&gt;
+Provide accurate shipping fee quotes to customers by using the available calculator tool.
+&lt;/primary_goal&gt;
+
+&lt;taskflow&gt;
+  &lt;subtask name="Calculate Shipping"&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Customer asks for a shipping quote.&lt;/trigger&gt;
+      &lt;action&gt;Gather the package weight, destination (domestic or international), and their loyalty tier (regular, silver, or gold). Ask for any missing information politely.&lt;/action&gt;
+    &lt;/step&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;All parameters (weight, destination, loyalty tier) have been provided by the customer.&lt;/trigger&gt;
+      &lt;action&gt;Call the shipping calculator tool: {@TOOL: calculate_shipping_fee} passing the collected values.&lt;/action&gt;
+    &lt;/step&gt;
+    &lt;step&gt;
+      &lt;trigger&gt;Tool returns the calculated fee.&lt;/trigger&gt;
+      &lt;action&gt;State the calculated shipping fee to the customer clearly. Do not explain the math, just give the final number.&lt;/action&gt;
+    &lt;/step&gt;
+  &lt;/subtask&gt;
+&lt;/taskflow&gt;
+
+&lt;constraints&gt;
+- Do not attempt to calculate the shipping fee yourself. Always use the {@TOOL: calculate_shipping_fee} tool.
+- If the user provides invalid inputs (e.g., negative weight), ask them to provide valid information.
+- Never guess a customer's loyalty tier; ask if not known.
+- Use "Customer User Journeys" (CUJs) to guide the flow.
+&lt;/constraints&gt;</code></pre>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Type Hinting and Docstrings</h3>
+<p>Even though CXAS handles the execution, writing clear docstrings and using type hints in your Python code helps other developers understand your logic and makes debugging much easier when looking at execution logs.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p><a href="day_010.html">Back to Day 10 Challenge</a> | <a href="day_011.html">Continue to Day 11</a></p>
+</div>
+</div>
+</body>
+</html>
