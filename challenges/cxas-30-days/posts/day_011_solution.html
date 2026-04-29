@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 11 Solution: Tool Chaining &amp; Wrappers - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 11 Solution: Tool Chaining &amp; Wrappers</h1>
+<p>Explore the optimized designs for reducing latency through tool wrappers and efficient instruction flows.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Excellent work on tackling Day 11! Latency is the silent killer of good user experience in conversational AI. By thinking about how to minimize turns, you are moving from a functional agent to a high-performance agent.</p>
+</div>
+<section class="solution-content">
+<h2>Solution: EcoShop Unified Availability Check</h2>
+<p>Here are two ways to solve the Day 11 challenge. Option 1 is generally preferred for maximum latency reduction, while Option 2 is useful if you cannot change the existing tool implementations.</p>
+<h3>Option 1: The Wrapper Tool Approach (Recommended)</h3>
+<p>We create a new, combined tool that handles both operations on the backend. This reduces the interaction to a single turn.</p>
+<div class="code-block">
+<p><strong>Tool Name:</strong> <code>get_product_fulfillment_details</code></p>
+<p><strong>Description:</strong> Checks if a product is in stock and calculates the estimated delivery time to a specific zip code.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>product_id</code> (string): The ID of the product to check.</li>
+<li><code>zip_code</code> (string): The destination zip code for shipping.</li>
+</ul>
+<p><strong>Returns:</strong> A JSON object containing <code>in_stock</code> (boolean) and <code>estimated_days</code> (integer).</p>
+</div>
+<p>This wrapper would be implemented on your server. When called, it can execute the database check for stock and the API call for shipping estimation in parallel, further reducing latency.</p>
+<h3>Option 2: The Instruction Set Approach (Tool Chaining)</h3>
+<p>If you must keep the tools separate (e.g., <code>{@TOOL: check_stock}</code> and <code>{@TOOL: calculate_delivery}</code>), you can instruct the model to chain them efficiently. We use structured prompting to guide the model.</p>
+<div class="prompt-example">
+<h4>Optimized Prompt Structure</h4>
+<pre><code>You are a helpful assistant for EcoShop. When a customer asks about product availability and delivery time, follow these steps:
+
+&lt;subtask name="check_full_availability"&gt;
+  &lt;step number="1"&gt;
+    Identify the product_id and the customer's zip_code from the conversation.
+  &lt;/step&gt;
+  &lt;step number="2"&gt;
+    Call {@TOOL: check_stock} with the product_id.
+  &lt;/step&gt;
+  &lt;step number="3"&gt;
+    If the item is in stock, immediately call {@TOOL: calculate_delivery} using the zip_code. Do not wait to report the stock status before calling the second tool.
+  &lt;/step&gt;
+  &lt;step number="4"&gt;
+    Provide a unified answer to the customer containing both availability and delivery time.
+  &lt;/step&gt;
+&lt;/subtask&gt;
+
+If the item is out of stock in Step 2, skip Step 3 and inform the customer it is out of stock.</code></pre>
+</div>
+<p>This structure uses the <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags to clearly define the sequence, helping the model understand it should execute these as a continuous flow rather than waiting for user input between steps.</p>
+</section>
+<div class="knowledge-check-answers">
+<h3>Knowledge Check Answers</h3>
+<ol>
+<li><strong>B</strong> - It reduces the number of turns between the model and the tool environment, reducing latency.</li>
+<li><strong>B</strong> - It keeps the context window smaller and more focused, helping the attention mechanism stay on target.</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Next Challenge: Day 12 - Summary &amp; Review. Get ready to consolidate your learning! <a href="day_012.html">Go to Day 12</a></p>
+</div>
+</div>
+</body>
+</html>

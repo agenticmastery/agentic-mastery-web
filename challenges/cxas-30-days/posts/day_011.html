@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 11: Tool Chaining &amp; Wrappers (Reducing Latency) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 11: Tool Chaining &amp; Wrappers (Reducing Latency)</h1>
+<p>Optimize your agent's performance by sequencing tool calls and creating unified wrappers to minimize turns and reduce latency.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Day 11! You've empowered your agent with external APIs and internal logic. But as your agent grows more capable, it might become slower if it has to make multiple round-trips to different tools. Today, we focus on speed and efficiency. We will learn how to chain tools and build wrappers to make our agents lightning fast!</p>
+<p><strong>Achievement:</strong> By the end of today, you will know how to identify latency bottlenecks and use tool chaining or wrapper patterns to reduce execution turns in CXAS.</p>
+<p><strong>Customer Value:</strong> Customers get answers much faster, leading to a smoother and more satisfying experience, reducing drop-offs in Customer User Journeys (CUJs).</p>
+<p><strong>Milestones:</strong> Understand the cost of multi-turn tool execution, learn the wrapper pattern, and design an optimized flow for EcoShop.</p>
+<p><strong>Goals:</strong> Design a wrapper tool or optimized instruction flow to combine stock checking and delivery estimation for EcoShop.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we used Python Code Tools to give our agent deterministic logic for complex calculations. You can check the Day 10 solution <a href="day_010_solution.html">here</a>. Today, we look at optimizing how our agent interacts with multiple tools to reduce latency.</p>
+</div>
+<section class="lesson">
+<h2>Lesson: Tool Chaining &amp; Wrappers</h2>
+<p>In complex Customer User Journeys (CUJs), an agent often needs to perform multiple operations to satisfy a single user request. For example, to answer "Is this item available and when can I get it?", the agent might need to:</p>
+<ol>
+<li>Call a tool to check inventory.</li>
+<li>Call another tool to calculate shipping time based on the user's location.</li>
+</ol>
+<p>If the agent handles this by calling the first tool, processing the result, and then calling the second tool, it takes two full "turns" (Model -&gt; Tool -&gt; Model). Each turn adds latency, making the experience feel sluggish to the customer.</p>
+<h3>Tool Chaining</h3>
+<p>Tool chaining refers to the ability of the agent to plan and execute a sequence of tool calls. While CXAS handles orchestration, you can optimize this by providing clear instructions on how tools relate to each other, or by using parallel tool calling if the platform supports it and the calls are independent.</p>
+<h3>The Wrapper Pattern</h3>
+<p>A more powerful way to reduce latency is to create a **Wrapper Tool**. Instead of exposing two separate, fine-grained tools to the agent, you create a single, coarse-grained tool that combines both operations on the backend.</p>
+<p>For example, instead of <code>check_inventory(item_id)</code> and <code>get_shipping_estimate(zip_code)</code>, you could create a wrapper tool called <code>get_product_availability_and_delivery(item_id, zip_code)</code>. This tool executes both checks in a single execution turn from the agent's perspective, drastically reducing latency.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Reducing the number of execution turns doesn't just improve speed; it also improves the reliability of the agent. Every time the model has to stop, generate a tool call, and then process the tool output, it adds to the conversation history (context window).</p>
+<p>By minimizing turns, we keep the context window smaller and more focused. This helps the attention mechanism of the LLM stay focused on the user's primary goal, reducing the risk of the model getting confused by intermediate outputs or hallucinating across turns. It makes the agent "smarter" simply by making it more efficient.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 11 Challenge: EcoShop Unified Availability Check</h3>
+<p><strong>Scenario:</strong> EcoShop customers frequently ask if an item is in stock and how soon they can get it. Currently, the agent has access to two separate tools:</p>
+<ul>
+<li><code>{@TOOL: check_stock}</code>: Takes <code>product_id</code> and returns availability status.</li>
+<li><code>{@TOOL: calculate_delivery}</code>: Takes <code>zip_code</code> and <code>shipping_method</code> and returns estimated days.</li>
+</ul>
+<p>This results in a slow experience for the user as the agent calls them sequentially.</p>
+<p><strong>Task:</strong> 
+            Design the concept for a single **Wrapper Tool** or a specific **Instruction Set** that allows the agent to resolve the CUJ "Check availability and delivery time" in a single turn.
+            </p>
+<p>If you choose to design a Wrapper Tool, specify its name, parameters, and what it returns. If you choose an Instruction Set, show how you would instruct the model to chain these calls efficiently (assuming the model can generate multiple tool calls in one turn).</p>
+<p>Do not provide the full solution here. Focus on the design or the prompt structure.</p>
+<p><strong>Difficulty:</strong> Medium. Think about what parameters are strictly necessary for the combined operation.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Balance Granularity</h3>
+<p>While wrappers reduce latency, don't over-consolidate. Keep tools focused enough that they are reusable across different CUJs. A tool that does too many unrelated things will confuse the LLM about when to use it.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Hidden Backend Latency</h3>
+<p>A wrapper tool reduces turns between the LLM and the tool execution environment, but if the wrapper itself calls slow external APIs sequentially, total latency might still be high. Ensure your backend implementation of the wrapper executes independent operations in parallel whenever possible.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check</h3>
+<p>Select the best answer for each question to test your understanding:</p>
+<ol>
+<li>
+<strong>What is the primary benefit of using a Wrapper Tool instead of calling multiple tools sequentially?</strong><br/>
+<small>
+                    A) It makes the code easier to read for humans.<br/>
+                    B) It reduces the number of turns between the model and the tool environment, reducing latency.<br/>
+                    C) It allows the model to bypass security checks.
+                    </small>
+</li>
+<li>
+<strong>How does reducing execution turns improve the LLM's performance?</strong><br/>
+<small>
+                    A) It allows the model to use more tokens for generation.<br/>
+                    B) It keeps the context window smaller and more focused, helping the attention mechanism stay on target.<br/>
+                    C) It forces the model to use Python instead of natural language.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 12 - Summary &amp; Review. We will recap the core concepts of the first 11 days and prepare for the next phase. <a href="day_012.html">Preview Day 12</a></p>
+</div>
+</div>
+</body>
+</html>
