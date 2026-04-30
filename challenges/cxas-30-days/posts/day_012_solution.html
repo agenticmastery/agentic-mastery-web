@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 12 Solution: Week 2 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 12 Solution: Week 2 Summary &amp; Review</h1>
+<p>Review the reference architecture and check your answers for the Week 2 review.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Great job completing the review! Self-assessment is a critical part of learning. By reviewing these solutions, you are solidifying the patterns in your mind, making them ready for use in your next production project.</p>
+</div>
+<section class="solution-content">
+<h2>Reference Architecture: Smart Return Assistant</h2>
+<p>Here is a reference design for the Day 12 mini-project. There is no single correct answer, but this approach demonstrates best practices using Week 2 concepts.</p>
+<h3>1. Orchestration: Single Agent vs. Steering Agent</h3>
+<p><strong>Recommendation:</strong> For this specific scenario, a **Single Agent with focused tools** is likely sufficient to start, as the task is linear (Check policy -&gt; Calculate refund -&gt; Generate label). However, if EcoShop plans to add more features (like replacement ordering or customer support chat), transitioning to a **Steering Agent** would be better to separate return logic from general chat.</p>
+<h3>2. Tool Design</h3>
+<ul>
+<li><strong>Knowledge Base Tool:</strong> A tool to query the return policy (e.g., <code>query_policy(item_type)</code>).</li>
+<li><strong>Python Code Tool (Deterministic Logic):</strong> A tool to calculate the refund. It takes the original price, condition of the item, and applies the policy rules (e.g., deducting a 10% restocking fee if applicable).
+                    <pre><code>def calculate_refund(price, condition, applies_restocking_fee):
+    if condition != "new" or applies_restocking_fee:
+        return price * 0.9
+    return price</code></pre>
+</li>
+<li><strong>Connector Tool (External API):</strong> An OpenAPI-based tool to generate the shipping label (e.g., <code>{@TOOL: create_shipping_label}</code> taking name, address, and package details).</li>
+</ul>
+<h3>3. Latency Optimization</h3>
+<p>To handle the combined request "Can I return this and how much will I get back?" efficiently:</p>
+<ul>
+<li><strong>Wrapper Pattern:</strong> Create a wrapper tool called <code>check_return_eligibility_and_value(item_id, condition)</code> that internally queries the policy and calculates the refund in one go, reducing turns.</li>
+<li><strong>Instruction Set:</strong> Alternatively, instruct the model to fetch the policy and calculate the refund in parallel or sequence before responding to the user, ensuring the user gets a complete answer in the first response turn.</li>
+</ul>
+</section>
+<div class="knowledge-check-answers">
+<h3>Knowledge Check Answers</h3>
+<ol>
+<li><strong>B</strong> - The Wrapper Tool Pattern is specifically designed to reduce latency by combining multiple backend operations into a single execution turn.</li>
+<li><strong>B</strong> - Python Code Tools are used to ensure deterministic, accurate results for operations where LLMs are prone to error, like math and complex logic.</li>
+<li><strong>B</strong> - The main purpose of the Steering Agent Pattern is to manage complexity by delegating tasks to specialized components, preventing prompt overload in a single agent.</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready for Week 3? The solution to this review will be referenced in Day 13. <a href="day_013.html">Go to Day 13</a></p>
+</div>
+</div>
+</body>
+</html>

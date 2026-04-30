@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 12: Week 2 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 12: Week 2 Summary &amp; Review</h1>
+<p>Consolidate your knowledge of advanced orchestration, specialized tools, and efficiency patterns from Week 2.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Congratulations on completing Week 2! You have moved far beyond simple chat agents. You are now building complex, orchestrated systems capable of handling real-world business logic. Today is about stepping back, seeing the big picture, and cementing these advanced concepts.</p>
+<p><strong>Achievement:</strong> You have mastered the Steering Agent pattern, advanced callbacks, external tool integration via OpenAPI, deterministic logic with Python, and latency reduction techniques.</p>
+<p><strong>Customer Value:</strong> By mastering these skills, you can build agents that are not only capable but also fast, reliable, and perfectly aligned with complex Customer User Journeys (CUJs).</p>
+<p><strong>Milestones:</strong> Review the core concepts of Week 2, complete the comprehensive knowledge check, and prepare for the next level of agentic mastery.</p>
+<p><strong>Goals:</strong> Score 100% on the knowledge check and complete the mini-project design to prove your readiness for Week 3.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we learned about Tool Chaining and the Wrapper Pattern to reduce latency in complex agent interactions. You can check the Day 11 solution <a href="day_011_solution.html">here</a>. Today is a dedicated review day to ensure you are ready for the advanced topics coming in Week 3.</p>
+</div>
+<section class="lesson">
+<h2>Week 2 Detailed Summary</h2>
+<p>This week we transitioned from basic agent setup to advanced orchestration and specialized tools. Here is a recap of the core pillars we covered:</p>
+<h3>1. The Steering Agent Pattern</h3>
+<p>As agents take on more tasks, a single prompt can become overloaded. The Steering Agent pattern introduces a central "router" or "manager" agent that understands the high-level goal and delegates specific tasks to specialized sub-agents or focused tool sets. This improves accuracy and maintainability by keeping the scope of each agent component narrow.</p>
+<h3>2. Advanced Callbacks</h3>
+<p>Callbacks are the hooks that allow you to monitor and intervene in the agent's lifecycle. We explored how to use callbacks not just for logging, but for dynamic behavior modification, such as intercepting tool calls, enriching context on the fly, or enforcing business rules before a response is sent to the user.</p>
+<h3>3. OpenAPI &amp; Connector Tools</h3>
+<p>Agents need to interact with the real world. We learned how to bridge the gap between LLMs and external systems using OpenAPI specifications. By defining clear schemas, CXAS can automatically generate connector tools that the agent can use to fetch data or trigger actions in external services securely.</p>
+<h3>4. Python Code Tools</h3>
+<p>LLMs are great at language but often struggle with precise, deterministic calculations or complex data manipulation. We integrated Python Code Tools to give the agent a "sandbox" where it can generate and execute Python code. This allows the agent to solve math problems, process data structures, and execute complex algorithms reliably.</p>
+<h3>5. Tool Chaining &amp; Wrappers</h3>
+<p>Efficiency is key for user experience. We learned that calling tools sequentially can introduce significant latency. We covered **Tool Chaining** (guiding the agent to sequence calls) and the **Wrapper Pattern** (combining multiple backend operations into a single tool) to minimize execution turns and provide faster responses in complex CUJs.</p>
+</section>
+<div class="challenge">
+<h3>The Day 12 Challenge: Week 2 Mini-Project</h3>
+<p><strong>Scenario:</strong> EcoShop wants to build a "Smart Return Assistant". This assistant needs to:</p>
+<ol>
+<li>Understand the user's request to return an item (Steering/CUJ identification).</li>
+<li>Check the return policy for that specific item type using a knowledge base.</li>
+<li>Calculate the refund amount, deducting a restocking fee if applicable (Deterministic logic).</li>
+<li>Call the warehouse API to generate a return shipping label (External API).</li>
+</ol>
+<p><strong>Task:</strong> Design the architecture for this assistant using at least 3 of the concepts learned this week. Specify:</p>
+<ul>
+<li>Will you use a Steering Agent or a single agent with many tools? Why?</li>
+<li>What tools will you need? (Specify at least one Python Code Tool and one Connector Tool).</li>
+<li>How will you optimize for latency if the user asks "Can I return this and how much will I get back?"</li>
+</ul>
+<p>Draft your architectural design or prompt structures. Do not write actual code for the solution.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Consolidate with Documentation</h3>
+<p>The best way to review is to document. Take 15 minutes today to write down your own summary of how these 5 patterns fit together. Creating your own mental model is the key to applying these patterns in new scenarios.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Over-Orchestration</h3>
+<p>A common pitfall is making the system too complex too early. Only use a Steering Agent if a single agent is failing due to prompt length or confusion. Only build a Wrapper Tool if sequential tool calling is causing noticeable latency. Start simple, measure, and then optimize.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your retention of Week 2 concepts:</p>
+<ol>
+<li>
+<strong>Which pattern is best suited for reducing latency when an agent needs to call two dependent external APIs?</strong><br/>
+<small>
+                    A) The Steering Agent Pattern<br/>
+                    B) The Wrapper Tool Pattern<br/>
+                    C) Python Code Tools<br/>
+                    D) Advanced Callbacks
+                    </small>
+</li>
+<li>
+<strong>Why would you use a Python Code Tool instead of letting the LLM do calculations directly?</strong><br/>
+<small>
+                    A) Because LLMs cannot do any math.<br/>
+                    B) To ensure deterministic, accurate results for complex logic or data manipulation.<br/>
+                    C) To reduce the number of tokens used.<br/>
+                    D) Because it is faster than the LLM.
+                    </small>
+</li>
+<li>
+<strong>What is the main purpose of the Steering Agent Pattern?</strong><br/>
+<small>
+                    A) To make the agent run faster.<br/>
+                    B) To delegate complex user requests to specialized sub-agents or tool sets, avoiding prompt overload.<br/>
+                    C) To connect to external databases.<br/>
+                    D) To generate code.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 13 - Start of Week 3. We will dive into Advanced Prompting Techniques and Few-Shot Learning. <a href="day_013.html">Preview Day 13</a></p>
+</div>
+</div>
+</body>
+</html>
