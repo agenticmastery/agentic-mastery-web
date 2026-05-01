@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 13 Solution: Offline Evaluations &amp; Golden Datasets - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 13 Solution: Offline Evaluations &amp; Golden Datasets</h1>
+<p>Review the reference Golden Dataset definitions and prompt structures for evaluation.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Great work on defining your first Golden Dataset! Having a structured way to evaluate your agent is what separates toy projects from production-grade systems. By defining clear inputs and expected outputs, you've laid the foundation for continuous improvement without fear of regression.</p>
+</div>
+<section class="solution-content">
+<h2>Reference Solution: Golden Dataset for Returns</h2>
+<p>Here is a reference example of how you might structure your Golden Dataset using YAML. This structure allows for both Turn and Simulation evaluations.</p>
+<h3>Reference YAML Structure</h3>
+<pre><code># test_cases.yaml
+- id: TC001_TURN_INITIAL_REQUEST
+  type: turn
+  description: Verify agent identifies return request and checks policy.
+  input: "I bought a toaster last week and it stopped working. How do I return it?"
+  expected:
+    tool_calls:
+      - name: "{@TOOL: query_policy}"
+        args:
+          category: "electronics"
+          reason: "defective"
+    next_state: "awaiting_policy_result"
+
+- id: TC002_SIM_FULL_RETURN_FLOW
+  type: simulation
+  description: Full multi-turn return flow for a standard item.
+  persona:
+    profile: "Cooperative customer wanting to return a shirt that doesn't fit."
+    goal: "Successfully initiate a return and get a label."
+  steps:
+    - user: "Hi, I'd like to return a shirt I bought."
+    - user: "The order number is 12345."
+    - user: "It's in new condition, just the wrong size."
+  expected:
+    final_state: "return_label_generated"
+    criteria:
+      - "Agent asked for order number."
+      - "Agent verified return eligibility."
+      - "Agent called {@TOOL: create_shipping_label}."
+
+- id: TC003_TURN_EDGE_CASE_DAMAGED
+  type: turn
+  description: Handle request for returning a damaged item (edge case).
+  input: "My dog chewed on this shirt I bought yesterday, can I still return it?"
+  expected:
+    response_contains: "damaged"
+    tool_calls:
+      - name: "{@TOOL: query_policy}"
+        args:
+          condition: "damaged"
+    next_state: "explain_damaged_policy"
+</code></pre>
+<h3>Prompting the Evaluator LLM (Best Practice Structure)</h3>
+<p>When running Simulation Evals, you often use an LLM to "judge" if the conversation was successful based on the Golden Dataset criteria. Here is how you should structure the prompt for that evaluator agent, using structured instructions:</p>
+<pre><code>You are an expert QA evaluator for conversational agents. Your task is to assess if the agent successfully handled the Customer User Journey (CUJ) for a product return.
+
+<subtask>
+Analyze the provided conversation transcript against the specific evaluation criteria and determine if the goal was achieved.
+</subtask>
+
+<step>
+1. Read the simulation transcript and the target test case criteria.
+2. Verify that the agent correctly identified the user's intent to return an item without referencing "Intents" explicitly in the response.
+3. Confirm that the agent invoked the {@TOOL: query_policy} tool before making a decision.
+4. Check if the final response aligns with the policy returned by the tool (e.g., if the item is damaged, did it follow the damaged policy?).
+5. Rate the conversation as SUCCESS or FAILURE and provide a brief rationale.
+</step>
+
+Transcript:
+[Insert Conversation Transcript Here]
+
+Criteria:
+- The user must be guided to provide an order number.
+- The agent must check the return policy.
+- The agent must not process a return if the item condition is described as heavily damaged by the user.
+</code></pre>
+</section>
+<div class="knowledge-check-answers">
+<h3>Knowledge Check Answers</h3>
+<ol>
+<li><strong>B</strong> - Turn Evals test single interactions (one utterance to one response/action), while Simulation Evals test the full multi-turn conversation path to see if the goal is reached.</li>
+<li><strong>B</strong> - A Golden Dataset is a curated, high-quality set of test cases that serve as the ground truth baseline for regression testing.</li>
+<li><strong>C</strong> - Because LLMs are non-deterministic and can generate many semantically equivalent but lexically different responses, traditional exact-match string comparison unit tests are often insufficient.</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready to move on? The next day covers implementing these Turn Evals in CXAS. <a href="day_014.html">Go to Day 14</a></p>
+</div>
+</div>
+</body>
+</html>

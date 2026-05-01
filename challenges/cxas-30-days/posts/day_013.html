@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 13: Offline Evaluations &amp; Golden Datasets - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 13: Offline Evaluations &amp; Golden Datasets</h1>
+<p>Learn how to measure agent quality and prevent regressions using Turn and Simulation Evals with Golden Datasets.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Week 3! You've built sophisticated agents; now it's time to prove they are enterprise-ready. Building an agent is easy; ensuring it behaves correctly across thousands of scenarios is the real challenge. Today, we shift from building to evaluating.</p>
+<p><strong>Achievement:</strong> You will understand the difference between Turn and Simulation evaluations and how to construct a "Golden Dataset" to serve as your quality baseline.</p>
+<p><strong>Customer Value:</strong> Robust evaluations mean fewer broken experiences for users. When you update your agent, you can be confident you aren't introducing regressions in existing Customer User Journeys (CUJs).</p>
+<p><strong>Milestones:</strong> Master the concepts of Turn Evals and Simulation Evals. Learn to structure a test case for a Golden Dataset.</p>
+<p><strong>Goals:</strong> Define a set of test cases for the EcoShop return flow to form a foundational Golden Dataset.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>In Week 2, we covered advanced orchestration, tool chaining, and deterministic logic. You can review the solution to the Week 2 review and the quiz answers <a href="day_012_solution.html">here</a>. Today, we begin Week 3 by focusing on Quality Assurance and Evaluation in Agentic systems.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Offline Evaluations in CXAS</h2>
+<p>In traditional software, we use unit and integration tests. In the world of LLMs and Agentic systems, testing is less deterministic. Users can say the same thing in a million different ways, and the LLM's response can vary. To ensure quality, we use **Offline Evaluations**.</p>
+<p>Offline Evals run test cases against a snapshot of your agent (or specific components) without exposing it to real users. In CXAS, we typically look at two types of offline evaluations:</p>
+<h3>1. Turn Evaluations</h3>
+<p>Turn Evals focus on a single exchange: a user utterance and the agent's immediate response or action. You are testing if the agent understood the user's intent (mapped to the correct CUJ) and took the right next step.</p>
+<p>For example, if the user says "I want to return this broken toaster," a Turn Eval checks if the agent correctly identifies the return flow and perhaps calls the `{@TOOL: query_policy}` tool, rather than trying to sell them a new toaster.</p>
+<h3>2. Simulation Evaluations</h3>
+<p>Simulation Evals are more complex. They simulate a complete, multi-turn conversation between a user persona (played by another LLM or a script) and your agent. The goal is to see if the agent can guide the user to a successful resolution of a full Customer User Journey (CUJ).</p>
+<p>For instance, a Simulation Eval might test a user trying to return a product, being told it's past the return window, and then asking for an exception. The evaluation checks if the agent followed the policy throughout the conversation and arrived at the correct final state.</p>
+<h3>Creating Golden Datasets</h3>
+<p>To run these evaluations, you need a **Golden Dataset**. This is a curated, high-quality set of test cases that represent the "ground truth" of how your agent should behave. It should cover:</p>
+<ul>
+<li>**Happy Paths:** Standard, straightforward user journeys.</li>
+<li>**Edge Cases:** Unusual but valid user requests (e.g., returning a gift without a receipt).</li>
+<li>**Negative Cases:** Things the agent should *not* do (e.g., processing a return for a non-returnable item).</li>
+</ul>
+<p>A typical test case in a Golden Dataset includes the input (user utterance or persona), the expected output (agent response or tool call), and success criteria.</p>
+<div class="llm-why">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why can't we just use traditional unit tests? LLMs are non-deterministic by nature. The same input can produce slightly different outputs. Traditional testing looking for exact string matches will fail often. Offline evaluations using LLMs as judges or measuring semantic similarity allow us to scale quality assurance. We can run hundreds of simulated conversations in minutes to detect regressions that a human tester might miss, ensuring that improvements in one area don't degrade performance in another.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 13 Challenge: Define a Golden Dataset for Returns</h3>
+<p><strong>Scenario:</strong> You are building the Golden Dataset for the EcoShop Return Assistant. You need to define test cases to ensure the agent handles the return process correctly.</p>
+<p><strong>Task:</strong> Define at least three test cases for the Golden Dataset in a structured format (e.g., YAML or a detailed list). Do not give away the solution in full code, but outline the structure.</p>
+<p>Include at least:</p>
+<ul>
+<li>One Turn Eval test case for initial return request.</li>
+<li>One Simulation Eval test case for a complete return flow.</li>
+<li>One test case handling an edge case (e.g., damaged item).</li>
+</ul>
+<p>Specify the Input, Expected Tool Call (using `{@TOOL: tool_name}` syntax), and Expected Final State for each.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Diversify Your Expressions</h3>
+<p>When creating Turn Evals, don't just use the most common phrasing. Include slang, typos, and indirect requests to ensure your agent can handle the variety of real-world user input. A robust Golden Dataset reflects the messy reality of human conversation.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Overfitting to the Golden Set</h3>
+<p>A common pitfall is tuning your prompts specifically to pass the test cases in your Golden Dataset. This is called overfitting. If you do this, your agent might perform perfectly on the test set but fail on new, slightly different real-world inputs. Keep your dataset representative and update it regularly with real user interactions that exposed weaknesses.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of Offline Evals:</p>
+<ol>
+<li>
+<strong>What is the main difference between a Turn Eval and a Simulation Eval?</strong><br/>
+<small>
+                    A) Turn Evals test the whole conversation; Simulation Evals test single turns.<br/>
+                    B) Turn Evals test single interactions; Simulation Evals test multi-turn conversations to a goal.<br/>
+                    C) Turn Evals are manual; Simulation Evals are automated.<br/>
+                    D) There is no difference; they are synonyms.
+                    </small>
+</li>
+<li>
+<strong>What is a "Golden Dataset" in the context of agent evaluation?</strong><br/>
+<small>
+                    A) A dataset containing the most expensive items in the store.<br/>
+                    B) A curated set of high-quality test cases representing expected behavior for regression testing.<br/>
+                    C) A set of logs from failed customer interactions.<br/>
+                    D) A database of user profiles.
+                    </small>
+</li>
+<li>
+<strong>Why are traditional exact-match unit tests often insufficient for testing LLM-based agents?</strong><br/>
+<small>
+                    A) Because LLMs are too fast for unit tests.<br/>
+                    B) Because LLMs generate deterministic outputs that never vary.<br/>
+                    C) Because LLMs are non-deterministic and can express the same correct answer in many different ways.<br/>
+                    D) Because unit tests cannot be run on cloud platforms.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 14 - Implementing Turn Evals in CXAS. <a href="day_014.html">Preview Day 14</a></p>
+</div>
+</div>
+</body>
+</html>
