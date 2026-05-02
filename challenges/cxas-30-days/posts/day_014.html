@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 14: Offline Evals - Tool &amp; Callback (Isolation Testing) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 14: Offline Evals - Tool &amp; Callback (Isolation Testing)</h1>
+<p>Learn how to validate individual components of your agent system in isolation to ensure reliability and ease of debugging.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> We've looked at agent-level evaluations. Now it's time to zoom in. Think of an agentic system like a high-performance car. You wouldn't wait to test the engine, brakes, and transmission until they are all assembled on the track. You test each component in isolation first. Today, we apply that same rigor to our tools and callbacks.</p>
+<p><strong>Achievement:</strong> You will understand the importance of isolation testing and learn how to design test cases for tools and callbacks without involving the full agent LLM loop.</p>
+<p><strong>Customer Value:</strong> Rock-solid components lead to a rock-solid agent. By ensuring each tool and callback behaves predictably, you eliminate a massive source of erratic behavior, providing a consistent and reliable experience for the customer.</p>
+<p><strong>Milestones:</strong> Grasp the concept of isolation testing for Agentic components. Identify how to mock inputs and verify outputs for tools and callbacks.</p>
+<p><strong>Goals:</strong> Design a test plan to validate a specific EcoShop tool or callback in isolation.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we covered Offline Evaluations at the agent level, focusing on Turn and Simulation Evals using Golden Datasets. You can review the solution for creating a Golden Dataset <a href="day_013_solution.html">here</a>. Today, we go deeper into the architecture to test individual components in isolation.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Isolation Testing of Tools and Callbacks</h2>
+<p>In complex Agentic systems, the agent is just the orchestrator. The actual work—fetching data, updating systems, sending notifications—is often done by **Tools** and **Callbacks**. If something goes wrong, you need to know exactly where the failure occurred. Was it the LLM failing to call the tool? Or was it the tool itself returning incorrect data?</p>
+<p>**Isolation Testing** (similar to unit testing in traditional software) allows you to validate these components independently of the LLM. This makes tests faster, cheaper, and much easier to debug.</p>
+<h3>Validating Tools in Isolation</h3>
+<p>Tools are typically functions or API wrappers called by the agent. To test a tool in isolation, you bypass the LLM entirely. You call the tool function directly with specific inputs and verify that it returns the expected output.</p>
+<p>For example, consider a tool `{@TOOL: calculate_shipping}`. To test it in isolation:</p>
+<ul>
+<li>**Input:** A specific destination zip code and package weight.</li>
+<li>**Execution:** Call the tool function directly.</li>
+<li>**Verification:** Check if the returned shipping cost matches the expected value based on the business logic or a mock API response.</li>
+</ul>
+<p>If the tool relies on external APIs, you should **mock** those API responses to ensure your tests are deterministic and don't rely on external system availability.</p>
+<h3>Validating Callbacks in Isolation</h3>
+<p>Callbacks are hooks that trigger when specific events occur in the agent's lifecycle (e.g., `on_tool_start`, `on_agent_finish`, or custom business events). They are crucial for logging, state management, and side effects.</p>
+<p>To test a callback in isolation, you simulate the event that triggers it and verify that the callback performs the correct action.</p>
+<p>For example, suppose you have a callback that flags high-value returns for manual review. To test it:</p>
+<ul>
+<li>**Trigger:** Manually invoke the callback function, passing in a mock return request where the value is over the threshold (e.g., $100).</li>
+<li>**Verification:** Verify that the callback successfully calls the alerting system or updates the database state to "flagged".</li>
+</ul>
+<div class="llm-why">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why is component-level isolation testing so critical when working with LLMs? LLMs are non-deterministic and operate as "black boxes" to some extent. If you only perform end-to-end testing, a failure could be due to prompt ambiguity, LLM hallucination, a bug in the tool logic, or a failure in the callback execution. By unit testing tools and callbacks in isolation, you dramatically reduce the search space for bugs. You ensure that the deterministic parts of your system are perfect, leaving you to focus your LLM evaluation efforts on the non-deterministic conversational aspects.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 14 Challenge: Isolation Test Plan for EcoShop</h3>
+<p><strong>Scenario:</strong> EcoShop uses a tool called `{@TOOL: apply_loyalty_discount}` which takes a `customer_id` and the current `cart_total`, and returns the new total after applying any applicable discounts based on the customer's loyalty tier.</p>
+<p><strong>Task:</strong> Write a test plan to validate the `{@TOOL: apply_loyalty_discount}` tool in isolation. Do not write the actual code, but define the test cases in a structured way.</p>
+<p>Your test plan should include at least three test cases covering:</p>
+<ul>
+<li>A standard case (e.g., a "Gold" tier customer getting a 10% discount).</li>
+<li>An edge case (e.g., a customer with no loyalty tier or an invalid ID).</li>
+<li>A case where the cart total is zero or negative.</li>
+</ul>
+<p>For each test case, specify the **Input Parameters** (customer_id, cart_total), the **Mock Data** needed (what the mock loyalty service should return for that ID), and the **Expected Output** (the calculated final total).</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Use Standard Unit Testing Frameworks</h3>
+<p>You don't need special AI testing tools for isolation testing. Use standard frameworks like `pytest` (Python) or `Jest` (JavaScript). Treat your tools and callbacks as regular functions. Mocking libraries (like `unittest.mock` in Python) are your best friends here for simulating external API responses.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Isolation Is Not Integration</h3>
+<p>A common mistake is assuming that because all tools and callbacks pass their isolation tests, the agent will work perfectly. Isolation testing ensures the *components* work as specified. You still need Turn and Simulation Evals to ensure the LLM *calls* the tools correctly and understands their outputs in the context of a Customer User Journey (CUJ).</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of Isolation Testing:</p>
+<ol>
+<li>
+<strong>What is the primary benefit of testing tools in isolation rather than through full agent simulations?</strong><br/>
+<small>
+                    A) It tests the LLM's reasoning capabilities.<br/>
+                    B) It is faster, cheaper, and makes it easier to pinpoint failures in the tool's logic.<br/>
+                    C) It guarantees the agent will use the tool correctly.<br/>
+                    D) It requires no mock data.
+                    </small>
+</li>
+<li>
+<strong>How do you typically test a callback in isolation?</strong><br/>
+<small>
+                    A) By asking the LLM to trigger the callback.<br/>
+                    B) By running a full customer simulation and waiting for the callback to fire.<br/>
+                    C) By manually invoking the callback function with simulated event data and verifying the side effects.<br/>
+                    D) Callbacks cannot be tested in isolation.
+                    </small>
+</li>
+<li>
+<strong>Why do we use "mocking" when testing tools in isolation?</strong><br/>
+<small>
+                    A) To make the tests run slower and more realistically.<br/>
+                    B) To simulate responses from external APIs or databases, making tests deterministic and fast.<br/>
+                    C) To confuse the LLM.<br/>
+                    D) Mocking is only used in frontend development.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 15 - CI/CD for Agents: Automation. <a href="day_015.html">Preview Day 15</a></p>
+</div>
+</div>
+</body>
+</html>
