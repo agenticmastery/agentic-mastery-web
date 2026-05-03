@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 15: Guardrails Configuration (Safety &amp; Out-of-Scope Handling) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 15: Guardrails Configuration (Safety &amp; Out-of-Scope Handling)</h1>
+<p>Learn how to keep your agent focused, safe, and aligned with your brand by configuring robust guardrails.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Imagine sending a brand new customer service agent onto the floor without any training on what they *shouldn't* talk about. Chaos would ensue! In the world of Gen AI, users will test your agent's limits. They might ask about competitors, try to trick it into giving away discounts, or even use inappropriate language. Guardrails are your agent's safety net, keeping conversations productive and on-brand.</p>
+<p><strong>Achievement:</strong> You will learn how to define and configure guardrails in CXAS to handle out-of-scope queries and maintain safety.</p>
+<p><strong>Customer Value:</strong> A safe, focused agent builds trust. Customers get the help they need without being distracted by irrelevant topics or exposed to potentially unsafe content.</p>
+<p><strong>Milestones:</strong> Understand the role of Guardrails in CXAS. Learn to define refusal criteria and calibrate thresholds.</p>
+<p><strong>Goals:</strong> Design a guardrail configuration for EcoShop to refuse competitor comparisons and casual chitchat.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we explored Isolation Testing for tools and callbacks, ensuring each component works perfectly on its own. You can review the solution for the Day 14 challenge <a href="day_014_solution.html">here</a>. Today, we shift our focus to safety and control by configuring Guardrails.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Guardrails in CX Agent Studio</h2>
+<p>In CX Agent Studio, **Guardrails** are policies you put in place to ensure the agent behaves safely and stays within its intended scope. They are essential for preventing the agent from hallucinating on sensitive topics, discussing competitors, or engaging in inappropriate conversations.</p>
+<h3>Configuring Guardrails for Out-of-Scope Handling</h3>
+<p>One of the most common uses of guardrails is to define what is **out-of-scope**. For example, an agent designed to help with retail orders shouldn't be answering questions about the weather or giving medical advice.</p>
+<p>To configure guardrails effectively, you need to:</p>
+<ul>
+<li>**Define Clear Boundaries:** Specify exactly what topics are allowed and what are forbidden. Instead of relying on broad "Intents", focus on the specific **Customer User Journeys (CUJs)** the agent is authorized to handle.</li>
+<li>**Provide Refusal Instructions:** Tell the agent exactly how to respond when a user crosses a boundary. The response should be polite but firm, redirecting the user back to supported topics.</li>
+<li>**Calibrate Refusal Thresholds:** Guardrails often use a separate classification step or specific instructions to decide when to refuse. You need to balance safety (refusing bad prompts) with helpfulness (not refusing valid prompts that might sound slightly off).</li>
+</ul>
+<h3>Guardrail Evals</h3>
+<p>As mentioned in the SCRAPI guide, CXAS supports **Guardrail Evals**. These are designed for security tuning. You can run sample datasets containing both safe and malicious/out-of-scope prompts against your offline Guardrail configurations. This allows you to measure precision and recall for refusals and calibrate the thresholds effectively before going live.</p>
+<div class="llm-why">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why do we need a separate guardrail system instead of just putting "don't talk about competitors" in the main prompt? Large Language Models are trained to be helpful and follow instructions, which makes them susceptible to "prompt injection" or being led astray by clever users. By implementing guardrails, often as a separate filter on model attention or output, we add a layer of defense. This separate mechanism evaluates the input (or output) against the safety policy before the main generation or delivery, ensuring that even if the model *wants* to answer an out-of-scope question, the system prevents it from doing so.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 15 Challenge: Guardrail Configuration for EcoShop</h3>
+<p><strong>Scenario:</strong> EcoShop wants to ensure its customer service agent stays focused on helping customers with EcoShop products and services. Management is concerned that users might ask the agent to compare EcoShop products with competitors (like "MegaMart") or just use the agent for casual chitchat.</p>
+<p><strong>Task:</strong> Define the guardrail rules for the EcoShop agent to prevent out-of-scope interactions. Your configuration should address:</p>
+<ul>
+<li>**Competitor Discussion:** How should the agent handle questions about "MegaMart" or general comparisons?</li>
+<li>**Chitchat/General Knowledge:** How should the agent handle questions about the weather, sports, or general advice?</li>
+</ul>
+<p>In your response, outline the **criteria** for what constitutes out-of-scope in these areas and the **refusal strategy** (what the agent should say). Do not write the exact prompt instructions, just the high-level rules.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Keep Guardrails Explicit and Focused</h3>
+<p>Avoid vague rules like "be helpful and polite". Instead, use explicit negative constraints like "DO NOT discuss competitor pricing" or "DO NOT answer questions unrelated to order management or product inquiries." Clear, specific rules are much easier for the model (and the guardrail evaluator) to follow.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Over-Restricted Agents</h3>
+<p>Be careful not to make your guardrails too strict. If a customer mentions a competitor casually ("I used to shop at MegaMart but I like your eco-friendly focus"), the agent shouldn't shut them down aggressively. It should acknowledge the context and stay focused on the EcoShop value proposition. Over-restricting can lead to a frustrating user experience where the agent refuses to answer legitimate questions that happen to touch on a restricted keyword.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of Guardrails:</p>
+<ol>
+<li>
+<strong>What is the main purpose of Guardrail Evals in CXAS?</strong><br/>
+<small>
+                    A) To test the speed of the agent.<br/>
+                    B) To calibrate refusal thresholds by running safe and malicious prompts against the configuration.<br/>
+                    C) To generate new product descriptions.<br/>
+                    D) To train the base LLM.
+                    </small>
+</li>
+<li>
+<strong>Why is it often better to use a separate guardrail mechanism rather than just relying on the main prompt for safety?</strong><br/>
+<small>
+                    A) It makes the main prompt shorter and cheaper.<br/>
+                    B) LLMs can be manipulated by prompt injection; a separate filter provides a more reliable layer of defense.<br/>
+                    C) Guardrails are always faster than the main LLM.<br/>
+                    D) There is no difference; it's just a matter of style.
+                    </small>
+</li>
+<li>
+<strong>Which of the following is a good example of a specific guardrail rule?</strong><br/>
+<small>
+                    A) "Be nice to the user."<br/>
+                    B) "Refuse to discuss any topics unrelated to EcoShop products or order status."<br/>
+                    C) "Try to answer everything the user asks."<br/>
+                    D) "Never say the word 'No'."
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 16 - CI/CD for Agents: Automation. <a href="day_016.html">Preview Day 16</a></p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 15 Solution: Guardrails Configuration - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 15 Solution: Guardrails Configuration</h1>
+<p>Review the recommended guardrail configuration for keeping the EcoShop agent focused and safe.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> Excellent work! You've defined the boundaries for your agent. By explicitly stating what is out-of-scope and providing a clear refusal strategy, you protect your brand and ensure a better user experience. This is a critical step in moving from a prototype to a production-ready agent.</p>
+</div>
+<div class="refresher">
+<h3>Challenge Recap</h3>
+<p>In the Day 15 challenge, you were asked to define guardrail rules for the EcoShop agent to handle competitor discussions and general chitchat, specifying out-of-scope criteria and refusal strategies.</p>
+</div>
+<section class="solution">
+<h2>Recommended Solution: Guardrail Configuration</h2>
+<p>Here is a recommended approach to configuring the guardrail instructions for the EcoShop agent, using a structured prompt format to ensure clear execution by the LLM.</p>
+<h3>Structured Guardrail Instructions</h3>
+<p>We use a structured format with `<subtask>` and `<step>` tags to make the instructions unambiguous for the model.</step></subtask></p>
+<pre><code>
+&lt;subtask name="Guardrail: Competitor Refusal"&gt;
+    &lt;step number="1"&gt;Identify if the user is asking to compare EcoShop products with competitors (e.g., "MegaMart") or asking for recommendations of other brands.&lt;/step&gt;
+    &lt;step number="2"&gt;If a competitor discussion is detected, refuse to answer politely.&lt;/step&gt;
+    &lt;step number="3"&gt;Respond with: "I can only provide information about EcoShop products and services. I am not able to compare them with other brands. How else can I help you today?"&lt;/step&gt;
+&lt;/subtask&gt;
+
+&lt;subtask name="Guardrail: Out-of-Scope Chitchat Refusal"&gt;
+    &lt;step number="1"&gt;Identify if the user's query is unrelated to EcoShop products, services, returns, or order management (e.g., questions about weather, sports, general knowledge, or personal advice).&lt;/step&gt;
+    &lt;step number="2"&gt;If the query is out-of-scope, refuse to answer politely.&lt;/step&gt;
+    &lt;step number="3"&gt;Respond with: "I am designed to assist with EcoShop inquiries. I cannot help with unrelated topics. Is there an EcoShop product or order I can help you with today?"&lt;/step&gt;
+&lt;/subtask&gt;
+            </code></pre>
+<h3>Key Considerations in this Solution</h3>
+<ul>
+<li>**Explicit Triggers:** The steps clearly define what to look for (competitor names, unrelated topics).</li>
+<li>**Standardized Responses:** Providing a specific response template ensures consistency and prevents the model from improvising potentially unsafe or off-brand answers.</li>
+<li>**Fallback to Supported CUJs:** The refusal responses end by inviting the user back to valid Customer User Journeys (CUJs) supported by EcoShop.</li>
+</ul>
+<h3>Calibrating with Guardrail Evals</h3>
+<p>After implementing these instructions, you should use **Guardrail Evals** (via SCRAPI) to test them. Create a dataset with queries like:</p>
+<ul>
+<li>*Safe:* "How do I return my EcoShop shoes?"</li>
+<li>*Malicious/Out-of-Scope:* "Is MegaMart cheaper than EcoShop?"</li>
+<li>*Chitchat:* "What's the weather like in New York?"</li>
+</ul>
+<p>Run the eval to ensure the agent refuses the bad ones and answers the good ones, adjusting the instructions or thresholds as needed.</p>
+</section>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Back to <a href="day_015.html">Day 15 Challenge</a></p>
+</div>
+</div>
+</body>
+</html>
