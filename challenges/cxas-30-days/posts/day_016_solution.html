@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 16 Solution: PII Redaction &amp; DLP - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 16 Solution: PII Redaction &amp; DLP</h1>
+<p>Review the recommended configuration for PII redaction to protect EcoShop customer data.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> Fantastic! You've designed a robust data protection layer for your agent. By intercepting sensitive data before it hits the LLM, you ensure compliance and build deep trust with your users. Remember, security is not an afterthought—it's a core component of agent architecture.</p>
+</div>
+<div class="refresher">
+<h3>Challenge Recap</h3>
+<p>In the Day 16 challenge, you were asked to define redaction rules for EcoShop to protect customer email addresses and credit card numbers, specifying target types, detection approaches, and replacement tokens.</p>
+</div>
+<section class="solution">
+<h2>Recommended Solution: PII Redaction Configuration</h2>
+<p>Here is a recommended configuration for the redaction rules in EcoShop. This setup ensures that sensitive data is masked before processing, while maintaining the ability to handle specific user journeys securely.</p>
+<h3>Configured Redaction Rules</h3>
+<table class="solution-table">
+<thead>
+<tr>
+<th>PII Type</th>
+<th>Detection Approach</th>
+<th>Replacement Token</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>**Credit Card Number**</td>
+<td>Regex pattern matching standard 16-digit (or 15-digit for Amex) credit card formats, including spacing variations.</td>
+<td>`[REDACTED_CC]`</td>
+<td>Direct exposure of CC numbers is a high risk. Immediate full masking is required for PCI compliance.</td>
+</tr>
+<tr>
+<td>**Email Address**</td>
+<td>Standard email regex pattern detection.</td>
+<td>`[REDACTED_EMAIL]`</td>
+<td>Protects user identity. However, as noted in the lesson, if the email is needed for a lookup tool, a reversible tokenization approach is preferred.</td>
+</tr>
+</tbody>
+</table>
+<h3>Structured Instructions for Secure PII Handling</h3>
+<p>To implement a secure pattern where the LLM needs to reference PII without seeing it (Reversible Redaction), you can use structured instructions like this:</p>
+<pre><code>
+&lt;subtask name="Secure Order Lookup"&gt;
+    &lt;step number="1"&gt;Identify if the user wants to look up an order and needs to provide an email address.&lt;/step&gt;
+    &lt;step number="2"&gt;If the user provides an email, check if it has been replaced by a session token like `[SESSION_EMAIL_1]` by the pre-processor.&lt;/step&gt;
+    &lt;step number="3"&gt;Call the tool {@TOOL: lookup_order} using the session token `[SESSION_EMAIL_1]` as the identifier. Do not attempt to extract or use the raw email address.&lt;/step&gt;
+&lt;/subtask&gt;
+            </code></pre>
+<p>This keeps the PII out of the LLM's attention and logs, while still enabling the necessary business logic by letting the tool execution layer handle the actual data swap.</p>
+</section>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Back to <a href="day_016.html">Day 16 Challenge</a></p>
+</div>
+</div>
+</body>
+</html>

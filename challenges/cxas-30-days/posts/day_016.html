@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 16: PII Redaction &amp; DLP (Data Security) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 16: PII Redaction &amp; DLP (Data Security)</h1>
+<p>Learn how to protect sensitive user data by configuring PII Redaction and Data Loss Prevention in CXAS.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Guarding sensitive data is not just a legal requirement; it's the foundation of customer trust. In conversational AI, users often share information they shouldn't—like credit card numbers or personal emails—thinking they are talking to a human who will handle it securely. As an architect, you must ensure this data is protected before it even reaches the AI's processing core. Neglecting this can lead to severe compliance breaches and loss of customer trust.</p>
+<p><strong>Achievement:</strong> You will learn how to configure PII Redaction and Data Loss Prevention (DLP) rules in CXAS to automatically mask sensitive information.</p>
+<p><strong>Customer Value:</strong> Customers can interact with the agent confidently, knowing their private data is secure and won't be stored or exposed in logs or model training.</p>
+<p><strong>Milestones:</strong> Understand the importance of pre-processing redaction. Learn to identify common PII types and define redaction rules.</p>
+<p><strong>Goals:</strong> Design a redaction strategy for EcoShop to protect customer credit card numbers and email addresses during Customer User Journeys (CUJs).</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we configured Guardrails to keep our agent focused and safe from out-of-scope queries. You can review the solution for the Day 15 challenge <a href="day_015_solution.html">here</a>. Today, we deepen our security posture by tackling PII Redaction and Data Loss Prevention (DLP).</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: PII Redaction &amp; DLP in CXAS</h2>
+<p>In CX Agent Studio, protecting user privacy is a top priority. **Personally Identifiable Information (PII)** includes any data that could potentially identify a specific individual, such as names, email addresses, phone numbers, and credit card details. **Data Loss Prevention (DLP)** refers to the strategies and tools used to ensure that sensitive data is not lost, misused, or accessed by unauthorized users.</p>
+<p>CXAS provides built-in features to automatically detect and redact PII from user inputs before they are processed by the Large Language Model (LLM). This ensures that sensitive data is never stored in conversation logs in its raw form and is not used to influence model behavior in ways that could leak information.</p>
+<h3>Configuring Redaction Rules</h3>
+<p>To implement effective PII redaction, you typically configure rules based on:</p>
+<ul>
+<li>**Pre-defined Detectors:** Many systems offer built-in detectors for common PII types like credit card numbers, social security numbers, and email addresses.</li>
+<li>**Custom Regular Expressions (Regex):** For domain-specific sensitive data (e.g., a specific format for EcoShop loyalty IDs), you can define custom regex patterns to identify and redact matching text.</li>
+<li>**Masking Strategies:** You can choose how to replace the sensitive data. Common strategies include replacing it with a generic label (e.g., `[REDACTED_EMAIL]`) or masking parts of it (e.g., `****-****-****-1234`).</li>
+</ul>
+<div class="llm-why">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why is it critical to redact PII *before* it reaches the LLM's core context? LLMs operate by attending to all the tokens in their context window. If a raw credit card number or email address is included in the input prompt, it becomes part of the model's active memory for that turn. While modern LLMs are generally safe, there are risks: the data could be inadvertently echoed back in the response, logged in plain text in system logs, or potentially exposed if the conversation history is used for future fine-tuning or debugging. By redacting at the gateway (pre-processing), we ensure the model never "sees" the raw PII, adhering to the principle of least privilege and minimizing the blast radius of any potential data leak.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 16 Challenge: PII Redaction for EcoShop</h3>
+<p><strong>Scenario:</strong> EcoShop customers frequently share their email addresses and sometimes attempt to provide credit card numbers directly in the chat when asking about orders or billing. To comply with PCI-DSS and general privacy regulations, EcoShop needs to ensure this data is redacted before reaching the LLM.</p>
+<p><strong>Task:</strong> Define the redaction rules for the EcoShop agent. You need to specify:
+            <ul>
+<li>Which PII types should be targeted for redaction.</li>
+<li>A conceptual approach for detecting each type (e.g., pattern matching).</li>
+<li>The replacement strategy or token to be used (e.g., `[EMAIL_HIDDEN]`).</li>
+</ul>
+<p>Do not provide the exact regex patterns or code, but describe the logic and replacement tokens clearly. Focus on Email Addresses and Credit Card Numbers.</p>
+</p></div>
+<div class="pro-tip">
+<h3>Pro-Tip: Use Context-Aware Redaction</h3>
+<p>While simple regex works for structured data like credit cards, some PII like names can be tricky. Over-redaction can make the conversation hard for the LLM to understand. Where possible, use context-aware or entity-recognition-based redaction that understands the difference between a common word and a person's name in context.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Redaction Breakage in Tool Calls</h3>
+<p>Ensure that if the user *needs* to provide PII for a valid operation (like an email for lookup), that data is handled securely via a specific, secure tool call or payload that bypasses the general LLM context logging, rather than being blindly redacted if the LLM needs to pass it to a tool. If you redact it before the LLM sees it, the LLM cannot pass it to the tool! This is why some systems use "reversible" redaction or tokenization for trusted tools.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of PII Redaction:</p>
+<ol>
+<li>
+<strong>When should PII Redaction ideally occur in a Gen AI pipeline?</strong><br/>
+<small>
+                    A) After the LLM generates the response.<br/>
+                    B) Before the user input reaches the LLM's core context.<br/>
+                    C) Only when storing the conversation in a database.<br/>
+                    D) LLMs automatically handle PII, so explicit redaction is unnecessary.
+                    </small>
+</li>
+<li>
+<strong>What is a primary risk of exposing raw PII to an LLM's context?</strong><br/>
+<small>
+                    A) It makes the LLM respond slower.<br/>
+                    B) The data could be leaked in logs or inadvertently repeated in the response.<br/>
+                    C) It improves the LLM's accuracy too much.<br/>
+                    D) It has no risk; LLMs are completely secure.
+                    </small>
+</li>
+<li>
+<strong>If a user needs to provide an email for account lookup, what is a challenge with naive pre-processing redaction?</strong><br/>
+<small>
+                    A) The LLM won't be able to see the email to pass it to the lookup tool.<br/>
+                    B) The user will be angry.<br/>
+                    C) The email will be saved in plain text.<br/>
+                    D) Naive redaction is always the best approach.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 17 - CI/CD for Agents: Automation. <a href="day_017.html">Preview Day 17</a></p>
+</div>
+</div>
+</body>
+</html>
