@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 17: Online Evals &amp; Latency (Metrics Analysis) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 17: Online Evals &amp; Latency (Metrics Analysis)</h1>
+<p>Learn how to monitor live performance and analyze latency metrics to keep your agent snappy and responsive.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Latency is the silent killer of user experience in Generative AI applications. A brilliant agent that takes 10 seconds to respond feels broken and frustrates users. As a Super Mentor, I cannot stress this enough: you must obsess over speed as much as accuracy. Online evaluations and latency metrics are your dashboard to ensure your agent remains a high-performing assistant, not a slow bottleneck.</p>
+<p><strong>Achievement:</strong> You will learn how to interpret online evaluation data and analyze latency metrics (like p50 and p99) to identify performance bottlenecks.</p>
+<p><strong>Customer Value:</strong> Customers receive fast, near-instantaneous support, making interactions feel natural and efficient, which directly boosts satisfaction and retention.</p>
+<p><strong>Milestones:</strong> Understand the difference between p50 and p99 latency. Learn to read a trace report. Identify slow steps in a Customer User Journey (CUJ).</p>
+<p><strong>Goals:</strong> Analyze a sample trace report for the EcoShop agent and identify the primary source of latency.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we tackled PII Redaction and Data Loss Prevention (DLP) to secure our agent's interactions. You can review the solution for the Day 16 challenge <a href="day_016_solution.html">here</a>. Today, we shift our focus from security to performance: Online Evaluations and Latency Metrics.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Online Evals &amp; Latency in CXAS</h2>
+<p>Once your agent is in production, the work doesn't stop. You need to monitor how it performs with real users. **Online Evaluations** involve analyzing live traffic data to assess quality and performance. Unlike offline testing with golden datasets, online evals show you the messy reality of user interactions.</p>
+<p>One of the most critical aspects of online performance is **Latency**—the time it takes for the agent to respond to a user input. In CXAS, we typically look at two key latency metrics:</p>
+<ul>
+<li><strong>p50 (Median Latency):</strong> The value at which 50% of requests are faster and 50% are slower. This gives you a good sense of the "typical" user experience.</li>
+<li><strong>p99 Latency:</strong> The value at which 99% of requests are faster. This highlights the worst-case scenarios and edge cases that are affecting a small but significant portion of your users. High p99 latency often indicates issues with complex queries, large context sizes, or slow external tools.</li>
+</ul>
+<h3>Analyzing Trace Reports</h3>
+<p>To fix high latency, you need to know where the time is being spent. CXAS provides **Trace Reports** that break down a single conversation turn into its component steps. A typical trace might include:</p>
+<ol>
+<li><strong>Pre-processing:</strong> PII redaction, guardrail checks.</li>
+<li><strong>LLM Processing (Input):</strong> Loading context, processing system instructions and history.</li>
+<li><strong>Tool Execution:</strong> Time spent waiting for external APIs or databases to return data.</li>
+<li><strong>LLM Generation (Output):</strong> The time taken by the model to generate the response tokens.</li>
+</ol>
+<div class="llm-why">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why do some turns take so much longer than others? From the LLM's perspective, latency is heavily influenced by two factors:
+                <ul>
+<li><strong>Context Size:</strong> LLMs process information by attending to all tokens in their current context window. As the conversation grows longer, or if large amounts of data are injected via tools, the model has to do more computation just to process the input, increasing latency.</li>
+<li><strong>Tool Execution:</strong> If your agent relies on tools to fetch external data (e.g., checking order status), the LLM must stop, emit the tool call, wait for the external system to respond, and then process that new information. The latency of the tool call is often the largest contributor to the overall turn latency.</li>
+</ul>
+                Understanding this helps you design better prompts and tools. For instance, using tool wrappers to combine multiple API calls can reduce the number of round trips the LLM needs to make, significantly cutting down latency.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 17 Challenge: Analyze Latency for EcoShop</h3>
+<p><strong>Scenario:</strong> EcoShop users have been reporting that the agent is slow when they ask about their order status. You have pulled a sample trace report for a single turn where a user asked, "Where is my order #12345?". The total turn latency was **5.2 seconds**, well above the target of 2.0 seconds.</p>
+<p><strong>Task:</strong> Analyze the trace report below and identify the step that is the primary bottleneck causing the high latency. Do not provide the solution in this file.</p>
+<table class="solution-table">
+<thead>
+<tr>
+<th>Trace Step</th>
+<th>Operation</th>
+<th>Latency (Seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Pre-processing (PII Redaction)</td>
+<td>0.1s</td>
+</tr>
+<tr>
+<td>2</td>
+<td>LLM Input Processing (Prompt &amp; History)</td>
+<td>0.4s</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Tool Execution: <code>{@TOOL: lookup_order}</code></td>
+<td>3.9s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LLM Output Generation (Synthesizing Response)</td>
+<td>0.8s</td>
+</tr>
+</tbody>
+</table>
+<p>Review the breakdown and pinpoint where the optimization efforts should be focused.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Perceived Latency vs. Absolute Latency</h3>
+<p>Sometimes you can't make the backend faster. In those cases, focus on **perceived latency**. Use **Streaming** to start showing the user the response as it is being generated token-by-token, rather than waiting for the full response to be complete. This makes the agent *feel* much faster even if the total time is the same.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Ignoring the Long Tail</h3>
+<p>Don't fall into the trap of only looking at average or p50 latency. A great p50 might hide terrible p99 latency. If 1% of your users are experiencing 15-second delays, those users are likely having a very poor experience that could lead to escalation or churn. Always monitor and optimize for the long tail.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of latency metrics:</p>
+<ol>
+<li>
+<strong>If a system has a p99 latency of 3 seconds, what does this mean?</strong><br/>
+<small>
+                    A) 99% of all requests take exactly 3 seconds.<br/>
+                    B) 99% of all requests take 3 seconds or less.<br/>
+                    C) 1% of requests take 3 seconds or less.<br/>
+                    D) The average latency is 3 seconds.
+                    </small>
+</li>
+<li>
+<strong>Which factor typically contributes most to LLM input processing latency?</strong><br/>
+<small>
+                    A) The complexity of the user's question.<br/>
+                    B) The size of the context (instructions + history).<br/>
+                    C) The speed of the user's internet connection.<br/>
+                    D) The PII redaction rules.
+                    </small>
+</li>
+<li>
+<strong>If a trace report shows that a tool call is taking 4 seconds out of a 5-second total turn time, what is the best course of action?</strong><br/>
+<small>
+                    A) Rewrite the LLM instructions to be shorter.<br/>
+                    B) Optimize the external API or database called by the tool.<br/>
+                    C) Use a smaller LLM model.<br/>
+                    D) Ask the user to provide less information.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 18 - Summary &amp; Review. <a href="day_018.html">Preview Day 18</a></p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 17 Solution: Online Evals &amp; Latency - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 17 Solution: Online Evals &amp; Latency</h1>
+<p>Review the analysis of the trace report and recommendations for optimizing latency.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> Excellent work! Identifying the bottleneck is the first and most crucial step in performance optimization. By looking at the trace data rather than guessing, you ensure your efforts are directed where they will have the most impact. Keep this data-driven mindset as you scale your agents.</p>
+</div>
+<div class="refresher">
+<h3>Challenge Recap</h3>
+<p>In the Day 17 challenge, you were asked to analyze a sample trace report for a slow EcoShop interaction (5.2s total latency) and identify which step was the primary bottleneck.</p>
+</div>
+<section class="solution">
+<h2>Recommended Solution: Trace Analysis &amp; Optimization</h2>
+<h3>1. Bottleneck Identification</h3>
+<p>Based on the trace report provided in the challenge:</p>
+<ul>
+<li>Step 1: Pre-processing (0.1s) - Negligible.</li>
+<li>Step 2: LLM Input Processing (0.4s) - Reasonable for context loading.</li>
+<li><strong>Step 3: Tool Execution (3.9s) - This is the clear bottleneck.</strong> It accounts for 75% of the total turn latency.</li>
+<li>Step 4: LLM Output Generation (0.8s) - Normal for generating the response.</li>
+</ul>
+<p><strong>Conclusion:</strong> The optimization effort must focus on the <code>{@TOOL: lookup_order}</code> tool execution. Optimizing LLM prompts or generation length will yield minimal improvements compared to fixing this tool call.</p>
+<h3>2. Recommendations for Optimization</h3>
+<p>To address this bottleneck, consider the following strategies:</p>
+<ul>
+<li><strong>API Optimization:</strong> Work with the backend team to optimize the API endpoint used by <code>{@TOOL: lookup_order}</code>. Ensure proper database indexing and minimize payload size.</li>
+<li><strong>Caching:</strong> If order status data doesn't change second-by-second, implement caching for frequent lookups.</li>
+<li><strong>Tool Wrappers:</strong> If the tool makes multiple sequential API calls internally, wrap them into a single optimized call or execute them in parallel.</li>
+</ul>
+<h3>3. Structured Instructions for Latency Awareness</h3>
+<p>While instructions can't make the API faster, they can guide the LLM to handle the interaction gracefully, such as setting expectations or using streaming if supported. Here is an example of how to structure instructions for a CUJ involving a slow tool:</p>
+<pre><code>
+&lt;subtask name="Order Status Lookup"&gt;
+    &lt;step number="1"&gt;
+        &lt;trigger&gt;User asks for order status and provides an order number.&lt;/trigger&gt;
+        &lt;action&gt;
+            Inform the user that you are looking up the order details (to manage perceived latency).
+            Call the tool {@TOOL: lookup_order} with the provided order number.
+        &lt;/action&gt;
+    &lt;/step&gt;
+    &lt;step number="2"&gt;
+        &lt;trigger&gt;Tool returns order data.&lt;/trigger&gt;
+        &lt;action&gt;
+            Synthesize the response for the user, highlighting the current status and expected delivery date.
+        &lt;/action&gt;
+    &lt;/step&gt;
+&lt;/subtask&gt;
+            </code></pre>
+<p>Notice how Step 1 explicitly manages the user's expectation before the slow tool call is made, which is a best practice for improving user experience during high-latency operations.</p>
+</section>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Back to <a href="day_017.html">Day 17 Challenge</a></p>
+</div>
+</div>
+</body>
+</html>
