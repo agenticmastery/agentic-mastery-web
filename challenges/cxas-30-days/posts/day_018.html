@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 18: Week 3 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 18: Week 3 Summary &amp; Review</h1>
+<p>Consolidate your knowledge on evaluations, security, and performance monitoring.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Congratulations on completing the third week of the CXAS challenge! We have covered some of the most critical aspects of production-grade agent development: evaluations, security, and performance. These are the pillars that separate a demo from a robust, enterprise-ready solution. Today is about consolidation. We will review what we've learned and test your mastery. Take this time to ensure you fully grasp these concepts before we dive into the final week.</p>
+<p><strong>Achievement:</strong> You will synthesize everything learned in Week 3, identifying strengths and areas for review in your understanding of Agentic AI quality assurance and security.</p>
+<p><strong>Customer Value:</strong> A thoroughly evaluated and secured agent ensures that customers interact with a reliable, safe, and high-performing system, protecting both the user and the brand.</p>
+<p><strong>Milestones:</strong> Complete the Week 3 comprehensive review. Identify any gaps in your understanding of evals and guardrails.</p>
+<p><strong>Goals:</strong> Complete the knowledge check and reflection exercise to solidify your Week 3 learning.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we focused on Online Evaluations and Latency Metrics, learning how to monitor live performance using metrics like p50 and p99. You can review the solution for analyzing the latency trace report <a href="day_017_solution.html">here</a>. Today is our scheduled Week 3 Review.</p>
+</div>
+<section class="lesson">
+<h2>Week 3 Detailed Summary</h2>
+<p>This week was all about ensuring your agent is safe, reliable, and fast. Here is a recap of the core topics we covered:</p>
+<h3>1. Offline Evals: Turn &amp; Simulation</h3>
+<p>We learned how to evaluate agents before they go live. **Turn Evals** check the agent's response to a single input, while **Simulation Evals** test full multi-turn conversations (Customer User Journeys or CUJs) using Golden Datasets. This helps us catch logic errors, prompt drift, and hallucinations early.</p>
+<h3>2. Offline Evals: Tool &amp; Callback (Isolation Testing)</h3>
+<p>We zoomed in to test individual components. By testing tools and callbacks in isolation (using mocks for external APIs), we can ensure they work as specified without the unpredictability of the LLM. This makes debugging much easier.</p>
+<h3>3. Guardrails Configuration</h3>
+<p>We explored how to keep the agent on track and safe. Guardrails prevent the agent from discussing off-topic subjects, generating harmful content, or making unauthorized commitments. They act as the safety net for the non-deterministic nature of LLMs.</p>
+<h3>4. PII Redaction &amp; Data Loss Prevention (DLP)</h3>
+<p>Security is paramount. We looked at how to identify and redact Personally Identifiable Information (PII) like credit card numbers and addresses before data is logged or processed by external systems, ensuring compliance and user trust.</p>
+<h3>5. Online Evals &amp; Latency</h3>
+<p>Finally, we learned how to monitor the agent in production. We discussed online evaluations of live traffic and the importance of monitoring latency metrics like **p50** (typical experience) and **p99** (worst-case scenarios) to ensure the agent remains responsive.</p>
+</section>
+<div class="challenge">
+<h3>The Day 18 Challenge: Week 3 Reflection &amp; Strategy</h3>
+<p><strong>Scenario:</strong> You are preparing to launch a new agent feature for EcoShop that allows customers to upgrade their loyalty tier. This involves checking order history, calculating points, and updating the user profile.</p>
+<p><strong>Task:</strong> Based on what you've learned this week, outline a Quality &amp; Security strategy for this new feature. Answer the following questions (do not provide answers in this file):</p>
+<ol>
+<li>What specific edge cases would you include in a Golden Dataset for simulating this loyalty upgrade journey?</li>
+<li>Which component (tool or callback) would be most critical to test in isolation for this feature, and why?</li>
+<li>What kind of Guardrail would be essential to prevent the agent from accidentally giving away free upgrades?</li>
+<li>How would you measure the latency of this feature in production, and what would be an acceptable p99 target?</li>
+</ol>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: The Pre-Flight Checklist</h3>
+<p>Always create a "Pre-Flight Checklist" for every major agent update. This checklist should include running your Golden Datasets, verifying isolation tests for new tools, checking guardrail logs, and reviewing expected latency impact. Never rely on manual "smoke tests" alone.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Over-Reliance on Offline Success</h3>
+<p>A common pitfall is assuming that a 100% pass rate on your offline Golden Dataset means your agent will be perfect in production. Real users are creative and unpredictable. Always complement strong offline evaluations with robust online monitoring and alerting.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your mastery of Week 3 concepts:</p>
+<ol>
+<li>
+<strong>Which evaluation method is best for testing how an agent handles a complex, multi-step Customer User Journey (CUJ)?</strong><br/>
+<small>
+                    A) Single-Turn Evaluation.<br/>
+                    B) Isolation Testing of tools.<br/>
+                    C) Simulation Evaluation using Golden Datasets.<br/>
+                    D) Checking guardrail logs.
+                    </small>
+</li>
+<li>
+<strong>Why do we prioritize fixing high p99 latency even if the p50 latency is excellent?</strong><br/>
+<small>
+                    A) Because p99 represents the typical user experience.<br/>
+                    B) Because high p99 means the worst-case experiences are unacceptably slow, risking high frustration for some users.<br/>
+                    C) Because p99 is easier to optimize than p50.<br/>
+                    D) p99 latency is not important if p50 is good.
+                    </small>
+</li>
+<li>
+<strong>What is the primary purpose of PII Redaction in an agentic system?</strong><br/>
+<strong>A) To make the LLM generate responses faster.<br/>
+                    B) To prevent sensitive user data from being exposed in logs or processed insecurely.<br/>
+                    C) To reduce the cost of LLM API calls.<br/>
+                    D) To improve the agent's understanding of the user's query.</strong>
+</li>
+<li>
+<strong>Isolation testing of a tool involves:</strong><br/>
+<small>
+                    A) Testing the tool as part of a full agent conversation.<br/>
+                    B) Testing the tool function directly with specific inputs and mocked external dependencies, bypassing the LLM.<br/>
+                    C) Asking the LLM to evaluate if the tool works correctly.<br/>
+                    D) Only testing the tool in production.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 19 - Advanced Multi-Agent Orchestration (Week 4 Start). <a href="day_019.html">Preview Day 19</a></p>
+</div>
+</div>
+</body>
+</html>

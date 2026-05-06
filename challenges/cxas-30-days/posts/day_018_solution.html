@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 18 Solution: Week 3 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 18 Solution: Week 3 Summary &amp; Review</h1>
+<p>Reference answers and strategy guidelines for the Week 3 review.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Review and Consolidate:</strong> Use these answers not just to check off boxes, but to understand the *rationale* behind each best practice. If you missed any of the MCQs, I recommend going back to the specific day's lesson to refresh your memory. Mastery of these foundational pillars—evaluations, security, and performance—is what will make you a top-tier Agentic AI Architect.</p>
+</div>
+<section class="lesson">
+<h2>Answers &amp; Reference Strategy</h2>
+<h3>Part 1: Reflection &amp; Strategy (Loyalty Upgrade Feature)</h3>
+<p>Here are the recommended approaches for the strategy exercise:</p>
+<h4>1. Edge Cases for Golden Dataset:</h4>
+<ul>
+<li><strong>Negative Case:</strong> A customer trying to upgrade with insufficient points. The agent should politely explain why and what is needed.</li>
+<li><strong>Boundary Case:</strong> A customer with exactly the minimum points required. This tests precise logic.</li>
+<li><strong>Interrupted Journey:</strong> A customer who starts the upgrade process but suddenly asks an unrelated question (e.g., "Wait, what is your return policy?"). The agent should answer and then return to the upgrade flow.</li>
+<li><strong>Security Case:</strong> A user attempting to upgrade an account they are not authorized for (handled via authentication checks, but the agent prompt should handle the denial gracefully).</li>
+</ul>
+<h4>2. Critical Component for Isolation Testing:</h4>
+<p>The tool that calculates the points and applies the upgrade (e.g., <code>{@TOOL: process_loyalty_upgrade}</code>) is the most critical. It directly affects the database state and business value. You must ensure that given a specific user state, it computes the correct output every time, without relying on the LLM's reasoning.</p>
+<h4>3. Essential Guardrail:</h4>
+<p>A guardrail that explicitly checks for and blocks any generated text where the agent promises a free upgrade or discounts without the appropriate tool execution confirmation. You could also use a hard constraint in the prompt, but a guardrail provides the secondary safety net.</p>
+<h4>4. Latency Monitoring:</h4>
+<p>You should measure the full turn latency for the upgrade operation. A typical p99 target for a complex operation involving multiple tool calls might be around **3.0 to 4.0 seconds**, but the target should always be as low as possible while maintaining accuracy. You would look at trace reports to see if database calls are the bottleneck.</p>
+<hr/>
+<h3>Part 2: Knowledge Check (MCQs) Answers</h3>
+<ol>
+<li>
+<strong>Which evaluation method is best for testing how an agent handles a complex, multi-step Customer User Journey (CUJ)?</strong><br/>
+<strong>Answer: C) Simulation Evaluation using Golden Datasets.</strong><br/>
+<em>Explanation: Simulation evals test the entire flow across multiple turns, which is necessary to see if context is maintained and the goal is reached.</em>
+</li>
+<li>
+<strong>Why do we prioritize fixing high p99 latency even if the p50 latency is excellent?</strong><br/>
+<strong>Answer: B) Because high p99 means the worst-case experiences are unacceptably slow, risking high frustration for some users.</strong><br/>
+<em>Explanation: The p99 metric represents the 1% of users having the worst experience. Ignoring it means ignoring a segment of users who may churn due to poor performance.</em>
+</li>
+<li>
+<strong>What is the primary purpose of PII Redaction in an agentic system?</strong><br/>
+<strong>Answer: B) To prevent sensitive user data from being exposed in logs or processed insecurely.</strong><br/>
+<em>Explanation: PII redaction is a security measure to protect user privacy and comply with regulations like GDPR or HIPAA.</em>
+</li>
+<li>
+<strong>Isolation testing of a tool involves:</strong><br/>
+<strong>Answer: B) Testing the tool function directly with specific inputs and mocked external dependencies, bypassing the LLM.</strong><br/>
+<em>Explanation: Isolation testing treats the tool like a standard unit test, removing the non-deterministic LLM from the equation.</em>
+</li>
+</ol>
+</section>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready for Week 4? <a href="day_019.html">Day 19</a> will cover Advanced Multi-Agent Orchestration.</p>
+</div>
+</div>
+</body>
+</html>
