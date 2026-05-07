@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 19: Web Deployment (Agent Kite) - Solution - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 19: Web Deployment (Agent Kite) - Solution</h1>
+<p>Solution for embedding the Agent Kite web widget.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Well Done!</strong> You've explored how to bring your agent to the real world. Web deployment is where your hard work becomes visible to users. Let's review the standard way to embed the Agent Kite widget.</p>
+</div>
+<div class="refresher">
+<h3>Challenge Recap</h3>
+<p>You were asked to describe the steps to embed the Agent Kite web widget for EcoShop, ensuring asynchronous loading, passing the <code>agentId</code> <code>"ecoshop-support-v1"</code>, and setting a custom title "EcoShop Support".</p>
+</div>
+<section class="lesson">
+<h2>The Solution</h2>
+<p>Here is a typical implementation for embedding the Agent Kite web widget. This snippet should ideally be placed just before the closing <code>&lt;/body&gt;</code> tag of your HTML file to ensure it doesn't block the rendering of critical page content.</p>
+<pre><code>&lt;!-- Agent Kite Web Widget --&gt;
+&lt;script&gt;
+  window.agentKiteSettings = {
+    agentId: 'ecoshop-support-v1',
+    title: 'EcoShop Support',
+    autoOpen: false // Best practice: let the user initiate
+  };
+&lt;/script&gt;
+&lt;script async src="https://cdn.agentkite.com/widget.js"&gt;&lt;/script&gt;
+</code></pre>
+<h3>Explanation of the Code</h3>
+<ul>
+<li><strong><code>window.agentKiteSettings</code></strong>: This object holds the configuration for the widget. The library reads these settings when it loads.</li>
+<li><strong><code>agentId</code></strong>: Identifies your specific agent instance in the backend.</li>
+<li><strong><code>title</code></strong>: Customizes the header of the chat window.</li>
+<li><strong><code>async</code></strong>: The <code>async</code> attribute on the <code>&lt;script&gt;</code> tag ensures the script is fetched asynchronously, allowing the browser to continue parsing the HTML without waiting for the script to download.</li>
+</ul>
+<h3>Best Practices Applied</h3>
+<ul>
+<li><strong>Placement</strong>: Placing the script at the bottom of the body is a standard performance optimization.</li>
+<li><strong>Asynchronous Loading</strong>: Prevents the widget from becoming a render-blocking resource.</li>
+<li><strong>User-Initiated</strong>: Setting <code>autoOpen: false</code> is often preferred so as not to annoy users, though some scenarios might require auto-opening.</li>
+</ul>
+</section>
+<div class="pro-tip">
+<h3>Pro-Tip: Custom Styling</h3>
+<p>Most enterprise widgets allow you to override CSS variables to match your brand colors. Check the documentation for properties like <code>--agent-kite-primary-color</code> to customize the look and feel without editing the library code.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<ol>
+<li>
+<strong>What is the primary reason the web widget must maintain a session ID?</strong><br/>
+<strong>Correct Answer: B)</strong> Because LLMs are stateless, and the session ID allows the platform to retrieve conversation history.
+                </li>
+<li>
+<strong>Where is the most common place to embed the chat widget snippet in an HTML file?</strong><br/>
+<strong>Correct Answer: B)</strong> Just before the closing <code>&lt;/body&gt;</code> tag.
+                </li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+</div>
+</body>
+</html>

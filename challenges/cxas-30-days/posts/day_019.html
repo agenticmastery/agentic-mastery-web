@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 19: Web Deployment (Agent Kite) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 19: Web Deployment (Agent Kite)</h1>
+<p>Learn how to deploy your agent to the web using the Agent Kite test kit.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You've mastered evaluations and security. Now it's time to bring your agent to life! Deploying to the web is the first step to getting real user feedback and delivering value. Seeing your agent interact with users in a real browser environment is a huge milestone.</p>
+<p><strong>Achievement:</strong> You will learn how to deploy a CX Agent to a web page using the Agent Kite web widget.</p>
+<p><strong>Customer Value:</strong> A seamless, interactive chat experience directly on the website makes it easy for customers to get help when and where they need it.</p>
+<p><strong>Milestones:</strong> Understand the components of the Agent Kite web widget and how to embed it in an HTML page.</p>
+<p><strong>Goals:</strong> Complete the challenge by describing the deployment steps or identifying the correct configuration for a test scenario.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we concluded Week 3 with a comprehensive review of evaluations, security, and latency. You can review the solution for the Week 3 Reflection &amp; Strategy <a href="day_018_solution.html">here</a>. Today, we start Week 4 by moving from testing to deployment! We will focus on deploying our agent to the web using the Agent Kite test kit.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Web Deployment with Agent Kite</h2>
+<p>Deploying your agent to the web is the process of making it available to users through a chat interface on your website. Agent Kite provides a powerful and customizable web widget (also known as the test kit) that makes this process straightforward.</p>
+<p>The deployment typically involves two main steps:</p>
+<ol>
+<li><strong>Generating the Snippet:</strong> The platform generates a small snippet of HTML and JavaScript code that references the Agent Kite library and includes configuration specific to your agent.</li>
+<li><strong>Embedding the Snippet:</strong> You copy this snippet and paste it into the HTML of the web pages where you want the chat widget to appear.</li>
+</ol>
+<p>The configuration snippet usually includes parameters like the <code>agentId</code>, <code>conversationId</code> (optional for starting new sessions), and styling options to match your brand.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>From the perspective of the LLM and the backend platform, the web widget is more than just a UI component; it is a state manager and a bridge. LLMs are inherently stateless—they don't remember previous turns unless that history is provided with each new prompt. The Agent Kite widget handles this by maintaining a persistent session.</p>
+<p>When a user starts a chat, the widget initiates a session and receives a session ID. For every subsequent message the user sends, the widget attaches this session ID. This allows the platform to retrieve the conversation history (the full transcript of the Customer User Journey or CUJ) and feed it back to the LLM, ensuring contextually relevant responses. Without the widget managing this session state, the LLM would treat every message as a completely new interaction, losing all context.</p>
+<p>Furthermore, the widget handles the secure connection to the platform, ensuring that user inputs are securely transmitted and responses are received and rendered in real-time, handling aspects like typing indicators and rich responses seamlessly.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 19 Challenge: Deploying EcoShop Support</h3>
+<p><strong>Scenario:</strong> EcoShop is ready to test their new AI support agent on a staging version of their website. You have been tasked with preparing the deployment snippet.</p>
+<p><strong>Task:</strong> Describe the steps you would take to embed the Agent Kite web widget into the EcoShop homepage. Consider the following requirements:</p>
+<ul>
+<li>The widget should be loaded asynchronously to avoid blocking page render.</li>
+<li>You need to pass the <code>agentId</code> value <code>"ecoshop-support-v1"</code>.</li>
+<li>You want to set a custom title for the chat window: "EcoShop Support".</li>
+</ul>
+<p>Draft the HTML and JavaScript structure you would use (in your notes, do not provide the answer here). Think about where in the HTML file this snippet should ideally be placed.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Asynchronous Loading</h3>
+<p>Always load the chat widget script asynchronously. This ensures that the loading of the chat interface does not delay the rendering of your main website content, providing a better user experience.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Session Persistence</h3>
+<p>Ensure your widget is configured to handle session persistence correctly. If a user refreshes the page or navigates to another page on your site, the chat session should ideally continue rather than starting over. Check the Agent Kite documentation for session storage options (e.g., local storage vs. session storage).</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of web deployment:</p>
+<ol>
+<li>
+<strong>What is the primary reason the web widget must maintain a session ID?</strong><br/>
+<small>
+                    A) To track the user's location.<br/>
+                    B) Because LLMs are stateless, and the session ID allows the platform to retrieve conversation history.<br/>
+                    C) To charge the customer for the usage.<br/>
+                    D) To speed up the network connection.
+                    </small>
+</li>
+<li>
+<strong>Where is the most common place to embed the chat widget snippet in an HTML file?</strong><br/>
+<small>
+                    A) At the very beginning of the <code>&lt;head&gt;</code> tag.<br/>
+                    B) Just before the closing <code>&lt;/body&gt;</code> tag.<br/>
+                    C) Inside the main content <code>&lt;div&gt;</code>.<br/>
+                    D) It does not matter where it is placed.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 20 - Multi-Agent Orchestration and Routing. <a href="day_020.html">Preview Day 20</a></p>
+</div>
+</div>
+</body>
+</html>
