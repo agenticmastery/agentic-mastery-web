@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 20 Solution: Telephony Deployment - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 20 Solution: Telephony Deployment (Voice Integration)</h1>
+<p>Solution and guidance for connecting your agent to telephony channels.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You've tackled the challenge of voice! It requires thinking differently about how users interact with your agent. The solution below demonstrates how to configure this effectively.</p>
+<p><strong>Achievement:</strong> You have defined the configuration for a telephony integration and designed a voice-optimized prompt.</p>
+<p><strong>Customer Value:</strong> A well-configured voice channel provides a smooth, low-latency experience that feels like talking to a human expert.</p>
+</div>
+<section class="solution">
+<h2>Solution: EcoShop Voice Integration</h2>
+<p>Here is the proposed solution for mapping the EcoShop agent to a Twilio number and handling order status inquiries.</p>
+<h3>1. Telephony Configuration (Twilio)</h3>
+<p>To connect the agent to a Twilio number, you would typically follow these steps in the CXAS console and Twilio console:</p>
+<ol>
+<li><strong>In CXAS:</strong> Navigate to the Deployment section and select "Telephony". Choose "Twilio" as the provider. This will generate a unique endpoint URL (Webhook) for your agent.</li>
+<li><strong>In Twilio:</strong> Go to your Phone Numbers console and select the number you want to use.</li>
+<li><strong>Configure Webhook:</strong> In the "A CALL COMES IN" section of the number configuration, select "Webhook" and paste the endpoint URL provided by CXAS. Ensure the HTTP method is set to POST.</li>
+<li><strong>Enable Streaming:</strong> If supported, enable bi-directional streaming to take advantage of CXAS's low-latency architecture.</li>
+</ol>
+<h3>2. Voice-Optimized Prompt Design</h3>
+<p>Here is an example of how you might structure the prompt for the agent to handle order status inquiries over the phone, using best practices for voice and the required structure.</p>
+<div class="code-block">
+<pre>
+&lt;subtask&gt;Handle order status inquiry via voice&lt;/subtask&gt;
+&lt;step&gt;Ask the user for their order number. Keep the request brief, e.g., "Sure, I can help with that. What is your order number?"&lt;/step&gt;
+&lt;step&gt;Once the user provides the number, call the tool {@TOOL: check_order_status} with the order_id.&lt;/step&gt;
+&lt;step&gt;If the tool returns the status, read it back to the user concisely. For example, "Your order is currently being processed and should ship tomorrow."&lt;/step&gt;
+&lt;step&gt;Ask if there is anything else they need help with, keeping it brief: "Is there anything else I can help you with?"&lt;/step&gt;
+                </pre>
+</div>
+<p><strong>Key Considerations for Voice:</strong></p>
+<ul>
+<li><strong>Conciseness:</strong> Notice that the prompts are short. We don't say "Thank you for calling EcoShop, the best place for eco-friendly products. I would be delighted to help you check your order status today if you could kindly provide me with your order number." We get straight to the point.</li>
+<li><strong>Turn-Taking:</strong> The steps are designed to prompt the user for specific information and then wait for a response, minimizing overlapping speech.</li>
+</ul>
+</section>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready for the next step? <a href="day_021.html">Move on to Day 21</a></p>
+</div>
+</div>
+</body>
+</html>

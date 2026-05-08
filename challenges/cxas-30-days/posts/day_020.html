@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 20: Telephony Deployment (Voice Integration) - CXAS 30-Day Challenge</title>
+<link href="../../../challenges.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 20: Telephony Deployment (Voice Integration)</h1>
+<p>Learn how to connect your agent to phone channels for natural voice interactions.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Moving from text to voice is a quantum leap in agent capability! Voice interactions feel more natural but come with unique challenges like latency and turn-taking. Mastering this puts you at the forefront of Conversational AI.</p>
+<p><strong>Achievement:</strong> You will learn how to connect your CXAS agent to telephony channels like Google Telephony Platform and third-party providers like Twilio.</p>
+<p><strong>Customer Value:</strong> Providing a voice channel allows customers to get immediate support via a simple phone call, improving accessibility and satisfaction for complex queries.</p>
+<p><strong>Milestones:</strong> Understand the low-latency voice architecture in CXAS and how to configure a telephony integration.</p>
+<p><strong>Goals:</strong> Define the telephony configuration for a mock scenario without revealing the solution.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>Yesterday, we explored deploying our agent to the web using the Agent Kite test kit. You can review the solution for the Day 19 challenge <a href="day_019_solution.html">here</a>. Today, we are taking our agent to the phones! We will learn how to integrate CXAS with telephony platforms to enable voice-based Customer User Journeys (CUJs).</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Telephony Deployment in CXAS</h2>
+<p>CX Agent Studio supports seamless integration with major telephony and Contact Center as a Service (CCaaS) providers. This allows you to assign a phone number to your agent, enabling customers to call and interact with it using natural speech.</p>
+<p>Supported integrations include:</p>
+<ul>
+<li>Google Telephony Platform</li>
+<li>Twilio</li>
+<li>AudioCodes</li>
+<li>Five9</li>
+<li>Google Cloud CCaaS</li>
+</ul>
+<p>The deployment process typically involves configuring a phone number in the provider's platform and mapping it to your CXAS agent via webhooks or direct integration settings. Once connected, incoming calls are routed to the agent, which processes the audio stream and responds in real-time.</p>
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Voice interaction imposes strict latency requirements. In text chat, a delay of a few seconds is tolerable. In a phone call, a silence of more than a second feels awkward and unnatural. Traditional voice systems used a "3-way cascade": Speech-to-Text (STT) -&gt; LLM -&gt; Text-to-Speech (TTS). This introduced significant latency at each step.</p>
+<p>To solve this, CXAS modernizes the pipeline. It uses a streamlined **2-way cascade architecture** where streaming audio is fed directly into the LLM (Audio-to-Text), reducing the steps and latency. Furthermore, developed in collaboration with Google DeepMind, CXAS support **Native Audio (Audio-to-Audio)** models. These models process audio directly from input to output, capturing human nuances like tone, pitch, and emotion without the lag of text conversion. This bi-directional streaming architecture is crucial for maintaining the flow of natural conversation on the phone.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 20 Challenge: Voice Integration for EcoShop</h3>
+<p><strong>Scenario:</strong> EcoShop wants to launch a voice-based support line. Customers should be able to call a number to check their order status and ask general questions.</p>
+<p><strong>Task:</strong> You need to define the configuration for connecting the EcoShop agent to a mock Twilio phone number. Specifically, consider how you would handle a request to check order status. You should assume a tool named `check_order_status` is available.</p>
+<p>Draft a high-level configuration plan and a prompt snippet for the agent to handle this CUJ effectively over voice. Remember to use best practices for voice prompts (concise, conversational). Do not include the solution here!</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Voice Prompt Design</h3>
+<p>Keep voice prompts short and conversational. Avoid reading out long lists of options or complex instructions. Users cannot "scan" audio like they scan text. If you must present options, limit them to three or four at most, and use clear, simple language.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: The Latency Trap</h3>
+<p>High latency is the enemy of good voice experiences. If your agent takes too long to process a tool call or generate a response, the user might think the call dropped or start speaking again, causing "barge-in" issues. Always optimize your tools and use streaming responses where possible.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of telephony deployment:</p>
+<ol>
+<li>
+<strong>What is the primary advantage of the Native Audio (Audio-to-Audio) model in CXAS?</strong><br/>
+<small>
+                    A) It allows the agent to understand multiple languages at once.<br/>
+                    B) It processes audio directly, reducing latency and capturing human nuances without text conversion lag.<br/>
+                    C) It is cheaper to operate than text-based models.<br/>
+                    D) It automatically records all calls for quality assurance.
+                    </small>
+</li>
+<li>
+<strong>Which of the following is a recommended practice for designing voice prompts?</strong><br/>
+<small>
+                    A) Provide as much detail as possible in the first greeting.<br/>
+                    B) Use long, complex sentences to sound more professional.<br/>
+                    C) Keep prompts short and limit options to a small number (3-4).<br/>
+                    D) Always read out the full terms and conditions at the start of the call.
+                    </small>
+</li>
+</ol>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Up Next: Day 21 - Start of Week 5! <a href="day_021.html">Preview Day 21</a></p>
+</div>
+</div>
+</body>
+</html>
