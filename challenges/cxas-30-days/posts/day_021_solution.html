@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 21 Solution: Manual Prompt Optimization - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 21 Solution: Manual Prompt Optimization (Iterative Refinement)</h1>
+<p>Solution and guidance for optimizing prompts based on evaluation failures.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You've applied targeted optimization to fix a specific failure! This is the core skill of a prompt engineer. By understanding *why* the model failed and adjusting instructions to guide its attention, you make the agent robust.</p>
+<p><strong>Achievement:</strong> You have optimized a prompt to handle a complex constraint involving time calculations and condition checks.</p>
+<p><strong>Customer Value:</strong> Enforcing business rules accurately prevents financial loss (e.g., issuing refunds outside policy) while maintaining consistency in customer treatment.</p>
+</div>
+<section class="solution">
+<h2>Solution: Optimizing EcoShop's Return Prompt</h2>
+<p>Here is the proposed solution to fix the failure where the agent ignored the 48-hour constraint for damaged items.</p>
+<p>We will use the structured PIF format (Prompt Instructions Format) as defined in our best practices, focusing on the <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code> tags to guide the model's attention.</p>
+
+<div class="code-block">
+<pre>
+&lt;subtask&gt;Handle Returns for Damaged Items&lt;/subtask&gt;
+&lt;step&gt;
+&lt;trigger&gt;User states they want to return an item because it arrived damaged or defective.&lt;/trigger&gt;
+&lt;action&gt;
+1. Ask the user for their order number if they haven't provided it.
+2. Once you have the order number, call the tool {@TOOL: get_order_details} with the order_id.
+3. **Crucial Constraint Check:** From the tool output, find the delivery date.
+4. Calculate the time elapsed between the delivery date and the current date.
+5. **Decision Path:**
+   - **If more than 48 hours have passed:** Politely inform the user that damaged items must be reported within 48 hours of delivery for a full refund. Offer to check if they qualify for a standard return (if within 30 days and item is unused) or store credit.
+   - **If 48 hours or less have passed:** Proceed with processing the return for a full refund. Ask for any additional details needed (e.g., photos of damage) as per standard flow.
+&lt;/action&gt;
+&lt;/step&gt;
+</pre>
+</div>
+
+<h3>Why This Fix Works</h3>
+<ul>
+<li><strong>Explicit Trigger:</strong> We isolated the specific condition ("item arrived damaged") to ensure the model pays attention to this specific flow.</li>
+<li><strong>Step-by-Step Logic:</strong> We broke down the action into sequential steps, making it easier for the model to follow reasoning paths.</li>
+<li><strong>Crucial Constraint Callout:</strong> We used strong language like "**Crucial Constraint Check**" and bolded text (which can help in some prompt formats, or translated to strong imperative text) to draw attention.</li>
+<li><strong>Explicit Decision Path:</strong> By mapping out the "If/Else" logic clearly, we reduce the chance of the model making a bad inference.</li>
+</ul>
+</section>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Use XML-like tags for complex logic</h3>
+<p>When handling multi-step reasoning or strict constraints, using XML-like tags (like <code>&lt;step&gt;</code>, <code>&lt;trigger&gt;</code>, <code>&lt;action&gt;</code>) helps the model parse the structure better than a simple block of bullet points. It provides a pseudo-code structure that LLMs are generally good at following.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready for the next step? <a href="day_022.html">Move on to Day 22</a></p>
+</div>
+</div>
+</body>
+</html>

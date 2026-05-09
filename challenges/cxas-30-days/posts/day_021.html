@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 21: Manual Prompt Optimization - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 21: Manual Prompt Optimization (Iterative Refinement)</h1>
+<p>Learn how to analyze failure traces and manually optimize your prompts for better performance.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Optimization is where the magic happens! Building a prototype is easy, but refining it to handle edge cases reliably is what separates the amateurs from the experts. Today, you start mastering the art of iterative refinement.</p>
+<p><strong>Achievement:</strong> You will learn how to dissect evaluation failures, trace them back to prompt deficiencies, and apply targeted optimizations to improve reasoning and constraint following.</p>
+<p><strong>Customer Value:</strong> A meticulously optimized agent reduces errors, avoids frustrating dead-ends for customers, and ensures business rules are strictly followed, directly impacting brand trust.</p>
+<p><strong>Milestones:</strong> Learn to read failure traces, understand attention shifting in LLMs, and practice manual prompt optimization.</p>
+<p><strong>Goals:</strong> Identify the prompt failure in a provided transcript and propose instructions to fix it.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 20, we took our agent to the phones by exploring Telephony Deployment and low-latency voice architectures. You can review the solution for the Day 20 challenge <a href="day_020_solution.html">here</a>. Today, we begin Week 5 by diving deep into **Manual Prompt Optimization**. We will learn how to analyze failure traces from our evaluations and iteratively refine our prompts to fix reasoning errors and constraint violations in our Customer User Journeys (CUJs).</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Manual Prompt Optimization</h2>
+<p>Even the best-designed agents will fail on edge cases. Automated evaluations (like the ones we discussed in Week 3) are excellent for identifying *where* the agent fails, but they often don't tell you *why* or *how* to fix it. That is where manual prompt optimization comes in.</p>
+<p>The process follows a continuous loop:</p>
+<ol>
+<li><strong>Analyze Failure Traces:</strong> When an evaluation fails, look at the complete conversation trace. Pay attention to:
+    <ul>
+        <li>What the user said.</li>
+        <li>What tools the agent called and the outputs returned.</li>
+        <li>The agent's final response.</li>
+    </ul>
+</li>
+<li><strong>Identify the Root Cause:</strong> Is it a **reasoning error** (the model failed to deduce the correct next step based on available information) or a **constraint violation** (the model ignored a specific rule or instruction)?</li>
+<li><strong>Apply Targeted Optimization:</strong> Update the prompt instructions to address the specific failure mode. Avoid adding a massive new section for every edge case; instead, refine existing instructions or use structured tags to improve clarity.</li>
+<li><strong>Re-Evaluate:</strong> Run the evaluation again to ensure the fix works and hasn't introduced regressions in other CUJs.</li>
+</ol>
+
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why does changing a few words in a prompt often fix a complex reasoning error? It comes down to **Attention Mechanisms**. LLMs process tokens by calculating attention scores between them. If instructions are buried in a large block of text, the model's attention may be diluted.</p>
+<p>When you manually optimize a prompt by breaking it into structured tags (like <code>&lt;constraints&gt;</code> or <code>&lt;subtask&gt;</code>) or by using imperative, unambiguous language, you are effectively guiding the model's attention. You are increasing the weights assigned to critical rules and reducing the probability of the model getting "lost" in the context.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 21 Challenge: Optimizing EcoShop's Return Policy</h3>
+<p><strong>Scenario:</strong> EcoShop has a strict return policy: *Damaged items must be reported within 48 hours of delivery for a full refund.* Standard returns (not damaged) are allowed within 30 days.</p>
+<p>In a recent evaluation run for the "Process Return" CUJ, the agent failed on a specific turn. Here is the trace:</p>
+<pre>
+User: "I want to return this shirt I bought last week. It has a tear."
+Agent: "I can help with that. What is your order number?"
+User: "It's #98765."
+[Agent calls tool: get_order_details(order_id='98765')]
+[Tool returns: Order #98765. Delivered 5 days ago.]
+Agent: "Okay, I see your order was delivered 5 days ago. Let's proceed with your return. I've generated a prepaid label for you."
+</pre>
+<p><strong>The Failure:</strong> The agent recognized the item was damaged ("has a tear") and that it was delivered 5 days ago, but it proceeded with the return anyway, violating the 48-hour constraint for damaged items.</p>
+<p><strong>Your Task:</strong> Tweak the prompt instructions to fix this specific failure. Propose a new or updated <code>&lt;subtask&gt;</code> or <code>&lt;constraints&gt;</code> block that ensures the agent checks the delivery timeframe for damaged items before proceeding. Do not give away the solution! Do not link the solution at the bottom.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Change One Thing at a Time</h3>
+<p>When optimizing prompts manually, treat it like a scientific experiment. Change only one instruction or constraint at a time and re-run your evals. If you change five things at once and the performance improves (or degrades), you won't know which change was responsible.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Instruction Overload</h3>
+<p>Avoid the temptation to add a new rule for every single edge case you find. This leads to "instruction overload," where the prompt becomes too long and the model starts ignoring rules again. Always look to refine existing instructions before adding new ones.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of prompt optimization:</p>
+<ol>
+<li>
+<strong>What is the first step in manual prompt optimization after identifying a failed evaluation?</strong><br/>
+<small>
+                    A) Rewrite the entire prompt from scratch.<br/>
+                    B) Analyze the complete conversation trace to understand the root cause.<br/>
+                    C) Add a new constraint to the prompt immediately.<br/>
+                    D) Delete the test case that failed.
+                    </small>
+</li>
+<li>
+<strong>How does using structured tags (like XML tags) in prompts help LLMs?</strong><br/>
+<small>
+                    A) It reduces the token count of the prompt.<br/>
+                    B) It makes the prompt look more professional to human readers.<br/>
+                    C) It helps guide the model's attention mechanisms to critical rules and structures.<br/>
+                    D) It allows the model to run faster.
+                    </small>
+</li>
+</ol>
+</div>
+<div class="preview">
+<p>Up Next: Day 22 - Automated Prompt Optimization (Few-Shot generation). <a href="day_022.html">Preview Day 22</a></p>
+</div>
+</div>
+</body>
+</html>
