@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 22 Solution: DFCX to CXAS Migration - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 22 Solution: DFCX to CXAS Migration (Legacy Transition)</h1>
+<p>Solution and guidance for mapping legacy Dialogflow CX flows to CXAS instructions.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You've successfully translated a rigid state machine into a fluid, goal-oriented instruction block! This is the core skill required to modernize conversational AI. By focusing on the user's goal rather than drawing complex state graphs, you unlock the true power of generative agents.</p>
+<p><strong>Achievement:</strong> You have mapped multiple pages and transitions from a legacy Dialogflow CX flow into a single, structured Customer User Journey (CUJ) in CXAS.</p>
+<p><strong>Customer Value:</strong> Transitioning to this model drastically reduces the time to build and update flows, resulting in a system that is easier to maintain and significantly more resilient to unexpected customer behavior.</p>
+</div>
+<section class="solution">
+<h2>Solution: Migrating EcoShop's Cancellation Flow</h2>
+<p>Here is the proposed solution to translate the legacy Dialogflow CX "Cancel Order" flow into a structured CXAS instruction block for a Customer User Journey.</p>
+
+<div class="code-block">
+<pre>
+&lt;subtask&gt;Cancel Order&lt;/subtask&gt;
+&lt;step&gt;
+&lt;trigger&gt;User expresses a desire to cancel an order.&lt;/trigger&gt;
+&lt;action&gt;
+1. Ask the user for their order number if they have not already provided it.
+2. Once the order number is obtained, call the tool {@TOOL: get_order_status} using the provided order_id.
+3. **Decision Path (Order Status):**
+   - **If the status is 'shipped':** Inform the customer that the order has already shipped and unfortunately cannot be canceled. The journey ends here.
+   - **If the status is 'pending':** Proceed to the next step.
+4. Ask the customer to confirm the cancellation (e.g., "Are you sure you want to cancel order #12345?").
+5. **Decision Path (Confirmation):**
+   - **If the user confirms (yes):** Call the tool {@TOOL: cancel_order} with the order_id. Inform the user that the order has been successfully canceled.
+   - **If the user does not confirm (no):** Inform the user that the order will not be canceled and will proceed as scheduled.
+&lt;/action&gt;
+&lt;/step&gt;
+</pre>
+</div>
+
+<h3>Why This Fix Works</h3>
+<ul>
+<li><strong>Goal-Oriented Structure:</strong> We condensed a multi-page Dialogflow CX flow into a single sequential list of steps within the instruction block. The model uses its context memory to track progress rather than hardcoded state changes.</li>
+<li><strong>Explicit Tooling:</strong> We used the correct syntax for calling tools (<code>{@TOOL: tool_name}</code>), explicitly telling the agent when to fetch external data or perform actions.</li>
+<li><strong>Clear Decision Logic:</strong> We modeled the legacy "Transitions" as explicit if/else checks within the instruction block. This gives the LLM clear guidelines on how to branch based on tool output and user confirmation, without restricting its ability to interpret natural variations in how users say "yes" or "no".</li>
+<li><strong>Eliminated Hardcoded Input Categories:</strong> Notice that we don't define rigid categories for user input like "providing order ID" or "saying yes". The LLM infers these implicitly from context and the instructions provided.</li>
+</ul>
+</section>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Use the instruction format as your new state machine</h3>
+<p>While we avoid complex graphs, the structured use of <code>&lt;subtask&gt;</code>, <code>&lt;step&gt;</code>, and clear condition checks acts as a pseudo-state machine that keeps the LLM on track without limiting its natural language capabilities.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready for the next step? Day 23 solution will be linked in the Day 23 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>
