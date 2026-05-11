@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 23: Final UI Project (Enterprise Agent Build) - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 23: Final UI Project (Enterprise Agent Build)</h1>
+<p>Synthesize all UI skills to build a complete, multi-functional enterprise agent.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You have reached the summit of the UI design track! Today, you bring together every skill you've honed over the last three weeks to build a true enterprise-grade agent. This is where theory meets reality.</p>
+<p><strong>Achievement:</strong> You will master the art of synthesizing Prompt Architecture, Data Stores, and Guardrails into a single, powerful AI system capable of handling multiple complex Customer User Journeys (CUJs).</p>
+<p><strong>Customer Value:</strong> An agent that can handle complex, multi-step customer journeys reliably and safely is the ultimate goal. It provides a seamless experience for users and drastically reduces the load on human agents.</p>
+<p><strong>Milestones:</strong> Review component integration, architect the master prompt using structured XML, and apply robust guardrails.</p>
+<p><strong>Goals:</strong> Create the comprehensive instructions for the EcoShop Enterprise Agent, handling multiple CUJs and tools.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 22, we mastered DFCX to CXAS Migration, learning how to translate rigid state machines into fluid, goal-oriented instructions. You can review the solution for the Day 22 challenge <a href="day_022_solution.html">here</a>. Today, we take the final step in our UI journey by building a complete **Enterprise Agent**. We will synthesize everything we've learned about prompt structure, tool integration, data stores, and guardrails.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Synthesizing the Enterprise Agent</h2>
+<p>Building an enterprise agent requires moving beyond simple single-purpose prompts. You must architect a system that can handle multiple distinct Customer User Journeys (CUJs), maintain context across steps, access external tools, leverage internal knowledge bases, and stay within strict safety and policy guardrails.</p>
+<p>To achieve this without causing the LLM to lose focus or behave unpredictably, we use a structured approach based on the **Prompt Instructions Format (PIF)**. This involves using XML-like tags to clearly delimit different sections of the prompt, making it easier for the model to navigate and follow complex instructions.</p>
+<h3>Key Components to Synthesize</h3>
+<ul>
+<li><strong>Role &amp; Persona:</strong> Define who the agent is and its tone (e.g., helpful, professional, concise).</li>
+<li><strong>Taskflow (CUJs):</strong> Use <code>&lt;subtask&gt;</code> tags to define each distinct capability or user goal. Within each subtask, use <code>&lt;step&gt;</code>, <code>&lt;trigger&gt;</code>, and <code>&lt;action&gt;</code> to outline the specific logic.</li>
+<li><strong>Tool Integration:</strong> Use the standard syntax <code>{@TOOL: tool_name}</code> to indicate when the agent should call an external API.</li>
+<li><strong>Data Stores:</strong> Instruct the agent to use grounded knowledge for policy or FAQ questions, rather than generating answers from its training data.</li>
+<li><strong>Guardrails:</strong> Explicitly list constraints (e.g., "Do not discuss competitor products", "Do not share internal API keys").</li>
+</ul>
+
+<div class="the-why-llm">
+<h3>The 'Why' from the LLM Perspective</h3>
+<p>Why is this structure so critical for an enterprise build? As you add more capabilities, the prompt grows significantly. This creates a challenge for the LLM's **attention mechanism**. Large Language Models have a limited capacity to focus on all parts of a large prompt simultaneously.</p>
+<p>By using structured XML tags like <code>&lt;subtask&gt;</code> and <code>&lt;step&gt;</code>, you create clear boundaries. This helps the LLM manage its cognitive load. When processing a specific turn in a conversation, the model can more easily "attend" to the relevant section of the instructions while ignoring irrelevant parts. This structured isolation reduces the risk of instruction overload and minimizes hallucinations, leading to much higher reliability in complex scenarios.</p>
+</div>
+</section>
+<div class="challenge">
+<h3>The Day 23 Challenge: The EcoShop Enterprise Agent</h3>
+<p><strong>Scenario:</strong> You are tasked with building the core instruction set for the EcoShop Enterprise Agent. This agent must handle three distinct Customer User Journeys (CUJs):</p>
+<ol>
+<li><strong>Track Order:</strong> The agent must collect an order ID and call the tool <code>{@TOOL: track_order}</code> to provide the status.</li>
+<li><strong>Cancel Order:</strong> The agent must follow the logic from Day 22: check status first using <code>{@TOOL: track_order}</code>, and only proceed to cancel using <code>{@TOOL: cancel_order}</code> if the status is 'pending'.</li>
+<li><strong>Policy Inquiry:</strong> The agent should answer questions about returns and shipping based on the EcoShop Policies Data Store.</li>
+</ol>
+<p><strong>Your Task:</strong> Write the master instruction block for this agent. You must use the PIF structure (<code>&lt;subtask&gt;</code>, <code>&lt;step&gt;</code>, <code>&lt;trigger&gt;</code>, <code>&lt;action&gt;</code>) for the taskflow. Include a <code>&lt;role&gt;</code>, <code>&lt;persona&gt;</code>, and a <code>&lt;constraints&gt;</code> section (add a guardrail to not discuss competitor products). Assume the Data Store content is available to the agent automatically when grounded questions are asked.</p>
+<p>Do not give away the solution! Do not link the solution at the bottom.</p>
+</div>
+<div class="pro-tip">
+<h3>Pro-Tip: Use Clear Delimiters</h3>
+<p>Always use XML-style tags or clear markdown headers to separate different sections of your instructions. This structural clarity is the single most effective way to improve instruction-following in large prompts.</p>
+</div>
+<div class="watch-out">
+<h3>Watch-Out: Instruction Overload</h3>
+<p>If you find your master prompt becoming too large and the agent starting to confuse different CUJs, that is a sign you have reached the limits of a single-agent architecture. It may be time to transition to a Multi-Agent architecture with a Steering Agent, as discussed in the Best Practices guide.</p>
+</div>
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of enterprise agent design:</p>
+<ol>
+<li>
+<strong>Why are structured XML tags like <code>&lt;subtask&gt;</code> useful in large prompts?</strong><br/>
+<small>
+                    A) They make the prompt look like code.<br/>
+                    B) They help the LLM manage attention and reduce cognitive load by creating clear boundaries.<br/>
+                    C) They are required by HTML standards.<br/>
+                    D) They make the agent respond faster.
+                    </small>
+</li>
+<li>
+<strong>When should you consider moving from a single-agent to a multi-agent architecture?</strong><br/>
+<small>
+                    A) Whenever you have more than one tool.<br/>
+                    B) When instruction overload causes the agent to confuse different CUJs or degrade in performance.<br/>
+                    C) Only when required by the client.<br/>
+                    D) Never, single-agent is always preferred for low latency.
+                    </small>
+</li>
+</ol>
+</div>
+<div class="preview">
+<p>Up Next: Day 24 - Summary Day and Path Forward. <a href="day_024.html">Preview Day 24</a></p>
+</div>
+</div>
+</body>
+</html>

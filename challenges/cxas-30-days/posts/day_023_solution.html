@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 23 Solution: Final UI Project - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 23 Solution: Final UI Project (Enterprise Agent Build)</h1>
+<p>Solution and reference architecture for the EcoShop Enterprise Agent.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You've done it! You have synthesized the core pillars of CXAS UI design into a single, coherent enterprise agent. This capability is what separates top-tier AI Architects from prompt experimenters. You are now ready to build production-grade systems.</p>
+<p><strong>Achievement:</strong> You have successfully structured a complex prompt handling multiple CUJs, tools, and data stores using the Prompt Instructions Format (PIF).</p>
+<p><strong>Customer Value:</strong> This structured approach ensures high reliability, reduces hallucination, and provides a maintainable foundation for future expansions of the agent's capabilities.</p>
+</div>
+<section class="solution">
+<h2>Solution: The EcoShop Enterprise Agent Prompt</h2>
+<p>Here is the reference instruction set for the EcoShop Enterprise Agent, utilizing structured XML tags for optimal instruction following.</p>
+
+<div class="code-block">
+<pre>
+&lt;role&gt;
+You are the EcoShop Customer Support Agent. Your primary goal is to assist customers with tracking orders, processing cancellations for pending orders, and answering general policy questions.
+&lt;/role&gt;
+
+&lt;persona&gt;
+Be helpful, professional, and concise. Maintain a polite tone and do not use overly technical jargon.
+&lt;/persona&gt;
+
+&lt;constraints&gt;
+- Do not discuss competitor products or make comparisons to other brands.
+- Ground all policy answers exclusively in the provided EcoShop Policies Data Store; do not invent policies.
+- Never share internal system codes or raw tool outputs directly with the customer unless requested.
+&lt;/constraints&gt;
+
+&lt;taskflow&gt;
+
+&lt;subtask&gt;Track Order&lt;/subtask&gt;
+&lt;step&gt;
+&lt;trigger&gt;User asks to track an order or check its status.&lt;/trigger&gt;
+&lt;action&gt;
+1. Ask the user for their order ID if they have not already provided it.
+2. Once the order ID is obtained, call the tool {@TOOL: track_order} using the provided order_id.
+3. Provide the status returned by the tool to the customer in a friendly manner.
+&lt;/action&gt;
+&lt;/step&gt;
+
+&lt;subtask&gt;Cancel Order&lt;/subtask&gt;
+&lt;step&gt;
+&lt;trigger&gt;User expresses a desire to cancel an order.&lt;/trigger&gt;
+&lt;action&gt;
+1. Ask the user for their order ID if they have not already provided it.
+2. Call the tool {@TOOL: track_order} with the order_id to check the current status.
+3. **Decision Path (Status Check):**
+   - **If the status is 'shipped':** Inform the customer that the order has already shipped and unfortunately cannot be canceled. The journey ends here.
+   - **If the status is 'pending':** Proceed to the next step.
+4. Ask the customer to confirm the cancellation (e.g., "Are you sure you want to cancel order #12345?").
+5. **Decision Path (Confirmation):**
+   - **If the user confirms (yes):** Call the tool {@TOOL: cancel_order} with the order_id. Inform the user that the order has been successfully canceled.
+   - **If the user does not confirm (no):** Inform the user that the order will not be canceled and will proceed as scheduled.
+&lt;/action&gt;
+&lt;/step&gt;
+
+&lt;subtask&gt;Policy Inquiry&lt;/subtask&gt;
+&lt;step&gt;
+&lt;trigger&gt;User asks about returns, shipping times, or other general store policies.&lt;/trigger&gt;
+&lt;action&gt;
+1. Use the grounding from the EcoShop Policies Data Store to answer the user's question accurately.
+2. If the answer cannot be determined from the Data Store, politely inform the user that you do not have that information and offer to connect them to a human specialist.
+&lt;/action&gt;
+&lt;/step&gt;
+
+&lt;/taskflow&gt;
+</pre>
+</div>
+
+<h3>Why This Architecture Works</h3>
+<ul>
+<li><strong>Role-Based Focus:</strong> The <code>&lt;role&gt;</code> and <code>&lt;persona&gt;</code> tags give the LLM a clear identity, ensuring consistent tone across different tasks.</li>
+<li><strong>Strict Constraints:</strong> The <code>&lt;constraints&gt;</code> section acts as hard guardrails, preventing the agent from going off-topic or discussing competitors.</li>
+<li><strong>Modular Taskflow:</strong> By breaking the instructions into distinct <code>&lt;subtask&gt;</code> blocks, we help the LLM manage its attention. It can focus on the logic for "Cancel Order" without getting confused by the steps for "Track Order".</li>
+<li><strong>Tool &amp; Data Store Integration:</strong> The instructions explicitly state when to call tools (using correct syntax) and when to rely on Data Stores for grounding, ensuring the agent knows its boundaries.</li>
+</ul>
+</section>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Maintain Instruction Modularity</h3>
+<p>As your agent grows, keep your <code>&lt;subtask&gt;</code> blocks as self-contained as possible. This modularity makes it easier to update individual flows without risking regression in others.</p>
+</div>
+
+<!-- Substack Embed Code -->
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+<div class="preview">
+<p>Ready for the next step? Day 23 solution will be linked in the Day 24 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>
