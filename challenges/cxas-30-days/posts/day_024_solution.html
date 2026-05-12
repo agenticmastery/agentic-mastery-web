@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 24 Solution: Week 4 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 24 Solution: Week 4 Summary &amp; Review</h1>
+<p>Reference architecture for the Upgrade Plan migration and MCQ answers.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> You have successfully synthesized the concepts of prompt structure and migration. Translating rigid state machines into fluid instructions is a core skill for modern AI architects.</p>
+<p><strong>Customer Value:</strong> This approach creates more natural conversations and makes the system much easier to maintain and update as business rules change.</p>
+</div>
+
+<section class="solution">
+<h2>Solution: Reference Architecture for "Upgrade Plan" Migration</h2>
+<p>Here is how you could structure the "Upgrade Plan" flow using the Prompt Instructions Format (PIF), translating the old 5-page DFCX flow into a single, goal-oriented subtask.</p>
+
+<div class="code-block">
+<pre>
+&lt;role&gt;
+You are the Account Services Agent for EcoShop. Your goal is to help users upgrade their subscription plans.
+&lt;/role&gt;
+
+&lt;taskflow&gt;
+
+&lt;subtask&gt;Upgrade Plan&lt;/subtask&gt;
+&lt;step&gt;
+&lt;trigger&gt;User expresses interest in upgrading their plan or asks about higher tier benefits.&lt;/trigger&gt;
+&lt;action&gt;
+1. Call the tool {@TOOL: get_current_plan} to retrieve the user's current subscription level.
+2. **Decision Path (Current Plan):**
+   - **If on the highest tier (Platinum):** Inform the user they are already on the best plan and highlight its benefits. The journey ends here.
+   - **If on a lower tier (Bronze/Silver):** Proceed to the next step.
+3. Present the benefits of the next available tier(s) and ask the user if they would like to proceed with an upgrade.
+4. **Decision Path (User Confirmation):**
+   - **If user says yes:** Call the tool {@TOOL: process_upgrade} to initiate the upgrade. Confirm success to the user.
+   - **If user says no or asks questions:** Answer questions based on the Plan Benefits Data Store or offer to keep their current plan.
+&lt;/action&gt;
+&lt;/step&gt;
+
+&lt;/taskflow&gt;
+</pre>
+</div>
+
+<h3>Why This Architecture Works</h3>
+<ul>
+<li><strong>Goal-Oriented:</strong> Instead of forcing the user through specific "pages", the agent knows the end goal (Upgrade Plan) and the necessary steps to get there, allowing for a more fluid conversation.</li>
+<li><strong>Conditional Logic in Actions:</strong> The complex routing that used to happen between pages is now handled by clear "Decision Path" instructions within the action block. This keeps the structure clean and readable.</li>
+<li><strong>Tool Integration:</strong> We use tools like <code>get_current_plan</code> and <code>process_upgrade</code> at the exact moment they are needed in the flow, rather than binding them to specific page entry/exit points.</li>
+</ul>
+</section>
+
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<p>Here are the answers to the MCQs from the Day 24 challenge:</p>
+<ol>
+<li>
+<strong>When migrating from DFCX to CXAS, what is the primary shift in design philosophy?</strong><br/>
+<strong>Answer: B</strong> (Moving from rigid state machines to fluid, goal-oriented instructions driven by CUJs.)
+</li>
+<li>
+<strong>Why are structured XML tags like <code>&lt;subtask&gt;</code> recommended in large prompts?</strong><br/>
+<strong>Answer: B</strong> (They help the LLM manage attention and reduce cognitive load by creating clear boundaries.)
+</li>
+</ol>
+</div>
+
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+
+<div class="preview">
+<p>Ready for the next step? Day 24 solution will be linked in the Day 25 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 24: Week 4 Summary &amp; Review - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 24: Week 4 Summary &amp; Review</h1>
+<p>Consolidate your knowledge of deployment, optimization, and migration in CXAS.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Congratulations on completing Week 4! You've covered a massive amount of ground, from deployment to deep prompt optimization. Today is about locking in that knowledge.</p>
+<p><strong>Achievement:</strong> You will review and synthesize the core concepts of Web and Telephony deployment, Prompt Instructions Format (PIF), and the migration path from DFCX to CXAS.</p>
+<p><strong>Customer Value:</strong> A well-understood and optimized agent architecture leads to faster deployments, lower maintenance costs, and a significantly better experience for the end user.</p>
+<p><strong>Milestones:</strong> Review Week 4 topics, complete the reflection challenge, and ace the final knowledge check.</p>
+<p><strong>Goals:</strong> Consolidate your learning and prepare for the final stretch in Week 5.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 23, we built a complete Enterprise Agent, synthesizing all our UI skills. You can review the solution for the Day 23 challenge <a href="day_023_solution.html">here</a>. Today, we take a step back to review the entire week's progress and ensure you are ready for the advanced topics coming up in Week 5.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Summary: Week 4 in Review</h2>
+<p>This week was all about taking your agent from a concept to a fully deployed and optimized system. Here is a recap of the key areas we covered:</p>
+
+<h3>1. Web Deployment with Agent Kite</h3>
+<p>We explored how **Agent Kite** serves as the bridge between your CXAS agent and the web. Key takeaways include:</p>
+<ul>
+<li>Streamlined integration of the agent into existing web properties.</li>
+<li>Handling session state and user context across web interactions.</li>
+<li>Ensuring a responsive and accessible UI for the chat interface.</li>
+</ul>
+
+<h3>2. Telephony Deployment</h3>
+<p>Deploying to voice channels introduces unique challenges. We learned to:</p>
+<ul>
+<li>Design tools with inputs that are easily expressible by humans in voice mode (avoiding complex IDs or continuous scales).</li>
+<li>Optimize for low latency to maintain a natural conversational flow.</li>
+<li>Handle the nuances of speech-to-text and text-to-speech transitions.</li>
+</ul>
+
+<h3>3. Manual Prompt Optimization</h3>
+<p>We went deep into the **Prompt Instructions Format (PIF)**, learning how to structure large prompts for maximum reliability:</p>
+<ul>
+<li>Using XML-style tags like <code>&lt;role&gt;</code>, <code>&lt;persona&gt;</code>, <code>&lt;taskflow&gt;</code>, and <code>&lt;subtask&gt;</code> to manage LLM attention.</li>
+<li>Applying the **Actionability Test**: Ensuring instructions are so clear that any human agent could follow them without extra context.</li>
+<li>Avoiding ambiguity and vague instructions to reduce hallucinations.</li>
+</ul>
+
+<h3>4. DFCX to CXAS Migration</h3>
+<p>One of the most critical shifts this week was understanding how to move from Dialogflow CX (DFCX) to CXAS:</p>
+<ul>
+<li>Moving away from rigid state machines and pages.</li>
+<li>Embracing fluid, goal-oriented instructions driven by **Customer User Journeys (CUJs)**.</li>
+<li>Translating conditional transitions into structured prompt logic.</li>
+</ul>
+
+<h3>5. Final UI Project</h3>
+<p>We culminated the week by building a full Enterprise Agent, demonstrating how to synthesize prompts, tools, data stores, and guardrails into a single cohesive system capable of handling multiple complex CUJs safely.</p>
+</section>
+
+<div class="challenge">
+<h3>The Day 24 Challenge: Reflection &amp; Architecture Exercise</h3>
+<p><strong>Scenario:</strong> You are tasked with migrating a complex "Upgrade Plan" flow from DFCX to CXAS. In the old DFCX system, this was handled across 5 different pages with complex conditional routing based on user input and account status.</p>
+<p><strong>Your Task:</strong> Reflect on how you would approach this migration. How would you translate those 5 pages and conditional transitions into the Prompt Instructions Format (PIF)? Outline the high-level structure of the prompt you would create, focusing on how to handle the transitions without using rigid pages.</p>
+<p>Do not give away the solution! Do not link the solution at the bottom.</p>
+</div>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Build a Prompt Library</h3>
+<p>As you optimize prompts for different CUJs, save the successful patterns in a shared prompt library. This accelerates future development and ensures consistency across your agent portfolio.</p>
+</div>
+
+<div class="watch-out">
+<h3>Watch-Out: Instruction Overload</h3>
+<p>When summarizing or migrating complex flows, resist the urge to put everything into a single prompt. If the instructions become too complex, the LLM may confuse different CUJs. Consider a Multi-Agent architecture for complex, disjointed flows.</p>
+</div>
+
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of Week 4 concepts:</p>
+<ol>
+<li>
+<strong>When migrating from DFCX to CXAS, what is the primary shift in design philosophy?</strong><br/>
+<small>
+                    A) Moving from goal-oriented instructions to rigid state machines.<br/>
+                    B) Moving from rigid state machines to fluid, goal-oriented instructions driven by CUJs.<br/>
+                    C) Focusing more on hardcoded transitions rather than LLM understanding.<br/>
+                    D) Ignoring tools and focusing only on static content.
+                    </small>
+</li>
+<li>
+<strong>Why are structured XML tags like <code>&lt;subtask&gt;</code> recommended in large prompts?</strong><br/>
+<small>
+                    A) They are required by the LLM to function at all.<br/>
+                    B) They help the LLM manage attention and reduce cognitive load by creating clear boundaries.<br/>
+                    C) They automatically translate the prompt into code.<br/>
+                    D) They make the agent respond in XML format.
+                    </small>
+</li>
+</ol>
+</div>
+
+<div class="preview">
+<p>Up Next: Day 25 - Start of Week 5! <a href="day_025.html">Preview Day 25</a></p>
+</div>
+</div>
+</body>
+</html>
