@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 25 Solution: Intro to SCRAPI &amp; Auth - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 25 Solution: Intro to SCRAPI &amp; Auth</h1>
+<p>Python script to list CXAS applications and MCQ answers.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> You have successfully written your first SCRAPI script! Programmatic access is the foundation for all advanced automation tasks you will perform this week.</p>
+<p><strong>Customer Value:</strong> By automating the listing and verification of applications, you pave the way for automated testing and deployment pipelines, ensuring high quality and consistency.</p>
+</div>
+
+<section class="solution">
+<h2>Solution: Python Script to List Applications</h2>
+<p>Here is the complete Python script to list applications in your project. This script follows best practices by using an environment variable for the Project ID and including error handling.</p>
+
+<div class="code-block">
+<pre><code class="language-python">import os
+from cxas_scrapi import Apps
+
+def list_cxas_apps():
+    """Lists all CXAS applications in the project specified by environment variable."""
+    # Get project ID from environment variable
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    
+    if not project_id:
+        print("Error: GCP_PROJECT_ID environment variable not set.")
+        print("Please set it using: export GCP_PROJECT_ID='your-project-id'")
+        return
+
+    try:
+        print(f"Connecting to CXAS and listing apps for project: {project_id}...")
+        apps_client = Apps()
+        apps = apps_client.list_apps(project_id=project_id)
+
+        if not apps:
+            print("No applications found in this project.")
+            return
+
+        print("\nAvailable Applications:")
+        for app in apps:
+            print(f"- Name: {app.display_name}")
+            print(f"  ID:   {app.name}")
+            print("-" * 20)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        print("Ensure you have run 'gcloud auth application-default login'.")
+
+if __name__ == "__main__":
+    list_cxas_apps()
+</code></pre>
+</div>
+
+<h3>Key Steps Explained</h3>
+<ul>
+<li><strong>Importing the Client:</strong> We import <code>Apps</code> from <code>cxas_scrapi</code>. This is the core client for application management.</li>
+<li><strong>Authentication:</strong> We do not pass explicit credentials. The client automatically looks for Application Default Credentials (ADC) configured in your environment.</li>
+<li><strong>Environment Variables:</strong> We use <code>os.environ.get("GCP_PROJECT_ID")</code> to avoid hardcoding sensitive or environment-specific data.</li>
+</ul>
+</section>
+
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<p>Here are the answers to the MCQs from the Day 25 challenge:</p>
+<ol>
+<li>
+<strong>What is the primary purpose of CXAS SCRAPI?</strong><br/>
+<strong>Answer: B</strong> (To extend the official Google Python Client and provide a pythonic interface for programmatic control.)
+</li>
+<li>
+<strong>How does SCRAPI typically authenticate with Google Cloud?</strong><br/>
+<strong>Answer: B</strong> (Using Application Default Credentials (ADC) via <code>gcloud auth application-default login</code>.)
+</li>
+</ol>
+</div>
+
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+
+<div class="preview">
+<p>Ready for the next step? Day 25 solution will be linked in the Day 26 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 25: Intro to SCRAPI &amp; Auth - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 25: Intro to SCRAPI &amp; Auth</h1>
+<p>Unlock programmatic control of your CXAS agents using Python.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Welcome to Week 5! You've mastered the UI and prompt engineering. Now, it's time to scale. Programmatic control is how you move from building single agents to managing entire ecosystems efficiently.</p>
+<p><strong>Achievement:</strong> Today, you will learn about the CXAS Scripting API (SCRAPI), authenticate your environment, and make your very first programmatic call to list applications.</p>
+<p><strong>Customer Value:</strong> Automation reduces human error, enables continuous integration/continuous deployment (CI/CD), and allows for massive scale in testing and deployment, directly translating to higher quality and lower operational costs.</p>
+<p><strong>Milestones:</strong> Understand SCRAPI architecture, configure authentication, and execute a script to list apps.</p>
+<p><strong>Goals:</strong> Successfully run your first SCRAPI script and verify authentication.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 24, we completed our Week 4 review and tackled a reflection exercise on migrating complex DFCX flows to CXAS. You can review the solution for the Day 24 challenge <a href="day_024_solution.html">here</a>. Today, we pivot from manual UI operations to programmatic control.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Introduction to SCRAPI</h2>
+<p>The CX Agent Studio Scripting API (**SCRAPI**) is a high-level Python library that extends the official Google Cloud client for CXAS. It is designed to make the lives of bot builders and developers easier by providing a more pythonic and intuitive interface for managing agents, tools, and evaluations.</p>
+
+<h3>Why Use SCRAPI?</h3>
+<ul>
+<li><strong>Efficiency:</strong> Automate repetitive tasks like creating agents, uploading tools, or updating prompts.</li>
+<li><strong>Testing:</strong> Run complex, multi-turn simulations and turn-based evaluations programmatically.</li>
+<li><strong>CI/CD:</strong> Integrate agent testing and deployment into your standard developer workflows.</li>
+</ul>
+
+<h3>Authentication</h3>
+<p>SCRAPI relies on standard Google Cloud authentication. Before running any scripts, you must ensure your environment is authenticated. Typically, this involves running:</p>
+<pre><code>gcloud auth application-default login</code></pre>
+<p>This command sets up your Application Default Credentials (ADC), which the SCRAPI library will automatically detect and use.</p>
+
+<h3>Your First API Call</h3>
+<p>Let's look at a basic script to list the applications in your project using the <code>Apps</code> client.</p>
+<pre><code class="language-python">from cxas_scrapi import Apps
+
+# Initialize the Apps client
+# It automatically picks up your Google Cloud credentials
+apps_client = Apps()
+
+# Define your project ID
+PROJECT_ID = "your-project-id"
+
+# List all apps in the project
+apps = apps_client.list_apps(project_id=PROJECT_ID)
+
+print("Available Applications:")
+for app in apps:
+    print(f"- Name: {app.display_name}, ID: {app.name}")
+</code></pre>
+
+<h3>The "Why" from the LLM Perspective</h3>
+<p>From an LLM perspective, programmatic control via SCRAPI is transformative. Instead of relying on a human to manually test edge cases in a UI, scripts can generate thousands of variations of user inputs and feed them to the agent. This enables <strong>automated scaling</strong> of evaluations. Furthermore, by using scripts to "shift-left" testing (running unit tests on tools and guardrails before full system tests), we ensure that the LLM is operating on a reliable foundation, reducing non-deterministic errors and hallucinations.</p>
+</section>
+
+<div class="challenge">
+<h3>The Day 25 Challenge: List Your Applications</h3>
+<p><strong>Scenario:</strong> You are setting up the automation pipeline for EcoShop. Before you can automate agent updates, you need to verify that your script can successfully connect to CXAS and list the existing applications.</p>
+<p><strong>Your Task:</strong> Write a Python script using the CXAS SCRAPI library to list all applications in your Google Cloud project. Ensure you handle authentication correctly and print the display name of each application found.</p>
+<p>Do not give away the solution! Do not link the solution at the bottom.</p>
+</div>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Use Service Accounts for Automation</h3>
+<p>While <code>application-default login</code> is great for local development, always use dedicated Service Accounts with minimal permissions when running SCRAPI scripts in automated pipelines (like GitHub Actions or Cloud Build).</p>
+</div>
+
+<div class="watch-out">
+<h3>Watch-Out: Hardcoding Project IDs</h3>
+<p>Avoid hardcoding your Project ID directly in your scripts. Use environment variables to make your scripts portable across different environments (Dev, Staging, Prod).</p>
+</div>
+
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of SCRAPI basics:</p>
+<ol>
+<li>
+<strong>What is the primary purpose of CXAS SCRAPI?</strong><br/>
+<small>
+                    A) To provide a graphical user interface for building agents.<br/>
+                    B) To extend the official Google Python Client and provide a pythonic interface for programmatic control.<br/>
+                    C) To replace Dialogflow CX entirely.<br/>
+                    D) To write prompt instructions in XML.
+                    </small>
+</li>
+<li>
+<strong>How does SCRAPI typically authenticate with Google Cloud?</strong><br/>
+<small>
+                    A) By hardcoding username and password in the script.<br/>
+                    B) Using Application Default Credentials (ADC) via <code>gcloud auth application-default login</code>.<br/>
+                    C) It does not require authentication.<br/>
+                    D) Using a custom token provided by the CXAS UI.
+                    </small>
+</li>
+</ol>
+</div>
+
+<div class="preview">
+<p>Up Next: Day 26 - CRUD Ops with SCRAPI <a href="day_026.html">Preview Day 26</a></p>
+</div>
+</div>
+</body>
+</html>
