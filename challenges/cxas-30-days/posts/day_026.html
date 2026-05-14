@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 26: CRUD Ops with SCRAPI (Programmatic Build) - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 26: CRUD Ops with SCRAPI (Programmatic Build)</h1>
+<p>Master programmatic creation, retrieval, update, and deletion of CXAS resources.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You've dipped your toes into SCRAPI. Now, it's time to dive deep. True mastery means being able to build and tear down entire agentic architectures with a single script. This is where you transition from a builder to an architect.</p>
+<p><strong>Achievement:</strong> Today, you will learn how to perform full CRUD (Create, Read, Update, Delete) operations on Apps, Agents, and Tools using the SCRAPI SDK.</p>
+<p><strong>Customer Value:</strong> Programmatic build pipelines ensure that what you test in development is *exactly* what gets deployed to production. No manual configuration drift, no forgotten settings. Just pure, reproducible quality.</p>
+<p><strong>Milestones:</strong> Understand the CRUD methods for key SCRAPI clients and write a script to create an agent and tool.</p>
+<p><strong>Goals:</strong> Successfully create a new agent and attach a tool to it programmatically.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 25, we introduced SCRAPI and set up authentication. You can review the solution for listing applications <a href="day_025_solution.html">here</a>. Today, we expand on that by performing write operations: Creating, Updating, and Deleting resources.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: CRUD Operations with SCRAPI</h2>
+<p>SCRAPI provides dedicated clients for different resource types in CX Agent Studio. The most commonly used are <code>Apps</code>, <code>Agents</code>, and <code>Tools</code>. Let's look at how to perform CRUD operations with them.</p>
+
+<h3>1. Create Operations</h3>
+<p>To create resources, you use the <code>create_*</code> methods on the respective clients. You typically need to provide a parent resource name or ID.</p>
+<pre><code class="language-python">from cxas_scrapi import Apps, Agents, Tools
+
+apps_client = Apps()
+agents_client = Agents()
+tools_client = Tools()
+
+PROJECT_ID = "your-project-id"
+
+# 1. Create an App
+# Note: Apps are top-level resources in a project
+new_app = apps_client.create_app(
+    project_id=PROJECT_ID,
+    display_name="EcoShop Support"
+)
+app_name = new_app.name # This is the full resource path
+
+# 2. Create an Agent within the App
+new_agent = agents_client.create_agent(
+    parent=app_name,
+    display_name="Inventory Bot",
+    instructions="You help users find products in stock."
+)
+
+# 3. Create a Tool within the App
+# Here we use a correct tool syntax reference in the concept: {@TOOL: check_inventory}
+new_tool = tools_client.create_tool(
+    parent=app_name,
+    display_name="check_inventory",
+    type="code",
+    code="def check_inventory(product_name): return 5"
+)
+</code></pre>
+
+<h3>2. Read Operations</h3>
+<p>To retrieve details about a resource, use the <code>get_*</code> methods. To list resources, use <code>list_*</code>.</p>
+<pre><code class="language-python"># Get specific agent details
+agent = agents_client.get_agent(name=new_agent.name)
+print(f"Agent Instructions: {agent.instructions}")
+
+# List all tools in the app
+tools = tools_client.list_tools(parent=app_name)
+for tool in tools:
+    print(f"Tool: {tool.display_name}")
+</code></pre>
+
+<h3>3. Update Operations</h3>
+<p>Updating resources typically involves retrieving the resource, modifying its properties, and calling an <code>update_*</code> method. SCRAPI often uses field masks to update only specific fields.</p>
+<pre><code class="language-python"># Update agent instructions
+agent.instructions = "You help users find products and check their stock status."
+updated_agent = agents_client.update_agent(
+    agent=agent,
+    update_mask="instructions"
+)
+</code></pre>
+
+<h3>4. Delete Operations</h3>
+<p>Deleting is straightforward using <code>delete_*</code> methods and the resource name.</p>
+<pre><code class="language-python"># Delete the tool we created
+tools_client.delete_tool(name=new_tool.name)
+print("Tool deleted.")
+</code></pre>
+
+<h3>The "Why" from the LLM Perspective</h3>
+<p>Why do we care about programmatic CRUD from an LLM perspective? Because **reproducibility guarantees behavior**. When we manually click around the UI to create agents or tools, we introduce human variance. An LLM's behavior is highly sensitive to its prompt (instructions) and the tools it has access to. By using scripts to create and update these resources, we ensure that the exact same configuration is deployed across testing, staging, and production environments. This eliminates "it worked in my sandbox" issues and allows us to run large-scale automated evaluations on the exact same agent definition that will serve customers.</p>
+</section>
+
+<div class="challenge">
+<h3>The Day 26 Challenge: Programmatic Agent Provisioning</h3>
+<p><strong>Scenario:</strong> EcoShop is launching a new "Sustainability Advisor" agent. Instead of building it in the UI, you need to automate its creation as part of the deployment pipeline.</p>
+<p><strong>Your Task:</strong> Write a Python script using the CXAS SCRAPI library to:
+<ol>
+    <li>Connect to your existing EcoShop App.</li>
+    <li>Create a new Agent named "Sustainability Advisor" with instructions to guide users on eco-friendly products.</li>
+    <li>Create a Python Code Tool named <code>{@TOOL: get_carbon_footprint}</code> that returns a dummy carbon score.</li>
+    <li>(Bonus) Print the full resource names of both the created agent and tool.</li>
+</ol>
+</p>
+<p>Ensure you do not give away the full solution script here. Focus on explaining the steps the user needs to take.</p>
+</div>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Idempotency in Scripts</h3>
+<p>When writing build scripts, make them idempotent. Check if a resource (like an agent or tool with a specific display name) already exists before creating it. If it exists, update it instead of failing or creating duplicates.</p>
+</div>
+
+<div class="watch-out">
+<h3>Watch-Out: Asynchronous Operations</h3>
+<p>Some operations in CXAS can be long-running. While SCRAPI handles many of these synchronously by polling for completion, be aware that creating large resources or running complex updates might take a few moments. Don't assume immediate availability in subsequent lines without checking.</p>
+</div>
+
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of SCRAPI CRUD operations:</p>
+<ol>
+<li>
+<strong>Which client would you use to create a new agent?</strong><br/>
+<small>
+                    A) <code>Apps()</code><br/>
+                    B) <code>Agents()</code><br/>
+                    C) <code>Tools()</code><br/>
+                    D) <code>Sessions()</code>
+                    </small>
+</li>
+<li>
+<strong>What is generally required as the `parent` argument when creating a tool?</strong><br/>
+<small>
+                    A) The Project ID.<br/>
+                    B) The Agent's full resource name.<br/>
+                    C) The App's full resource name.<br/>
+                    D) The Tool's display name.
+                    </small>
+</li>
+</ol>
+</div>
+
+<div class="preview">
+<p>Up Next: Day 27 - Turn-Based Evals with SCRAPI <a href="day_027.html">Preview Day 27</a></p>
+</div>
+</div>
+</body>
+</html>

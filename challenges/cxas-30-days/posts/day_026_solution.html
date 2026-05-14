@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 26 Solution: CRUD Ops with SCRAPI - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 26 Solution: CRUD Ops with SCRAPI</h1>
+<p>Python script to programmatically create an agent and tool, and MCQ answers.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> You've successfully moved from manual configuration to programmatic orchestration. This is a huge step in scaling your operations.</p>
+<p><strong>Customer Value:</strong> By automating the build process, you ensure that every environment is configured identically, reducing bugs and accelerating deployment cycles.</p>
+</div>
+
+<section class="solution">
+<h2>Solution: Python Script for Programmatic Build</h2>
+<p>Here is the complete Python script to create the "Sustainability Advisor" agent and the <code>{@TOOL: get_carbon_footprint}</code> tool. Note how we use a structured approach for the agent's instructions to ensure best practices.</p>
+
+<div class="code-block">
+<pre><code class="language-python">import os
+from cxas_scrapi import Apps, Agents, Tools
+
+def build_sustainability_advisor():
+    """Programmatically creates the Sustainability Advisor agent and a dummy tool."""
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    app_id = os.environ.get("CXAS_APP_ID") # Assuming we have the App ID stored
+    
+    if not project_id or not app_id:
+        print("Error: GCP_PROJECT_ID or CXAS_APP_ID environment variables not set.")
+        return
+
+    # Construct the full app resource name
+    # Typically looks like: projects/{project}/locations/{location}/apps/{app}
+    # For simplicity, we assume the full resource path is provided or easily constructed
+    app_name = f"projects/{project_id}/locations/global/apps/{app_id}"
+
+    try:
+        agents_client = Agents()
+        tools_client = Tools()
+
+        print(f"Provisioning resources in App: {app_name}")
+
+        # 1. Create the Tool first (so we can reference it in instructions if needed)
+        # Best Practice: Use the {@TOOL: tool_name} syntax in documentation/references
+        print("Creating tool: get_carbon_footprint...")
+        tool = tools_client.create_tool(
+            parent=app_name,
+            display_name="get_carbon_footprint",
+            type="code",
+            code="""
+def get_carbon_footprint(product_id: str) -> dict:
+    # Dummy implementation
+    return {"product_id": product_id, "carbon_score": "Low", "equivalent_miles_driven": 1.2}
+"""
+        )
+        print(f"Tool created successfully: {tool.name}")
+
+        # 2. Create the Agent with structured instructions
+        print("Creating agent: Sustainability Advisor...")
+        
+        # Prompt examples in solution use the best practices structure
+        instructions = """
+<goal>
+You are the EcoShop Sustainability Advisor. Your goal is to help users understand the environmental impact of their purchases and guide them toward eco-friendly choices.
+</goal>
+
+<subtask>
+Handle inquiries about product carbon footprints.
+<step>
+When a user asks about the carbon footprint of a product, use the {@TOOL: get_carbon_footprint} tool.
+</step>
+<step>
+Summarize the result for the user, explaining what 'Low', 'Medium', or 'High' impact means.
+</step>
+</subtask>
+
+<subtask>
+Suggest eco-friendly alternatives.
+<step>
+If a user is looking at a high-impact product, suggest a lower-impact alternative from the same category if known.
+</step>
+</subtask>
+"""
+
+        agent = agents_client.create_agent(
+            parent=app_name,
+            display_name="Sustainability Advisor",
+            instructions=instructions.strip()
+        )
+        print(f"Agent created successfully: {agent.name}")
+
+        print("\nProvisioning Complete!")
+        print(f"Agent Resource Name: {agent.name}")
+        print(f"Tool Resource Name:  {tool.name}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    # For testing, you would set these in your terminal:
+    # export GCP_PROJECT_ID="your-project-id"
+    # export CXAS_APP_ID="your-app-id"
+    build_sustainability_advisor()
+</code></pre>
+</div>
+
+<h3>Key Steps Explained</h3>
+<ul>
+<li><strong>Dependency Management:</strong> We create the tool first. While CXAS allows you to reference tools in instructions by name before they are created in some cases, creating them first is generally safer if the SDK validates references immediately or if you need the resource name.</li>
+<li><strong>Structured Instructions:</strong> We used <code>&lt;goal&gt;</code>, <code>&lt;subtask&gt;</code>, and <code>&lt;step&gt;</code> tags in the agent's instructions. This XML-like structure helps the LLM parse its role and execution steps more reliably than flat text.</li>
+<li><strong>Tool Syntax:</strong> We referenced the tool using the specific syntax <code>{@TOOL: get_carbon_footprint}</code> in the instructions, aligning with CXAS expectations.</li>
+</ul>
+</section>
+
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<p>Here are the answers to the MCQs from the Day 26 challenge:</p>
+<ol>
+<li>
+<strong>Which client would you use to create a new agent?</strong><br/>
+<strong>Answer: B</strong> (<code>Agents()</code>)
+</li>
+<li>
+<strong>What is generally required as the `parent` argument when creating a tool?</strong><br/>
+<strong>Answer: C</strong> (The App's full resource name.)
+</li>
+</ol>
+</div>
+
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+
+<div class="preview">
+<p>Ready for the next step? Day 26 solution will be linked in the Day 27 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>
