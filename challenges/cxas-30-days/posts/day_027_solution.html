@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 27 Solution: Session Testing via Script - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 27 Solution: Session Testing via Script</h1>
+<p>Python script to automate regression testing and MCQ answers.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> You've successfully moved from manual testing to automated regression testing. This is a crucial step for maintaining quality as your agent scales.</p>
+<p><strong>Customer Value:</strong> By automating tests, you ensure that every Customer User Journey (CUJ) is verified consistently, reducing the risk of shipping regressions to production.</p>
+</div>
+
+<section class="solution">
+<h2>Solution: Python Script for Automated Testing</h2>
+<p>Here is the complete Python script to automate the regression test for the "Check Order Status" CUJ. Note how we use unique session IDs for test isolation and include an advanced section showing how to use structured prompts for LLM-as-a-Judge evaluation.</p>
+
+<div class="code-block">
+<pre><code class="language-python">import os
+import uuid
+from cxas_scrapi import Sessions
+
+def run_regression_tests():
+    """Runs automated tests against the EcoShop agent."""
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    app_id = os.environ.get("CXAS_APP_ID")
+    
+    if not project_id or not app_id:
+        print("Error: GCP_PROJECT_ID or CXAS_APP_ID environment variables not set.")
+        return
+
+    app_name = f"projects/{project_id}/locations/global/apps/{app_id}"
+    sessions_client = Sessions()
+    
+    # 2. Define a list of test queries for the "Check Order Status" CUJ
+    test_queries = [
+        "Where is my stuff?",
+        "Order status please",
+        "Track order 999"
+    ]
+    
+    print(f"Starting regression tests for App: {app_name}\n")
+    
+    for i, query in enumerate(test_queries):
+        # Best Practice: Use a unique session ID for each test to ensure isolation
+        session_id = f"test-order-{uuid.uuid4().hex[:8]}"
+        
+        print(f"Test {i+1}: User: '{query}'")
+        
+        response = sessions_client.run(
+            app_name=app_name,
+            text=query,
+            session_id=session_id
+        )
+        
+        print(f"Agent: '{response.text}'")
+        
+        # 4. Verify response (Basic string matching)
+        response_lower = response.text.lower()
+        passed = False
+        if "order" in response_lower or "status" in response_lower or "number" in response_lower:
+            passed = True
+            
+        if passed:
+            print("Result: PASS\n")
+        else:
+            print("Result: FAIL\n")
+
+    # Advanced: LLM-as-a-Judge Structure
+    # Prompt examples in solution use the best practices structure
+    print("--- Advanced: LLM-as-a-Judge Prompt Structure ---")
+    print("To go beyond simple string matching, use an LLM to judge responses with structured prompts:\n")
+    
+    eval_prompt_template = """
+<goal>
+You are a test evaluator. Your goal is to determine if the agent's response successfully addressed the user's query about order status.
+</goal>
+
+<subtask>
+Evaluate the response based on the following criteria:
+<step>
+Did the agent acknowledge the request for order status?
+</step>
+<step>
+Did the agent either provide the status or ask for a specific order number to look it up?
+</step>
+</subtask>
+
+User Query: {query}
+Agent Response: {response}
+
+Output only 'PASS' or 'FAIL' with a short reason.
+"""
+    print(eval_prompt_template.format(
+        query="Where is my stuff?", 
+        response="I can help you track your order. Could you please provide your order number?"
+    ))
+
+if __name__ == "__main__":
+    # Set these in your environment before running:
+    # export GCP_PROJECT_ID="your-project-id"
+    # export CXAS_APP_ID="your-app-id"
+    run_regression_tests()
+</code></pre>
+</div>
+
+<h3>Key Steps Explained</h3>
+<ul>
+<li><strong>Test Isolation:</strong> We used <code>uuid.uuid4()</code> to generate unique session IDs for each turn. This prevents context from leaking between tests.</li>
+<li><strong>Best Practice Prompts:</strong> In the advanced section, we demonstrated how to use <code>&lt;goal&gt;</code>, <code>&lt;subtask&gt;</code>, and <code>&lt;step&gt;</code> tags to structure a prompt for an LLM judge. This ensures the judge understands its role and evaluation criteria clearly.</li>
+</ul>
+</section>
+
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<p>Here are the answers to the MCQs from the Day 27 challenge:</p>
+<ol>
+<li>
+<strong>Which method on the <code>Sessions</code> client is used to send a query?</strong><br/>
+<strong>Answer: C</strong> (<code>run()</code>)
+</li>
+<li>
+<strong>How do you switch the modality to audio in a session test?</strong><br/>
+<strong>Answer: B</strong> (Set <code>modality="audio"</code> and provide audio bytes)
+</li>
+</ol>
+</div>
+
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+
+<div class="preview">
+<p>Ready for the next step? The Day 27 solution will be linked in the Day 28 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>

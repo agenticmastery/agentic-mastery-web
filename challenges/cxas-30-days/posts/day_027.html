@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 27: Session Testing via Script (Automated Chat Tests) - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 27: Session Testing via Script (Automated Chat Tests)</h1>
+<p>Automate regression testing by programmatically interacting with your agent.</p>
+</header>
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Testing in the UI is great for exploration, but manual testing doesn't scale. To build production-grade agents, you need automated regression tests. Today, you take the leap from manual verification to automated quality assurance.</p>
+<p><strong>Achievement:</strong> You will learn how to use the SCRAPI <code>Sessions</code> client to programmatically interact with your agent, sending both text and audio queries and asserting on the responses.</p>
+<p><strong>Customer Value:</strong> Automated tests catch regressions before they reach users, ensuring a consistently high-quality experience for every Customer User Journey (CUJ).</p>
+<p><strong>Milestones:</strong> Learn the <code>Sessions.run</code> method, understand modality switching (Text vs. Audio), and write a basic test script.</p>
+<p><strong>Goals:</strong> Create a script that sends a sequence of messages to simulate a user journey and validates the agent's responses.</p>
+</div>
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 26, we mastered programmatic CRUD operations to build and manage our agentic infrastructure. You can review the solution for automated provisioning <a href="day_026_solution.html">here</a>. Today, we shift focus from building to testing, learning how to automate session interactions to ensure our agents behave as expected.</p>
+</div>
+<section class="lesson">
+<h2>Detailed Lesson: Session Testing with SCRAPI</h2>
+<p>The <code>Sessions</code> client in SCRAPI allows you to simulate user interactions with your App programmatically. This is crucial for building automated test suites that run as part of your CI/CD pipeline, ensuring that updates to prompts or tools don't break existing Customer User Journeys (CUJs).</p>
+
+<h3>1. Initializing the Sessions Client</h3>
+<p>To get started, you need to import and initialize the <code>Sessions</code> client.</p>
+<pre><code class="language-python">from cxas_scrapi import Sessions
+
+sessions_client = Sessions()
+APP_NAME = "projects/your-project-id/locations/your-location/apps/your-app-id"
+</code></pre>
+
+<h3>2. Text Testing</h3>
+<p>Sending a text query is the most common operation. You use the <code>run</code> method, passing the app name, the user text, and a session ID.</p>
+<pre><code class="language-python">response = sessions_client.run(
+    app_name=APP_NAME,
+    text="I want to check the status of my order 12345",
+    session_id="test-session-unique-id"
+)
+
+print(f"Agent Response: {response.text}")
+# You can now assert on the response text
+assert "status" in response.text.lower()
+</code></pre>
+<p>Using a consistent <code>session_id</code> allows you to maintain context across multiple turns in a single test case. To start a fresh conversation, use a new <code>session_id</code>.</p>
+
+<h3>3. Audio Testing</h3>
+<p>SCRAPI also supports testing audio modality, which is essential for validating voice-enabled agents. You can pass audio bytes and set the <code>modality</code> to "audio".</p>
+<pre><code class="language-python">with open("query_audio.wav", "rb") as f:
+    audio_content = f.read()
+
+response = sessions_client.run(
+    app_name=APP_NAME,
+    audio=audio_content,
+    modality="audio",
+    session_id="test-voice-session-id"
+)
+
+print(f"Agent Response (Text from Audio): {response.text}")
+</code></pre>
+
+<h3>The "Why" from the LLM Perspective</h3>
+<p>Why do we need automated script-based testing when LLMs are so smart? Because **LLMs are non-deterministic**. A prompt that works perfectly 95% of the time might fail on the 96th turn due to a slight variation in the user's phrasing or internal temperature sampling. By automating tests and running them repeatedly (or across a wide batch of inputs), we can reveal these non-deterministic failures before they impact customers. It allows us to measure confidence intervals for specific Customer User Journeys (CUJs) rather than relying on "vibes" from a few manual tests.</p>
+</section>
+
+<div class="challenge">
+<h3>The Day 27 Challenge: Automated Regression Test Script</h3>
+<p><strong>Scenario:</strong> EcoShop wants to ensure that their agent always correctly handles the "Check Order Status" Customer User Journey (CUJ). You need to write a script to automate this check.</p>
+<p><strong>Your Task:</strong> Write a Python script using the CXAS SCRAPI library to:
+<ol>
+    <li>Initialize the <code>Sessions</code> client.</li>
+    <li>Define a list of 3 different ways a user might ask to check their order status (e.g., "Where is my stuff?", "Order status please", "Track order 999").</li>
+    <li>Loop through these queries, sending each to the agent.</li>
+    <li>Verify that the agent's response contains relevant words like "order" or "status" or asks for an order number.</li>
+    <li>Print a clear report showing which queries passed and which failed.</li>
+</ol>
+</p>
+<p>Focus on structure and assertions. Do not hardcode the solution script here.</p>
+</div>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Test Isolation</h3>
+<p>Always use a unique, randomly generated session ID for each independent test case. This ensures that the state from a previous test doesn't bleed into the current one, preventing false positives or negatives.</p>
+</div>
+
+<div class="watch-out">
+<h3>Watch-Out: Rate Limiting</h3>
+<p>When running batch tests programmatically, be mindful of the API rate limits for your project. Rapidly firing hundreds of queries might trigger throttling. Implement exponential backoff in your test scripts if you encounter <code>429 Too Many Requests</code> errors.</p>
+</div>
+
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of SCRAPI session testing:</p>
+<ol>
+<li>
+<strong>Which method on the <code>Sessions</code> client is used to send a query?</strong><br/>
+<small>
+                    A) <code>send()</code><br/>
+                    B) <code>execute()</code><br/>
+                    C) <code>run()</code><br/>
+                    D) <code>interact()</code>
+                    </small>
+</li>
+<li>
+<strong>How do you switch the modality to audio in a session test?</strong><br/>
+<small>
+                    A) Set <code>type="audio"</code><br/>
+                    B) Set <code>modality="audio"</code> and provide audio bytes<br/>
+                    C) Call <code>sessions_client.run_audio()</code><br/>
+                    D) It is automatically detected from the input file extension.
+                    </small>
+</li>
+</ol>
+</div>
+
+<div class="preview">
+<p>Up Next: Day 28 - Golden-Based Evals <a href="day_028.html">Preview Day 28</a></p>
+</div>
+</div>
+</body>
+</html>
