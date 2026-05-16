@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 28 Solution: Advanced Evals via Script - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 28 Solution: Advanced Evals via Script</h1>
+<p>Python script to automate simulation evaluations and MCQ answers.</p>
+</header>
+
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> You've mastered programmatic simulation evals, a top-tier capability for testing complex multi-turn conversations. This is where true quality engineering happens.</p>
+<p><strong>Customer Value:</strong> By simulating real-world personas, you ensure that edge cases are handled gracefully, protecting the user experience and brand reputation.</p>
+</div>
+
+<section class="solution">
+<h2>Solution: Python Script for Simulation Evals</h2>
+<p>Here is the complete Python script to automate the simulation eval for the "Late Return" scenario. Note how we define the persona, goal, and success criteria, and then programmatically check the result.</p>
+
+<div class="code-block">
+<pre><code class="language-python">import os
+from cxas_scrapi import Evaluations
+
+def run_simulation_eval():
+    """Triggers a simulation evaluation against the EcoShop agent."""
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    app_id = os.environ.get("CXAS_APP_ID")
+    
+    if not project_id or not app_id:
+        print("Error: GCP_PROJECT_ID or CXAS_APP_ID environment variables not set.")
+        return
+
+    app_name = f"projects/{project_id}/locations/global/apps/{app_id}"
+    evals_client = Evaluations()
+    
+    # 2. Define simulation configuration for the "Late Return" scenario
+    simulation_config = {
+        "app_name": app_name,
+        "user_persona": "A polite but firm customer trying to return shoes bought 45 days ago.",
+        "conversation_goal": "Get a refund despite being outside the 30-day window.",
+        "max_turns": 6,
+        "success_criteria": "The agent must politely refuse the refund based on the policy but offer an alternative like store credit or an exchange."
+    }
+    
+    print("Triggering simulation eval for Late Return scenario...")
+    result = evals_client.run_simulation(simulation_config)
+    
+    # 4. Programmatically check results
+    print(f"\nStatus: {result.status}")
+    print(f"Score: {result.score}")
+    print(f"Reasoning: {result.reasoning}")
+    
+    if result.status == "PASSED":
+        print("Result: SUCCESS - Agent followed policy.")
+    else:
+        print("Result: FAIL - Agent did not meet success criteria.")
+        print("\nConversation Log:")
+        for turn in result.conversation_log:
+            print(f"{turn.role}: {turn.text}")
+
+    # Advanced: Structured Evaluation Prompt for Simulator Judge
+    print("\n--- Advanced: Structured Evaluation Prompt for Simulator Judge ---")
+    print("Behind the scenes, the evaluation engine might use a structured prompt like this to judge the conversation:\n")
+    
+    eval_prompt_template = """
+<role>You are an expert quality assurance judge for conversational AI.</role>
+
+<primary_goal>Evaluate if the agent correctly followed the return policy in the conversation.</primary_goal>
+
+<constraints>
+- Base your evaluation strictly on the provided transcript.
+- The return policy states items must be returned within 30 days.
+</constraints>
+
+<taskflow>
+<subtask>
+Verify adherence to policy:
+<step>
+<trigger>Agent addresses the return request.</trigger>
+<action>Check if the agent identified that the purchase was outside the 30-day window.</action>
+</step>
+<step>
+<trigger>Agent refuses the refund.</trigger>
+<action>Verify the refusal was polite and cited the policy.</action>
+</step>
+<step>
+<trigger>Agent offers alternatives.</trigger>
+<action>Check if the agent offered store credit or an exchange instead of a full refund.</action>
+</step>
+</subtask>
+</taskflow>
+
+Transcript:
+{transcript}
+"""
+    print(eval_prompt_template.format(transcript="[Transcript would appear here]"))
+
+if __name__ == "__main__":
+    # Set these in your environment before running:
+    # export GCP_PROJECT_ID="your-project-id"
+    # export CXAS_APP_ID="your-app-id"
+    run_simulation_eval()
+</code></pre>
+</div>
+
+<h3>Key Steps Explained</h3>
+<ul>
+<li><strong>Dynamic Simulation:</strong> Instead of static inputs, we used an LLM-driven persona to converse dynamically with the agent.</li>
+<li><strong>Structured Evaluation:</strong> In the advanced section, we demonstrated how to use <code>&lt;role&gt;</code>, <code>&lt;primary_goal&gt;</code>, <code>&lt;subtask&gt;</code>, and <code>&lt;step&gt;</code> tags to structure the evaluation criteria for the judge. This aligns with best practices for complex prompt engineering.</li>
+</ul>
+</section>
+
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<p>Here are the answers to the MCQs from the Day 28 challenge:</p>
+<ol>
+<li>
+<strong>What is the primary difference between Session Testing and Simulation Evals?</strong><br/>
+<strong>Answer: B</strong> (Session testing uses fixed inputs; simulations use an LLM-driven persona for dynamic multi-turn interaction.)
+</li>
+<li>
+<strong>Which component in a simulation config defines the success condition?</strong><br/>
+<strong>Answer: C</strong> (success_criteria)
+</li>
+</ol>
+</div>
+
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+
+<div class="preview">
+<p>Ready for the next step? The Day 28 solution will be linked in the Day 29 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>

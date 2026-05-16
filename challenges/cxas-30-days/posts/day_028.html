@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 28: Advanced Evals via Script (Programmatic Testing) - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 28: Advanced Evals via Script (Programmatic Testing)</h1>
+<p>Level up your testing by triggering full simulation evaluations programmatically.</p>
+</header>
+
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> Yesterday, you learned how to script individual session interactions. That's a great start, but to truly guarantee quality at scale, you need to simulate complete, multi-turn Customer User Journeys (CUJs) with varied personas. Today, you master automated simulation evals.</p>
+<p><strong>Achievement:</strong> You will learn how to use the SCRAPI <code>Evaluations</code> client to trigger full conversation simulations and programmatically assert on the quality metrics.</p>
+<p><strong>Customer Value:</strong> By running these advanced evals automatically, you ensure that your agent can handle complex, non-linear conversations gracefully, providing a seamless experience for real users.</p>
+<p><strong>Milestones:</strong> Learn the <code>Evaluations.run_simulation</code> method, understand how to define test personas, and parse evaluation results in your scripts.</p>
+<p><strong>Goals:</strong> Write a script that triggers a simulation eval for a specific scenario and validates that the agent meets the success criteria.</p>
+</div>
+
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 27, we learned how to automate session testing by sending direct queries and asserting on responses. You can review the solution for session testing <a href="day_027_solution.html">here</a>. Today, we move from testing single turns or fixed scripts to dynamic simulations that truly stress-test your agent's capabilities.</p>
+</div>
+
+<section class="lesson">
+<h2>Detailed Lesson: Programmatic Simulation Evals</h2>
+<p>While session testing is excellent for regression checks on specific phrases, <strong>Simulation Evals</strong> use an LLM-driven "User Simulator" to interact with your agent. This allows you to test how your agent handles context, multi-turn logic, and unexpected user behaviors across full Customer User Journeys (CUJs).</p>
+
+<h3>1. The Evaluations Client</h3>
+<p>SCRAPI provides the <code>Evaluations</code> client to manage these complex tests. Instead of sending raw text, you define a <strong>Persona</strong> and a <strong>Goal</strong> for the simulator.</p>
+<pre><code class="language-python">from cxas_scrapi import Evaluations
+
+evals_client = Evaluations()
+APP_NAME = "projects/your-project-id/locations/your-location/apps/your-app-id"
+</code></pre>
+
+<h3>2. Triggering a Simulation</h3>
+<p>To trigger a simulation, you define the configuration, including the persona (who the user is) and the success criteria (what the agent must achieve or prevent).</p>
+<pre><code class="language-python">simulation_config = {
+    "app_name": APP_NAME,
+    "user_persona": "A customer who received a damaged item and is very upset. They do not have the original packaging.",
+    "conversation_goal": "Insist on a full refund and a shipping label for return.",
+    "max_turns": 8,
+    "success_criteria": "The agent must offer a replacement or refund and provide instructions for return without packaging, while maintaining a empathetic tone."
+}
+
+print("Triggering simulation eval...")
+result = evals_client.run_simulation(simulation_config)
+</code></pre>
+
+<h3>3. Analyzing Results</h3>
+<p>The result object contains detailed information about the simulation, including whether it passed the success criteria, a score, and the full conversation transcript.</p>
+<pre><code class="language-python">print(f"Status: {result.status}") # e.g., PASSED or FAILED
+print(f"Score: {result.score}")
+print(f"Reasoning: {result.reasoning}")
+
+if result.status == "FAILED":
+    print("Conversation Log:")
+    for turn in result.conversation_log:
+        print(f"{turn.role}: {turn.text}")
+</code></pre>
+
+<h3>The "Why" from the LLM Perspective</h3>
+<p>Why rely on simulations rather than just large datasets of real logs? Because simulations allow you to **explore the edge cases** that haven't happened yet. By defining diverse, adversarial, or complex personas, you force the agent into state spaces it might rarely visit in production. Automated quality gates powered by these simulations ensure that a change to improve one CUJ doesn't silently break another complex multi-turn journey. It provides continuous assurance in a non-deterministic environment.</p>
+</section>
+
+<div class="challenge">
+<h3>The Day 28 Challenge: Scripted Simulation Eval</h3>
+<p><strong>Scenario:</strong> EcoShop wants to ensure that their agent strictly follows the return policy: items must be returned within 30 days. They want to simulate a customer trying to return an item purchased 45 days ago.</p>
+<p><strong>Your Task:</strong> Write a Python script using the CXAS SCRAPI library to:
+<ol>
+    <li>Initialize the <code>Evaluations</code> client.</li>
+    <li>Define a simulation configuration for the "Late Return" scenario.
+        <ul>
+            <li><strong>Persona:</strong> A polite but firm customer trying to return shoes bought 45 days ago.</li>
+            <li><strong>Goal:</strong> Get a refund despite being outside the 30-day window.</li>
+            <li><strong>Success Criteria:</strong> The agent must politely refuse the refund based on the policy but offer an alternative like store credit or an exchange.</li>
+        </ul>
+    </li>
+    <li>Trigger the simulation.</li>
+    <li>Programmatically check if the status is "PASSED".</li>
+    <li>Print the reasoning provided by the evaluation engine.</li>
+</ol>
+</p>
+<p>Focus on the script structure and assertions. Do not give away the solution script here!</p>
+</div>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Persona Versioning</h3>
+<p>Treat your evaluation personas as code. Store them in version control along with your agent configurations. As your product evolves, your test personas should evolve too. This ensures your test suite remains relevant.</p>
+</div>
+
+<div class="watch-out">
+<h3>Watch-Out: Simulation Costs</h3>
+<p>Because simulation evals use LLMs for both the user side and the evaluation logic, they are more resource-intensive and costly than simple unit tests. Run them strategically—e.g., on a schedule or before major releases—rather than on every single commit.</p>
+</div>
+
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of SCRAPI simulation evals:</p>
+<ol>
+<li>
+<strong>What is the primary difference between Session Testing and Simulation Evals?</strong><br/>
+<small>
+                    A) Session testing is for audio, simulations are for text.<br/>
+                    B) Session testing uses fixed inputs; simulations use an LLM-driven persona for dynamic multi-turn interaction.<br/>
+                    C) Session testing is online; simulations are offline.<br/>
+                    D) There is no difference; they are synonyms.
+                    </small>
+</li>
+<li>
+<strong>Which component in a simulation config defines the success condition?</strong><br/>
+<small>
+                    A) <code>user_persona</code><br/>
+                    B) <code>conversation_goal</code><br/>
+                    C) <code>success_criteria</code><br/>
+                    D) <code>max_turns</code>
+                    </small>
+</li>
+</ol>
+</div>
+
+<div class="preview">
+<p>Up Next: Day 29 - Online Monitoring and Analytics <a href="day_029.html">Preview Day 29</a></p>
+</div>
+</div>
+</body>
+</html>
