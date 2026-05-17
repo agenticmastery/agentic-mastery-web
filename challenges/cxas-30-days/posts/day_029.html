@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 29: Full Automated Build (One-Click Deploy) - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 29: Full Automated Build (One-Click Deploy)</h1>
+<p>Bring it all together by scripting the complete lifecycle of your agent from creation to testing.</p>
+</header>
+
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Motivation:</strong> You have learned to build, connect tools, and test your agent. But doing these manually or in separate steps is not scalable. True mastery means automating the entire pipeline. Today, you will combine everything into a single, one-click deployment script.</p>
+<p><strong>Achievement:</strong> You will learn how to sequence SCRAPI operations to create an agent, bind tools, and run baseline tests in a single automated flow.</p>
+<p><strong>Customer Value:</strong> One-click deployment means zero manual errors, guaranteed consistency across environments, and the ability to iterate and ship features in minutes rather than hours.</p>
+<p><strong>Milestones:</strong> Master the orchestration of <code>Apps</code>, <code>Tools</code>, and <code>Evaluations</code> APIs in a single Python script.</p>
+<p><strong>Goals:</strong> Write a master script that builds a functional agent with a tool and validates it with a test, all from a single command.</p>
+</div>
+
+<div class="refresher">
+<h3>Refresher &amp; Orientation</h3>
+<p>On Day 28, we mastered advanced simulation evaluations to test complex, multi-turn Customer User Journeys (CUJs). You can review the solution for simulation testing <a href="day_028_solution.html">here</a>. Today is the culmination of your technical skills: we are going to take everything we've learned and wrap it into a full automated build script.</p>
+</div>
+
+<section class="lesson">
+<h2>Detailed Lesson: One-Click Deploy Orchestration</h2>
+<p>Manual configuration is the enemy of scale. If you have to click in a UI to connect a tool or manually trigger a test, you cannot guarantee that what you tested is what is actually deployed. Programmatic orchestration ensures that your agent's configuration is versioned code.</p>
+
+<h3>1. The Orchestration Flow</h3>
+<p>A full automated build typically follows these steps:</p>
+<ol>
+    <li><strong>Create/Update Agent:</strong> Use the <code>Apps</code> client to define the agent's core prompt and settings.</li>
+    <li><strong>Create/Bind Tools:</strong> Use the <code>Tools</code> client to register functions and attach them to the agent.</li>
+    <li><strong>Baseline Testing:</strong> Use the <code>Sessions</code> or <code>Evaluations</code> client to run a set of standard tests to ensure the new build is healthy.</li>
+</ol>
+
+<h3>2. Combining the Clients</h3>
+<p>Here is how you can structure a script to combine these operations using SCRAPI:</p>
+<pre><code class="language-python">from cxas_scrapi import Apps, Tools, Evaluations
+import os
+
+def full_automated_build():
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    location = "global"
+    
+    apps_client = Apps()
+    tools_client = Tools()
+    evals_client = Evaluations()
+
+    # Step 1: Create the Agent
+    print("Creating agent...")
+    app_config = {
+        "display_name": "EcoShop Automated Agent",
+        "instructions": "You are a helpful assistant for EcoShop. Use tools when necessary.",
+        "model": "gemini-1.5-pro"
+    }
+    app = apps_client.create_app(project_id, location, app_config)
+    app_id = app.name.split("/")[-1]
+    print(f"Agent created with ID: {app_id}")
+
+    # Step 2: Add a Tool
+    print("Registering tool...")
+    tool_config = {
+        "display_name": "CheckStock",
+        "description": "Check stock for a given item.",
+        "function_spec": {
+             "name": "check_stock",
+             "parameters": {
+                 "type": "OBJECT",
+                 "properties": {
+                     "item_name": {"type": "STRING"}
+                 },
+                 "required": ["item_name"]
+             }
+        }
+    }
+    tool = tools_client.create_tool(project_id, location, tool_config)
+    
+    # Bind tool to app (conceptual)
+    print("Binding tool to agent...")
+    apps_client.bind_tool(app.name, tool.name)
+
+    # Step 3: Run Baseline Test
+    print("Running baseline test...")
+    simulation_config = {
+        "app_name": app.name,
+        "user_persona": "A regular customer asking about stock.",
+        "conversation_goal": "Ask if organic apples are in stock.",
+        "max_turns": 3,
+        "success_criteria": "The agent must attempt to use the {@TOOL: CheckStock} tool."
+    }
+    result = evals_client.run_simulation(simulation_config)
+    print(f"Test Status: {result.status}")
+
+if __name__ == "__main__":
+    full_automated_build()
+</code></pre>
+
+<h3>The "Why" from the LLM Perspective</h3>
+<p>From an LLM's perspective, environment consistency is everything. If the prompt says the agent has access to a tool called <code>CheckStock</code>, but that tool was not correctly bound in the backend due to a manual error, the LLM will still try to invoke it, leading to a runtime failure that it cannot recover from. Complete automation minimizes this "configuration drift." It ensures that the agent's internal model of its capabilities perfectly matches the reality of the infrastructure it is deployed on, leading to much more predictable and reliable behavior.</p>
+</section>
+
+<div class="challenge">
+<h3>The Day 29 Challenge: EcoShop One-Click Deploy</h3>
+<p><strong>Scenario:</strong> EcoShop wants a single script that they can run in their CI/CD pipeline to deploy a brand new instance of their agent whenever they update the core prompt or tools.</p>
+<p><strong>Your Task:</strong> Write a Python script using the CXAS SCRAPI library to automate the following sequence:
+<ol>
+    <li>Create a new app named "EcoShop-FullAuto-[YourInitials]".</li>
+    <li>Create a tool named <code>{@TOOL: GetOrderDetails}</code> with a simple function specification (requiring an `order_id`).</li>
+    <li>Bind that tool to the newly created app.</li>
+    <li>Run a short simulation eval to verify that the agent correctly identifies when to use the tool (e.g., when asked "Where is my order?").</li>
+    <li>Print the final result of the build and test.</li>
+</ol>
+</p>
+<p>Do not hardcode project IDs; use environment variables. Focus on the orchestration logic. Do not give away the solution script here!</p>
+</div>
+
+<div class="pro-tip">
+<h3>Pro-Tip: Idempotency</h3>
+<p>Make your build scripts idempotent. This means if you run the script twice, it shouldn't fail or create duplicate resources. Check if a tool or app already exists before creating it, or use an "update or create" logic. This makes your automation much more robust.</p>
+</div>
+
+<div class="watch-out">
+<h3>Watch-Out: Cleanup on Failure</h3>
+<p>If your automated build fails halfway (e.g., the tool creation succeeds but the test fails), ensure your script handles cleanup. Leaving orphaned apps or tools around can clutter your project and increase costs. Use <code>try...finally</code> blocks to clean up resources if the build process does not complete successfully.</p>
+</div>
+
+<div class="knowledge-check">
+<h3>Knowledge Check (MCQs)</h3>
+<p>Test your understanding of automated builds:</p>
+<ol>
+<li>
+<strong>Why is full automation preferred over manual configuration for agent deployment?</strong><br/>
+<small>
+                    A) It makes the agent run faster.<br/>
+                    B) It guarantees consistency and eliminates manual errors.<br/>
+                    C) It allows the agent to learn from its own mistakes.<br/>
+                    D) It is required by the Gemini model.
+                    </small>
+</li>
+<li>
+<strong>What is the recommended practice if an automated build fails mid-way?</strong><br/>
+<small>
+                    A) Leave the resources as they are for debugging.<br/>
+                    B) Delete all resources in the project manually.<br/>
+                    C) Implement cleanup logic to remove orphaned resources.<br/>
+                    D) Ignore the failure and try again.
+                    </small>
+</li>
+</ol>
+</div>
+
+<div class="preview">
+<p>Up Next: Day 30 - Final Review &amp; Graduation <a href="day_030.html">Preview Day 30</a></p>
+</div>
+</div>
+</body>
+</html>

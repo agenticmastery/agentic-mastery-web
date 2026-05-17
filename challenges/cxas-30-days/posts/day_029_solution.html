@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Day 29 Solution: Full Automated Build - CXAS 30-Day Challenge</title>
+<link href="../style.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Day 29 Solution: Full Automated Build</h1>
+<p>Python script to automate the creation, tool binding, and testing of an agent.</p>
+</header>
+
+<div class="mentor-guidance">
+<h3>Super Mentor Guidance</h3>
+<p><strong>Achievement:</strong> You've successfully orchestrated a complete agent lifecycle programmatically. This is a huge milestone. You are no longer just building agents; you are engineering agentic systems.</p>
+<p><strong>Customer Value:</strong> This automation ensures that EcoShop can deploy updates safely and quickly, maintaining a high bar for customer experience without manual overhead.</p>
+</div>
+
+<section class="solution">
+<h2>Solution: Python Script for One-Click Deploy</h2>
+<p>Here is the complete Python script to automate the creation of the agent, registering the <code>{@TOOL: GetOrderDetails}</code> tool, binding it, and running a verification test.</p>
+
+<div class="code-block">
+<pre><code class="language-python">import os
+from cxas_scrapi import Apps, Tools, Evaluations
+
+def run_one_click_deploy():
+    """Automates the creation, tool binding, and testing of an agent."""
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    location = "global"
+    
+    if not project_id:
+        print("Error: GCP_PROJECT_ID environment variable not set.")
+        return
+
+    apps_client = Apps()
+    tools_client = Tools()
+    evals_client = Evaluations()
+
+    # 1. Create Agent with best-practice structured instructions
+    print("Creating agent...")
+    instructions = """
+<role>You are a professional customer service agent for EcoShop.</role>
+
+<primary_goal>Help customers track their orders and answer questions politely.</primary_goal>
+
+<taskflow>
+<subtask>
+Handle order tracking:
+<step>
+<trigger>Customer asks "Where is my order?" or provides an order ID.</trigger>
+<action>Call the {@TOOL: GetOrderDetails} tool to retrieve status.</action>
+</step>
+</subtask>
+</taskflow>
+"""
+    
+    app_config = {
+        "display_name": "EcoShop-FullAuto-SR",
+        "instructions": instructions,
+        "model": "gemini-1.5-pro"
+    }
+    
+    try:
+        app = apps_client.create_app(project_id, location, app_config)
+        app_name = app.name
+        print(f"Agent created: {app_name}")
+
+        # 2. Create Tool
+        print("Creating GetOrderDetails tool...")
+        tool_config = {
+            "display_name": "GetOrderDetails",
+            "description": "Retrieves shipping status and items for a given order ID.",
+            "function_spec": {
+                 "name": "get_order_details",
+                 "parameters": {
+                     "type": "OBJECT",
+                     "properties": {
+                         "order_id": {"type": "STRING", "description": "The 6-digit order number."}
+                     },
+                     "required": ["order_id"]
+                 }
+            }
+        }
+        tool = tools_client.create_tool(project_id, location, tool_config)
+        print(f"Tool created: {tool.name}")
+
+        # 3. Bind Tool to App
+        print("Binding tool to agent...")
+        apps_client.bind_tool(app_name, tool.name)
+        print("Tool bound successfully.")
+
+        # 4. Run Baseline Test
+        print("Running verification simulation...")
+        simulation_config = {
+            "app_name": app_name,
+            "user_persona": "A customer checking on their order.",
+            "conversation_goal": "Ask 'Where is my order #12345?'",
+            "max_turns": 4,
+            "success_criteria": "The agent must attempt to call the {@TOOL: GetOrderDetails} tool with the order_id '12345'."
+        }
+        result = evals_client.run_simulation(simulation_config)
+        
+        print(f"\nTest Status: {result.status}")
+        print(f"Score: {result.score}")
+        print(f"Reasoning: {result.reasoning}")
+        
+        if result.status == "PASSED":
+            print("\nBuild and Test SUCCESSFUL!")
+        else:
+            print("\nBuild succeeded but Test FAILED.")
+            
+    except Exception as e:
+        print(f"\nAn error occurred during deployment: {e}")
+        print("Consider implementing cleanup logic here to remove partially created resources.")
+
+if __name__ == "__main__":
+    run_one_click_deploy()
+</code></pre>
+</div>
+
+<h3>Key Steps Explained</h3>
+<ul>
+<li><strong>Structured Instructions:</strong> We used <code>&lt;role&gt;</code>, <code>&lt;primary_goal&gt;</code>, <code>&lt;subtask&gt;</code>, and <code>&lt;step&gt;</code> tags in the agent's instructions. This helps the LLM understand its task flow clearly.</li>
+<li><strong>Sequential Orchestration:</strong> The script ensures that the tool is created and bound *before* the test is run, preventing race conditions.</li>
+<li><strong>Error Handling:</strong> The <code>try...except</code> block catches failures, and a production script should include specific cleanup calls in a <code>finally</code> block.</li>
+</ul>
+</section>
+
+<div class="knowledge-check">
+<h3>Knowledge Check Answers</h3>
+<p>Here are the answers to the MCQs from the Day 29 challenge:</p>
+<ol>
+<li>
+<strong>Why is full automation preferred over manual configuration for agent deployment?</strong><br/>
+<strong>Answer: B</strong> (It guarantees consistency and eliminates manual errors.)
+</li>
+<li>
+<strong>What is the recommended practice if an automated build fails mid-way?</strong><br/>
+<strong>Answer: C</strong> (Implement cleanup logic to remove orphaned resources.)
+</li>
+</ol>
+</div>
+
+<div class="newsletter-signup">
+<h3>Want the Daily Solution &amp; Technical Weekly Summary?</h3>
+<p>Join 1,000+ AI Architects mastering Agentic AI.</p>
+<iframe frameborder="0" height="320" scrolling="no" src="https://agenticmastery.substack.com/embed" style="border: 1px solid #EEE; background: white" width="480"></iframe>
+</div>
+
+<div class="preview">
+<p>Ready for graduation? The Day 29 solution will be linked in the Day 30 challenge refresher.</p>
+</div>
+</div>
+</body>
+</html>
