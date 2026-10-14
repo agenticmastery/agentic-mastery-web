@@ -2,6 +2,15 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function isValidHttpUrl(value) {
+    try {
+        const parsed = new URL(value);
+        return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+    } catch (_err) {
+        return false;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const clientForm = document.getElementById('client-form');
@@ -21,14 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            switchTab(btn.getAttribute('data-tab'));
+            const tabName = btn.getAttribute('data-tab');
+            if (tabName) {
+                switchTab(tabName);
+            }
         });
     });
 
     document.querySelectorAll('[data-tab-target]').forEach(link => {
         link.addEventListener('click', () => {
             const target = link.getAttribute('data-tab-target');
-            if (target) switchTab(target);
+            if (target) {
+                switchTab(target);
+            }
         });
     });
 
@@ -36,26 +50,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const status = document.getElementById('cli-status');
         clientForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const name = document.getElementById('cli-name').value.trim();
-            const email = document.getElementById('cli-email').value.trim();
-            const company = document.getElementById('cli-company').value.trim();
-            const need = document.getElementById('cli-need').value.trim();
-            const notes = document.getElementById('cli-notes').value.trim();
+            const nameInput = document.getElementById('cli-name');
+            const emailInput = document.getElementById('cli-email');
+            const companyInput = document.getElementById('cli-company');
+            const needInput = document.getElementById('cli-need');
+            const notesInput = document.getElementById('cli-notes');
+
+            const name = nameInput ? nameInput.value.trim() : '';
+            const email = emailInput ? emailInput.value.trim() : '';
+            const company = companyInput ? companyInput.value.trim() : '';
+            const need = needInput ? needInput.value.trim() : '';
+            const notes = notesInput ? notesInput.value.trim() : '';
 
             if (!name || !isValidEmail(email) || !company) {
-                status.textContent = 'Please complete your name, work email, and company.';
-                status.className = 'status-msg error';
+                if (status) {
+                    status.textContent = 'Please complete your full name, valid work email, and organization name.';
+                    status.className = 'status-msg error';
+                }
                 return;
             }
 
-            status.textContent = 'Opening your email client to confirm your request...';
-            status.className = 'status-msg success';
+            if (status) {
+                status.textContent = 'Opening your email client to submit your partner request...';
+                status.className = 'status-msg success';
+            }
 
-            const subject = encodeURIComponent(`[AgenticMastery Client Partner] ${company} — ${need}`);
+            const subject = encodeURIComponent(`[AgenticMastery Hiring Partner] ${company} — ${need}`);
             const body = encodeURIComponent(
-                `Hi Sundar,\n\nName: ${name}\nEmail: ${email}\nCompany: ${company}\nInquiry: ${need}\nDetails: ${notes || 'N/A'}\n`
+                `Hello AgenticMastery.ai Leadership Team,\n\nPartner Name: ${name}\nWork Email: ${email}\nOrganization (Product / GCC): ${company}\nPrimary Track: ${need}\nRole & Timeline Context: ${notes || 'N/A'}\n`
             );
-            window.location.href = `mailto:sundarrajan.raman@gmail.com?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:partners@agenticmastery.ai?subject=${subject}&body=${body}`;
         });
     }
 
@@ -63,25 +87,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const status = document.getElementById('eng-status');
         engineerForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const name = document.getElementById('eng-name').value.trim();
-            const email = document.getElementById('eng-email').value.trim();
-            const role = document.getElementById('eng-role').value.trim();
-            const link = document.getElementById('eng-link').value.trim();
+            const nameInput = document.getElementById('eng-name');
+            const emailInput = document.getElementById('eng-email');
+            const roleInput = document.getElementById('eng-role');
+            const linkInput = document.getElementById('eng-link');
 
-            if (!name || !isValidEmail(email) || !link) {
-                status.textContent = 'Please enter your name, email, and LinkedIn/GitHub URL.';
-                status.className = 'status-msg error';
+            const name = nameInput ? nameInput.value.trim() : '';
+            const email = emailInput ? emailInput.value.trim() : '';
+            const role = roleInput ? roleInput.value.trim() : '';
+            const link = linkInput ? linkInput.value.trim() : '';
+
+            if (!name || !isValidEmail(email) || !isValidHttpUrl(link)) {
+                if (status) {
+                    status.textContent = 'Please enter your full name, valid email, and a valid https:// LinkedIn or GitHub URL.';
+                    status.className = 'status-msg error';
+                }
                 return;
             }
 
-            status.textContent = 'Opening your email client to submit your profile...';
-            status.className = 'status-msg success';
+            if (status) {
+                status.textContent = 'Opening your email client to submit your profile for architecture verification...';
+                status.className = 'status-msg success';
+            }
 
-            const subject = encodeURIComponent(`[AgenticMastery Architect Network] ${name} (${role})`);
+            const subject = encodeURIComponent(`[AgenticMastery Pre-Checked Network] ${name} (${role})`);
             const body = encodeURIComponent(
-                `Hi Sundar,\n\nName: ${name}\nEmail: ${email}\nSpecialty: ${role}\nLinkedIn / GitHub: ${link}\n`
+                `Hello AgenticMastery.ai Evaluation Committee,\n\nCandidate Name: ${name}\nEmail: ${email}\nPrimary Track: ${role}\nLinkedIn / GitHub URL: ${link}\n`
             );
-            window.location.href = `mailto:sundarrajan.raman@gmail.com?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:talent@agenticmastery.ai?subject=${subject}&body=${body}`;
         });
     }
 });
