@@ -4,188 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:;">
-    <title>AgenticMastery.ai | Recruiter &amp; Hiring Partner Workspace</title>
-    <meta name="description" content="Interactive 4-Agent JD-to-Candidate Matching Workspace. Evaluate pre-checked AI, FDE, and Cloud Architects verified by leaders from Tier-1 Product Companies (like Google) and Enterprise GCCs (like Bank of America).">
+    <title>Agentic Matcher | AgenticMastery.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="portal.css">
     <script defer src="js/candidates-data.js"></script>
     <script defer src="js/agentic-matcher.js"></script>
     <script defer src="js/portal-app.js"></script>
 </head>
 <body>
-    <!-- Google 4-Color Top Line -->
     <div class="google-bar" aria-hidden="true">
         <span class="b"></span><span class="r"></span><span class="y"></span><span class="g"></span>
     </div>
 
-    <!-- Top Workspace Bar -->
     <header class="portal-header">
-        <div class="portal-nav-container">
+        <div class="container header-inner">
             <a href="index.html" class="brand">
-                <img src="assets/logo.jpg" alt="AgenticMastery.ai Logo" class="brand-img">
-                <span class="brand-title">Agentic<strong>Mastery</strong>.ai <span class="brand-divider">|</span> <span class="brand-subtitle">Recruiter &amp; Hiring Partner Workspace</span></span>
+                <img src="assets/logo.jpg" alt="AgenticMastery" class="brand-img">
+                <span class="brand-title">Agentic<strong>Mastery</strong>.ai</span>
+                <span class="workspace-pill">Agentic JD Matcher</span>
             </a>
-
-            <div class="pedigree-header-badge">
-                <span class="dot"></span>
-                <span>Pre-Checked by Product (Google) &amp; GCC (Bank of America) Leaders</span>
-            </div>
-
-            <div class="portal-header-actions">
-                <button type="button" id="open-shortlist-btn" class="btn btn-secondary btn-sm">
-                    <span id="shortlist-btn-label">Shortlisted Candidates (0)</span>
+            <div class="header-right">
+                <button type="button" id="shortlist-btn" class="btn btn-primary btn-sm">
+                    Shortlist (<span id="shortlist-count">0</span>)
                 </button>
-                <button type="button" id="export-shortlist-top-btn" class="btn btn-primary btn-sm">
-                    Export Shortlist Brief
-                </button>
-                <a href="index.html" class="btn btn-outline btn-sm">Back to Home</a>
+                <a href="index.html" class="btn btn-outline btn-sm">&larr; Home</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Interactive Workspace -->
-    <main class="workspace-container">
-        <!-- Institutional Context & Expectation Alignment Banner -->
-        <section class="workspace-intro-banner" aria-label="Workspace Overview">
-            <div class="workspace-intro-left">
-                <h1>4-Agent Semantic JD-to-Candidate Matching Workspace</h1>
-                <p>
-                    Built by engineering and talent leaders from <strong>Tier-1 Product Companies (like Google)</strong> and <strong>Global Capability Centers / GCCs (like Bank of America)</strong>. Paste any Job Description below to match architectural equivalence, production evidence, and Product/GCC role DNA—going far beyond brittle keyword search.
-                </p>
+    <main class="container portal-main">
+        <!-- 1. GOOGLE-STYLE CLEAN SEARCH / JD BOX -->
+        <section class="search-card">
+            <div class="search-top">
+                <div>
+                    <h1>Match a Job Description to Pre-Checked Talent</h1>
+                    <p>Pick a sample role or paste your JD. Our 4-Agent Engine ranks candidates by architectural fit—not buzzwords.</p>
+                </div>
+                <div class="preset-chips" id="preset-chips">
+                    <button type="button" class="chip active" data-preset="product-fde">Product Co: Forward Deployed AI (FDE)</button>
+                    <button type="button" class="chip" data-preset="gcc-cloud-ai">Bank GCC: Cloud &amp; AI Architect</button>
+                    <button type="button" class="chip" data-preset="agentic-evals">AI Platform: Multi-Agent &amp; Evals</button>
+                </div>
             </div>
-            <div class="workspace-trust-pills">
-                <span class="trust-pill blue">Live System-Design Pre-Checked</span>
-                <span class="trust-pill green">Product &amp; GCC Expectation Aligned</span>
-                <span class="trust-pill" id="active-session-badge">Session: Recruiter Partner Workspace</span>
+
+            <div class="jd-bar">
+                <textarea id="jd-input" rows="2" placeholder="Paste any Job Description or requirement here..."></textarea>
+                <button type="button" id="run-match-btn" class="btn btn-primary">Run Agentic Match &rarr;</button>
             </div>
+
+            <!-- Compact 1-Line Agent Status Strip -->
+            <div class="agent-strip" id="agent-strip"></div>
         </section>
 
-        <div class="workspace-grid">
-            <!-- Left Control Panel: JD Input & Preset Selector -->
-            <aside class="jd-control-panel" aria-labelledby="jd-panel-heading">
-                <span class="panel-kicker">Step 1 &bull; Job Description Input</span>
-                <h2 id="jd-panel-heading">Configure Target Role &amp; JD</h2>
-                <p class="panel-sub">
-                    Select a 1-click benchmark JD or paste your custom role requirements to run our 4-Agent evaluation pipeline.
-                </p>
-
-                <span class="preset-label">One-Click Preset Job Descriptions</span>
-                <div class="preset-pills-group" id="preset-buttons-container">
-                    <button type="button" class="preset-pill active" data-preset-id="product-fde" id="preset-btn-product-fde">
-                        <span>Load Preset 1: Tier-1 Product Co FDE</span>
-                        <span class="preset-pill-tag">FDE</span>
-                    </button>
-                    <button type="button" class="preset-pill" data-preset-id="gcc-cloud-ai" id="preset-btn-gcc-cloud-ai">
-                        <span>Load Preset 2: Global Bank GCC Cloud/AI Architect</span>
-                        <span class="preset-pill-tag">GCC Cloud</span>
-                    </button>
-                    <button type="button" class="preset-pill" data-preset-id="agentic-evals" id="preset-btn-agentic-evals">
-                        <span>Load Preset 3: Applied Agentic AI &amp; Evals Lead</span>
-                        <span class="preset-pill-tag">Agentic AI</span>
-                    </button>
+        <!-- 2. COMPACT, SCANNABLE CANDIDATE LIST -->
+        <section class="results-section">
+            <div class="results-header">
+                <span id="results-summary" class="results-title">Top Pre-Checked Matches</span>
+                <div class="pillar-tabs" id="pillar-tabs">
+                    <button type="button" class="p-tab active" data-pillar="all">All</button>
+                    <button type="button" class="p-tab" data-pillar="FDE">FDE</button>
+                    <button type="button" class="p-tab" data-pillar="Agentic AI">Agentic AI</button>
+                    <button type="button" class="p-tab" data-pillar="Cloud & Infra">Cloud &amp; Infra</button>
                 </div>
-
-                <div class="form-field">
-                    <label for="jd-input">Job Description (Paste Custom JD or Edit Preset)</label>
-                    <textarea id="jd-input" class="form-textarea" placeholder="Paste any Job Description for Forward Deployed Engineers (FDE), Agentic AI Architects, or Cloud &amp; GenAI Infrastructure Leaders..."></textarea>
-                </div>
-
-                <div class="control-filter-row">
-                    <div class="form-field">
-                        <label for="pillar-filter">Specialty Practice Filter</label>
-                        <select id="pillar-filter" class="form-select">
-                            <option value="all">All Pillars</option>
-                            <option value="FDE">FDE</option>
-                            <option value="Agentic AI">Agentic AI</option>
-                            <option value="Cloud &amp; Infra">Cloud &amp; Infra</option>
-                        </select>
-                    </div>
-
-                    <button type="button" id="run-matcher-btn" class="btn btn-primary full-width btn-lg">
-                        Run 4-Agent Profile Match ⚡
-                    </button>
-                </div>
-
-                <!-- Live Parsed JD Expectation Vector Summary -->
-                <div id="jd-analysis-summary" class="jd-parsed-summary" aria-live="polite"></div>
-            </aside>
-
-            <!-- Right Column: 4-Agent Reasoning Trace Strip + Ranked Pre-Checked Candidate Cards -->
-            <div class="workspace-results-col">
-                <!-- 4-Agent Reasoning Trace Strip -->
-                <section class="trace-section-card" aria-labelledby="trace-heading">
-                    <div class="trace-header">
-                        <h2 id="trace-heading">
-                            <span>Live 4-Agent Reasoning Trace</span>
-                        </h2>
-                        <span class="trace-status-pill" id="trace-status-badge">✓ 4-Stage Ontology &amp; Rubric Pipeline Active</span>
-                    </div>
-                    <div id="agent-trace-container" class="agent-trace-grid" aria-live="polite"></div>
-                </section>
-
-                <!-- Ranked Pre-Checked Candidates Header -->
-                <section aria-labelledby="candidates-heading">
-                    <div class="candidates-section-header">
-                        <div>
-                            <span class="panel-kicker">Step 2 &bull; Compare, Pick &amp; Shortlist</span>
-                            <h2 id="candidates-heading">Ranked Pre-Checked Candidates (<span id="matched-count-label">0</span>)</h2>
-                        </div>
-                        <div class="score-legend">
-                            <span class="legend-item">
-                                <span class="legend-swatch agentic"></span>
-                                <span>Agentic Semantic Match % (Architecture + DNA + Evidence)</span>
-                            </span>
-                            <span class="legend-item">
-                                <span class="legend-swatch keyword"></span>
-                                <span>Traditional Keyword Match % (Exact Token Overlap)</span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Ranked Candidate Cards Container -->
-                    <div id="matched-candidates-list" class="candidates-list" style="margin-top: 1rem;" aria-live="polite"></div>
-                </section>
             </div>
-        </div>
+
+            <div id="candidate-list" class="candidate-list"></div>
+        </section>
     </main>
 
-    <!-- Shortlist Drawer / Modal -->
-    <div id="shortlist-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="shortlist-modal-title">
-        <div class="shortlist-modal-card">
-            <div class="shortlist-modal-header">
-                <div>
-                    <span class="panel-kicker">Recruiter Shortlist Cart &amp; Brief Generator</span>
-                    <h2 id="shortlist-modal-title">Shortlisted Pre-Checked Candidates</h2>
-                </div>
-                <button type="button" id="close-shortlist-modal-btn" class="btn btn-outline btn-sm">Close &times;</button>
+    <!-- SHORTLIST DRAWER MODAL -->
+    <div id="shortlist-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3>Your Picked Candidates</h3>
+                <button type="button" id="close-modal-btn" class="close-btn">&times;</button>
             </div>
-
-            <div class="shortlist-modal-body">
-                <div id="shortlist-items-list" class="shortlist-items-container"></div>
-
-                <div class="form-field">
-                    <label for="shortlist-brief-textarea">Ready-to-Send Hiring Manager Shortlist Brief</label>
-                    <textarea id="shortlist-brief-textarea" class="shortlist-brief-preview" readonly></textarea>
-                </div>
-            </div>
-
-            <div class="shortlist-modal-footer">
-                <span id="shortlist-modal-status" class="login-status"></span>
-                <div class="shortlist-modal-actions">
-                    <button type="button" id="copy-shortlist-brief-btn" class="btn btn-secondary btn-sm">
-                        Copy Complete Shortlist Brief
-                    </button>
-                    <button type="button" id="request-interviews-btn" class="btn btn-primary btn-sm">
-                        Request Live Interviews for Shortlist &rarr;
-                    </button>
-                </div>
+            <pre id="shortlist-text" class="shortlist-preview"></pre>
+            <div class="modal-actions">
+                <button type="button" id="copy-brief-btn" class="btn btn-secondary">Copy Hiring Manager Brief</button>
+                <a id="request-intro-link" href="mailto:sundarrajan.raman@gmail.com" class="btn btn-primary">Request Interviews &rarr;</a>
             </div>
         </div>
     </div>
-
-    <!-- Non-blocking Toast Notification -->
-    <div id="portal-toast" class="portal-toast hidden" role="status" aria-live="polite"></div>
 </body>
 </html>

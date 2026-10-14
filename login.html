@@ -3,100 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:;">
-    <title>Recruiter &amp; Hiring Partner Sign In | AgenticMastery.ai</title>
-    <meta name="description" content="Sign in to the AgenticMastery.ai Recruiter & Hiring Partner Workspace. Built by engineering and talent leaders from Tier-1 Product Companies (like Google) and Enterprise GCCs (like Bank of America).">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self';">
+    <title>Recruiter Sign In | AgenticMastery.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="portal.css">
-    <script defer src="js/portal-app.js"></script>
 </head>
 <body>
-    <!-- Google 4-Color Top Line -->
     <div class="google-bar" aria-hidden="true">
         <span class="b"></span><span class="r"></span><span class="y"></span><span class="g"></span>
     </div>
 
-    <!-- Top Workspace Navigation -->
     <header class="portal-header">
-        <div class="portal-nav-container">
+        <div class="container header-inner">
             <a href="index.html" class="brand">
-                <img src="assets/logo.jpg" alt="AgenticMastery.ai Logo" class="brand-img">
-                <span class="brand-title">Agentic<strong>Mastery</strong>.ai <span class="brand-divider">|</span> <span class="brand-subtitle">Recruiter &amp; Partner Access</span></span>
+                <img src="assets/logo.jpg" alt="AgenticMastery" class="brand-img">
+                <span class="brand-title">Agentic<strong>Mastery</strong>.ai</span>
             </a>
-
-            <div class="pedigree-header-badge">
-                <span class="dot"></span>
-                <span>Pre-Checked by Product (Google) &amp; GCC (Bank of America) Leaders</span>
-            </div>
-
-            <div class="portal-header-actions">
-                <a href="index.html" class="btn btn-outline btn-sm">&larr; Back to AgenticMastery.ai</a>
-            </div>
+            <a href="index.html" class="btn btn-outline btn-sm">&larr; Back to Home</a>
         </div>
     </header>
 
-    <!-- Main Centered Sign-In Card -->
     <main class="login-shell">
-        <section class="login-card" aria-labelledby="login-heading">
-            <div class="login-eyebrow">
-                <span>Institutional Recruiter Gateway</span>
-            </div>
-            <h1 id="login-heading">Recruiter &amp; Hiring Partner Portal</h1>
-            <p class="login-lead">
-                Built and operated by senior engineering, architecture, and talent leaders from <strong>Tier-1 Product Companies (like Google)</strong> and <strong>Global Capability Centers / GCCs (like Bank of America)</strong>. Match your Job Description against pre-checked AI, FDE, and Cloud talent beyond keywords.
-            </p>
+        <div class="login-card">
+            <span class="workspace-pill">Recruiter &amp; Partner Portal</span>
+            <h1 style="margin-top: 0.85rem;">Access Pre-Checked Talent</h1>
+            <p>Curated by engineering leaders from Tier-1 Product Companies &amp; Enterprise GCCs.</p>
 
-            <!-- Option 1: Instant Recruiter Sandbox Access -->
-            <div class="sandbox-callout">
-                <div class="sandbox-callout-header">
-                    <span class="sandbox-callout-title">Option 1: Instant Recruiter Sandbox</span>
-                    <span class="sandbox-tag">Zero Friction &bull; Live Engine</span>
-                </div>
-                <p>
-                    Visiting CTOs, VP Engineering Leaders, and Technical Recruiters can launch the interactive 4-Agent JD Matcher immediately with pre-checked candidate profiles.
-                </p>
-                <a href="portal.html?mode=demo" id="demo-access-btn" class="btn btn-primary full-width btn-lg">
-                    Enter Live Recruiter Workspace (Demo Access) &rarr;
-                </a>
-            </div>
+            <a href="portal.html" class="btn btn-primary" style="width: 100%;">
+                Enter Interactive Demo Workspace &rarr;
+            </a>
 
-            <div class="login-divider">Or Sign In With Partner Access Code</div>
-
-            <!-- Option 2: Partner / Recruiter Work Email & Access Code Sign-In Form -->
-            <form id="partner-login-form" class="login-form" novalidate>
-                <div class="form-field">
-                    <label for="login-email">Recruiter / Hiring Leader Work Email</label>
-                    <input type="email" id="login-email" class="form-input" placeholder="name@company.com" autocomplete="email" required>
-                </div>
-
-                <div class="form-field">
-                    <label for="login-org">Organization Type (Product Co / Enterprise GCC)</label>
-                    <input type="text" id="login-org" class="form-input" placeholder="e.g., Tier-1 Product Co or Global Banking GCC" autocomplete="organization">
-                </div>
-
-                <div class="form-field">
-                    <label for="login-code">Partner Access Code</label>
-                    <input type="text" id="login-code" class="form-input" placeholder="Enter Partner Code (e.g., GCC-PRODUCT-2026)" autocomplete="off" required>
-                    <div class="code-helper-strip">
-                        <span>Partner Evaluation Code: <code>GCC-PRODUCT-2026</code></span>
-                        <button type="button" id="fill-demo-code-btn" class="btn-link-inline">Auto-Fill Code</button>
-                    </div>
-                </div>
-
-                <p id="login-status" class="login-status" role="status" aria-live="polite"></p>
-
-                <button type="submit" class="btn btn-secondary full-width btn-lg">
-                    Verify Partner Access &amp; Launch Workspace &rarr;
-                </button>
+            <form action="portal.html" method="get" class="login-form">
+                <input type="email" name="email" required placeholder="Work Email (e.g., recruiter@company.com)">
+                <input type="password" name="code" placeholder="Partner Access Code (Optional for Demo)">
+                <button type="submit" class="btn btn-secondary" style="width: 100%;">Sign In with Partner Email</button>
             </form>
-
-            <div class="login-footer-links">
-                <a href="index.html">&larr; Back to AgenticMastery.ai</a>
-                <a href="index.html#register">Request Enterprise Partner Code &rarr;</a>
-            </div>
-        </section>
+        </div>
     </main>
 </body>
 </html>
