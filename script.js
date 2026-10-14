@@ -97,15 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (status) {
-                status.textContent = 'Opening your email client to submit your partner request...';
+                status.textContent = 'Opening your email client to connect with our consulting leaders...';
                 status.className = 'status-msg success';
             }
 
-            const subject = encodeURIComponent(`[AgenticMastery Hiring Partner] ${company} — ${need}`);
+            const subject = encodeURIComponent(`[AgenticMastery Consulting] ${company} — ${need}`);
             const body = encodeURIComponent(
-                `Hello AgenticMastery.ai Leadership Team,\n\nPartner Name: ${name}\nWork Email: ${email}\nOrganization (Product / GCC): ${company}\nPrimary Track: ${need}\nRole & Timeline Context: ${notes || 'N/A'}\n`
+                `Hello AgenticMastery.ai Leadership Team,\n\nPartner Name: ${name}\nWork Email: ${email}\nOrganization (Product / GCC): ${company}\nPrimary Hiring Need: ${need}\nRequirements / Context: ${notes || 'N/A'}\n`
             );
-            window.location.href = `mailto:partners@agenticmastery.ai?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:consulting@agenticmastery.ai?subject=${subject}&body=${body}`;
         });
     }
 
