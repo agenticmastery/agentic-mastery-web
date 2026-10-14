@@ -1,7 +1,7 @@
 /**
  * AgenticMastery.ai — Pre-Checked Candidate Pool & Preset Job Descriptions
  * Curated and verified by senior engineering & architecture leaders from
- * Tier-1 Product Companies (like Google) and Global Capability Centers (like Bank of America).
+ * Tier-1 Product Hyperscalers and Fortune-100 Global Capability Centers (GCCs).
  * Flagship Specialization: AI, FDE & Cloud + Full-Spectrum Enterprise Engineering.
  */
 (function (global) {
@@ -11,21 +11,21 @@
     {
       id: 'product-fde',
       label: '★ Flagship: Forward Deployed AI (FDE)',
-      title: 'Tier-1 Product Co (Google-Style): Principal Forward Deployed AI Engineer (FDE)',
+      title: 'Tier-1 Product Hyperscaler: Principal Forward Deployed AI Engineer (FDE)',
       shortTitle: 'Principal Forward Deployed AI Engineer (FDE)',
-      organizationType: 'Tier-1 Product Co (Google-Style)',
+      organizationType: 'Tier-1 Product Hyperscaler',
       pillar: 'FDE',
       text: [
         'Role: Principal Forward Deployed AI Engineer (FDE) — Tier-1 Product Company',
-        'We need a customer-facing Principal AI Engineer to partner with enterprise CTOs, architect stateful multi-agent workflows (LangGraph / Google ADK), build grounded hybrid RAG pipelines (pgvector / BM25 / reranking), and ship sub-400ms production systems in 30-day sprints.'
+        'We need a customer-facing Principal AI Engineer to partner with enterprise CTOs, architect stateful multi-agent workflows (LangGraph / ADK), build grounded hybrid RAG pipelines (pgvector / BM25 / reranking), and ship sub-400ms production systems in 30-day sprints.'
       ].join('\n')
     },
     {
       id: 'gcc-cloud-ai',
       label: '★ Flagship: Bank GCC Cloud & AI Infra',
-      title: 'Global Bank GCC (Bank of America-Style): Staff Cloud & GenAI Infrastructure Architect',
+      title: 'Fortune-100 Global Bank GCC: Staff Cloud & GenAI Infrastructure Architect',
       shortTitle: 'Staff Cloud & GenAI Infrastructure Architect',
-      organizationType: 'Global Bank GCC (Bank of America-Style)',
+      organizationType: 'Fortune-100 Global Bank GCC',
       pillar: 'Cloud & Infra',
       text: [
         'Role: Staff Cloud & GenAI Infrastructure Architect — Global Banking GCC',
