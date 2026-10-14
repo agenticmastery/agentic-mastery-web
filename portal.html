@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:;">
-    <title>Agentic Matcher | AgenticMastery.ai</title>
+    <title>Executive Recruiter Portal &amp; Agentic Matcher | AgenticMastery.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="portal.css">
     <script defer src="js/candidates-data.js"></script>
     <script defer src="js/agentic-matcher.js"></script>
@@ -23,7 +23,7 @@
             <a href="index.html" class="brand">
                 <img src="assets/logo.jpg" alt="AgenticMastery" class="brand-img">
                 <span class="brand-title">Agentic<strong>Mastery</strong>.ai</span>
-                <span class="workspace-pill">Agentic JD Matcher</span>
+                <span class="workspace-pill">Executive Recruiter Portal</span>
             </a>
             <div class="header-right">
                 <button type="button" id="shortlist-btn" class="btn btn-primary btn-sm">
@@ -35,51 +35,166 @@
     </header>
 
     <main class="container portal-main">
-        <!-- 1. GOOGLE-STYLE CLEAN SEARCH / JD BOX -->
+        <!-- 1. SEARCH & EVALUATION CARD WITH 2 MODES -->
         <section class="search-card">
             <div class="search-top">
-                <div>
-                    <h1>Match a Job Description to Pre-Checked Talent</h1>
-                    <p>Pick a sample role or paste your JD. Our 4-Agent Engine ranks candidates by architectural fit—not buzzwords.</p>
+                <div class="search-heading">
+                    <h1>Executive Matcher &amp; Talent Bench</h1>
+                    <p>Evaluate architectural capability against your JD &mdash; or score any candidate profile from LinkedIn, Naukri, or PDF.</p>
                 </div>
-                <div class="preset-chips" id="preset-chips">
-                    <button type="button" class="chip active" data-preset="product-fde">Product Co: Forward Deployed AI (FDE)</button>
-                    <button type="button" class="chip" data-preset="gcc-cloud-ai">Bank GCC: Cloud &amp; AI Architect</button>
-                    <button type="button" class="chip" data-preset="agentic-evals">AI Platform: Multi-Agent &amp; Evals</button>
+
+                <!-- 2-Mode Switcher -->
+                <div class="search-mode-tabs" role="tablist" aria-label="Search Mode Switcher">
+                    <button type="button" id="mode-tab-preset" class="mode-tab active" role="tab" aria-selected="true">
+                        Search Pre-Checked Talent Bench
+                    </button>
+                    <button type="button" id="mode-tab-custom" class="mode-tab" role="tab" aria-selected="false">
+                        Score Any Resume (LinkedIn / Naukri / PDF)
+                    </button>
                 </div>
             </div>
 
-            <div class="jd-bar">
-                <textarea id="jd-input" rows="2" placeholder="Paste any Job Description or requirement here..."></textarea>
-                <button type="button" id="run-match-btn" class="btn btn-primary">Run Agentic Match &rarr;</button>
+            <!-- Mode 1: Pre-Checked Talent Bench Search -->
+            <div id="preset-search-panel" class="search-panel">
+                <div class="preset-chips" id="preset-chips">
+                    <button type="button" class="chip active" data-preset="product-fde">★ Flagship: Forward Deployed AI</button>
+                    <button type="button" class="chip" data-preset="gcc-cloud-ai">★ Flagship: Bank GCC Cloud &amp; AI</button>
+                    <button type="button" class="chip" data-preset="agentic-evals">★ Flagship: Agentic AI &amp; Evals</button>
+                    <button type="button" class="chip" data-preset="enterprise-fullstack">Enterprise: Full-Stack &amp; Distributed Systems</button>
+                </div>
+
+                <div class="jd-bar">
+                    <textarea id="jd-input" rows="3" placeholder="Select a preset role above or paste any Job Description here..."></textarea>
+                    <button type="button" id="run-match-btn" class="btn btn-primary">Run Agentic Match &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Mode 2: Custom Resume Analyzer (LinkedIn / Naukri / PDF) -->
+            <div id="custom-resume-panel" class="search-panel hidden">
+                <p class="custom-panel-intro">
+                    Paste your target Job Description on the left and paste any candidate's profile from <strong>LinkedIn, Naukri, or PDF</strong> on the right to evaluate architectural fit in real time.
+                </p>
+
+                <div class="resume-analyzer-grid">
+                    <div class="analyzer-col">
+                        <label for="custom-jd-input" class="field-label">Target Job Description</label>
+                        <textarea id="custom-jd-input" rows="6" placeholder="Paste your target Job Description or requirements here..."></textarea>
+                    </div>
+
+                    <div class="analyzer-col">
+                        <div class="field-label-row">
+                            <label for="custom-resume-input" class="field-label">Candidate Resume (LinkedIn / Naukri / PDF)</label>
+                            <button type="button" id="load-sample-resume-btn" class="btn btn-ghost btn-xs">
+                                ⚡ Load Sample Naukri / LinkedIn Resume
+                            </button>
+                        </div>
+                        <textarea id="custom-resume-input" rows="6" placeholder="Paste candidate resume text, LinkedIn 'About' &amp; Experience summary, or Naukri profile..."></textarea>
+                    </div>
+                </div>
+
+                <div class="analyzer-actions-row">
+                    <input type="text" id="custom-candidate-title" class="title-input" placeholder="Candidate Title / Profile Label (e.g. Lead Cloud &amp; GenAI Architect - LinkedIn)">
+                    <button type="button" id="run-custom-match-btn" class="btn btn-primary">
+                        Analyze &amp; Score Resume &rarr;
+                    </button>
+                </div>
             </div>
 
             <!-- Compact 1-Line Agent Status Strip -->
             <div class="agent-strip" id="agent-strip"></div>
         </section>
 
-        <!-- 2. COMPACT, SCANNABLE CANDIDATE LIST -->
+        <!-- 2. EXECUTIVE RESULTS SECTION WITH CAROUSEL & TABLE VIEWS -->
         <section class="results-section">
             <div class="results-header">
-                <span id="results-summary" class="results-title">Top Pre-Checked Matches</span>
-                <div class="pillar-tabs" id="pillar-tabs">
-                    <button type="button" class="p-tab active" data-pillar="all">All</button>
-                    <button type="button" class="p-tab" data-pillar="FDE">FDE</button>
-                    <button type="button" class="p-tab" data-pillar="Agentic AI">Agentic AI</button>
-                    <button type="button" class="p-tab" data-pillar="Cloud & Infra">Cloud &amp; Infra</button>
+                <div class="results-header-left">
+                    <h2 id="results-summary" class="results-title">Pre-Checked Talent Ranked by Architectural Fit</h2>
+                    <p class="results-subtitle">Executive match meter reflects validated system design and production track record.</p>
+                </div>
+
+                <div class="results-header-right">
+                    <!-- Filter Tabs -->
+                    <div class="pillar-tabs" id="pillar-tabs" role="tablist" aria-label="Role Category Filter">
+                        <button type="button" class="p-tab active" data-pillar="all">All Roles</button>
+                        <button type="button" class="p-tab" data-pillar="FDE">★ FDE</button>
+                        <button type="button" class="p-tab" data-pillar="Agentic AI">★ Agentic AI</button>
+                        <button type="button" class="p-tab" data-pillar="Cloud & Infra">★ Cloud &amp; Infra</button>
+                        <button type="button" class="p-tab" data-pillar="Enterprise Systems">Enterprise Systems</button>
+                    </div>
+
+                    <!-- View Switcher -->
+                    <div class="view-switcher" role="group" aria-label="Results View Switcher">
+                        <button type="button" id="view-mode-carousel" class="view-btn active" aria-pressed="true">
+                            ❖ Carousel View
+                        </button>
+                        <button type="button" id="view-mode-table" class="view-btn" aria-pressed="false">
+                            ≡ Compact Table View
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div id="candidate-list" class="candidate-list"></div>
+            <!-- Primary View: Horizontal Executive Card Carousel -->
+            <div id="carousel-view-container" class="carousel-view-container">
+                <div class="carousel-controls-bar">
+                    <div id="carousel-indicator" class="carousel-indicator">Showing candidates</div>
+                    <div class="carousel-nav-arrows">
+                        <button type="button" id="carousel-prev-btn" class="carousel-nav-btn" aria-label="Previous candidates">
+                            &larr; Prev
+                        </button>
+                        <button type="button" id="carousel-next-btn" class="carousel-nav-btn" aria-label="Next candidates">
+                            Next &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <div class="carousel-viewport" id="carousel-viewport">
+                    <div id="candidate-carousel" class="carousel-track"></div>
+                </div>
+            </div>
+
+            <!-- Alternate View: Compact Scannable Table View -->
+            <div id="table-view-container" class="table-view-container hidden">
+                <div class="table-responsive">
+                    <table class="exec-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Pillar &amp; Track</th>
+                                <th>Executive Match Meter</th>
+                                <th>Experience &amp; Pedigree</th>
+                                <th>Availability</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidate-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </section>
     </main>
 
+    <!-- PROOF & PITCH DETAILS MODAL -->
+    <div id="proof-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="proof-modal-title">
+        <div class="modal-card proof-modal-card">
+            <div class="modal-head">
+                <div class="proof-modal-heading" id="proof-modal-header-info">
+                    <!-- Populated dynamically -->
+                </div>
+                <button type="button" id="close-proof-modal-btn" class="close-btn" aria-label="Close dialog">&times;</button>
+            </div>
+            <div id="proof-modal-body" class="proof-modal-body">
+                <!-- Populated dynamically via safe DOM methods -->
+            </div>
+        </div>
+    </div>
+
     <!-- SHORTLIST DRAWER MODAL -->
-    <div id="shortlist-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div id="shortlist-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="shortlist-modal-title">
         <div class="modal-card">
             <div class="modal-head">
-                <h3>Your Picked Candidates</h3>
-                <button type="button" id="close-modal-btn" class="close-btn">&times;</button>
+                <h3 id="shortlist-modal-title">Shortlisted Candidates</h3>
+                <button type="button" id="close-modal-btn" class="close-btn" aria-label="Close dialog">&times;</button>
             </div>
             <pre id="shortlist-text" class="shortlist-preview"></pre>
             <div class="modal-actions">

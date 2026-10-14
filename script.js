@@ -46,6 +46,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Role Carousel Navigation
+    const rolesTrack = document.getElementById('roles-track');
+    const rolesPrev = document.getElementById('roles-prev');
+    const rolesNext = document.getElementById('roles-next');
+
+    if (rolesTrack && rolesPrev && rolesNext) {
+        function getScrollDistance() {
+            const firstCard = rolesTrack.querySelector('.role-card');
+            return firstCard ? firstCard.getBoundingClientRect().width + 24 : 340;
+        }
+
+        rolesPrev.addEventListener('click', () => {
+            rolesTrack.scrollBy({
+                left: -getScrollDistance(),
+                behavior: 'smooth'
+            });
+        });
+
+        rolesNext.addEventListener('click', () => {
+            rolesTrack.scrollBy({
+                left: getScrollDistance(),
+                behavior: 'smooth'
+            });
+        });
+    }
+
     if (clientForm) {
         const status = document.getElementById('cli-status');
         clientForm.addEventListener('submit', (e) => {
