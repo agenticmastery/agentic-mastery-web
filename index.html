@@ -3,161 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentic Mastery | Education & Articles on Agentic AI</title>
-    <meta name="description" content="Mastering Agentic AI workflows, Google ADK, and CX Agent Studio. Educational resources, articles, and learning challenges by a Google Engineer with 13 patents.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:;">
+    <title>AgenticMastery.ai | Executive AI, FDE &amp; Cloud Talent Partner</title>
+    <meta name="description" content="Architect-vetted AI Engineers, Forward Deployed Engineers (FDEs), and Cloud Architects. Evaluated by a 22-year Data & AI leader with 15 granted patents.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 <body>
-    <div class="noise"></div>
-    <div class="gradient-bg"></div>
+    <!-- Subtle Google 4-Color Top Line -->
+    <div class="google-bar" aria-hidden="true">
+        <span class="b"></span><span class="r"></span><span class="y"></span><span class="g"></span>
+    </div>
 
-    <header>
-        <nav>
-            <div class="logo">Agentic<span>Mastery</span></div>
-            <ul class="nav-links">
-                <li><a href="#articles">Articles</a></li>
-                <li><a href="#challenges">Challenges</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact" class="btn-primary">Contact</a></li>
-            </ul>
-        </nav>
+    <!-- Minimalist Header -->
+    <header class="header">
+        <div class="container nav-bar">
+            <a href="#top" class="brand">
+                <img src="assets/logo.jpg" alt="AgenticMastery" class="brand-img">
+                <span class="brand-title">Agentic<strong>Mastery</strong>.ai</span>
+            </a>
+            <nav class="nav-menu" aria-label="Primary">
+                <a href="#practice">Practice</a>
+                <a href="#standard">The Standard</a>
+                <a href="#blueprints">Blueprints &amp; References</a>
+                <a href="#founder">Founder</a>
+            </nav>
+            <div class="nav-cta">
+                <a href="#register" class="btn btn-outline btn-sm" data-tab-target="engineer">Engineer Network</a>
+                <a href="#register" class="btn btn-primary btn-sm" data-tab-target="client">Hire Talent</a>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="hero-section">
-            <div class="hero-content">
-                <div class="badge">Command Center</div>
-                <h1>Mastering The Shift From Chat to <span>Autonomous Agents</span></h1>
-                <p>Bridging the gap between legacy chat systems and state-of-the-art autonomous agents. Structured learning, deep-dive articles, and hands-on challenges.</p>
-                <div class="cta-group">
-                    <a href="#challenges" class="btn-primary">Explore Challenges</a>
-                    <a href="#articles" class="btn-secondary">Read Articles</a>
+    <main id="top">
+        <!-- HERO: Centered, Minimalist, Executive -->
+        <section class="hero">
+            <div class="container hero-inner">
+                <div class="eyebrow-pill">
+                    <span class="dot"></span>
+                    Led by a 15-Patent AI Architect &bull; 22+ Years in Data &amp; Cloud
                 </div>
-            </div>
-            <div class="hero-visual">
-                <div class="glass-card visual-box">
-                    <div class="code-header">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
-                        <span class="file-name">agent_playbook.py</span>
+                <h1>Architect-Vetted <span>AI, FDE &amp; Cloud</span> Talent.</h1>
+                <p class="hero-sub">
+                    We partner with CEOs, CTOs, and Engineering Leaders to hire the top 1% of Forward Deployed Engineers, Agentic AI Builders, and Cloud Architects—personally evaluated in live system design.
+                </p>
+                <div class="hero-actions">
+                    <a href="#register" class="btn btn-primary" data-tab-target="client">Hire Vetted Talent</a>
+                    <a href="#register" class="btn btn-secondary" data-tab-target="engineer">Apply as an Architect</a>
+                </div>
+
+                <div class="metrics-row">
+                    <div class="metric">
+                        <strong>15</strong>
+                        <span>Granted AI Patents</span>
                     </div>
-                    <pre><code><span class="keyword">import</span> google_adk as adk
-
-agent = adk.Agent(
-    name=<span class="string">"Architect"</span>,
-    instructions=<span class="string">"Lead the shift."</span>
-)
-
-<span class="comment"># Playbooks > Flows</span>
-agent.add_playbook(<span class="string">"cx_mastery"</span>)
-agent.run()</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Articles Section -->
-        <section id="articles" class="services-section">
-            <div class="section-header">
-                <h2>Latest Articles & Insights</h2>
-                <p>Deep dives into Agentic AI, Google ADK, and the future of conversational systems.</p>
-            </div>
-            <div class="services-grid">
-
-                <div class="glass-card service-card">
-                    <div class="icon">🤖</div>
-                    <h3>Building ADK Agents</h3>
-                    <p>Best practices for designing guardrails and safety measures in multi-modal autonomous systems.</p>
-                    <a href="#" class="btn-text disabled">Coming Soon</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Challenges Section -->
-        <section id="challenges" class="challenges-section">
-            <div class="section-header">
-                <h2>Active Challenges</h2>
-                <p>Follow the journey and build your skills in public.</p>
-            </div>
-            <div class="challenges-grid">
-                <!-- Challenge 1 -->
-                <div class="glass-card challenge-card">
-                    <div class="challenge-tag">Ongoing</div>
-                    <h3>30 Days of CX Agent Studio</h3>
-                    <p>Mastering Google Gemini Enterprise CX Agent Studio. Building advanced conversational agents focused on Customer User Journeys (CUJs) and complex multi-turn orchestrations.</p>
-                    <div class="curriculum-teaser">
-                        <h4>Module 1 Milestones (Days 1-20):</h4>
-                        <ul>
-                            <li><a href="https://agenticmastery.github.io/agentic-mastery-web/challenges/cxas-30-days/posts/intro.html" style="color: inherit; text-decoration: none;"><span>Intro:</span> Start Here</a></li>
-                            <li><a href="https://agenticmastery.github.io/agentic-mastery-web/challenges/cxas-30-days/posts/day_001.html" style="color: inherit; text-decoration: none;"><span>Day 1:</span> Agent Studio Foundations</a></li>
-                            <li><span>Day 5:</span> Console Navigation & Agent Creation</li>
-                            <li><span>Day 10:</span> Instructions, Role & Persona</li>
-                            <li><span>Day 15:</span> Connect Data Store or Tool</li>
-                            <li><span>Day 20:</span> Simulator Manual Testing</li>
-                        </ul>
+                    <div class="metric">
+                        <strong>22+ Yrs</strong>
+                        <span>Data &amp; AI Leadership</span>
                     </div>
-                    <a href="https://agenticmastery.github.io/agentic-mastery-web/challenges/cxas-30-days/posts/intro.html" class="btn-text">Start Challenge &rarr;</a>
+                    <div class="metric">
+                        <strong>Top 1%</strong>
+                        <span>Live System-Design Vetted</span>
+                    </div>
+                    <div class="metric">
+                        <strong>90 Days</strong>
+                        <span>Post-Hire Mentorship</span>
+                    </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <div class="about-card glass-card">
-                <div class="about-text">
-                    <div class="badge">The Expert</div>
-                    <h2>How I Can Help You</h2>
-                    <p>With over 22 years of experience in Data and AI, I help enterprises navigate the shift from traditional chat to **Autonomous Agents**. My focus is on building practical, production-ready solutions that deliver real business value.</p>
-                    <p>Here is how I can help your organization level up:</p>
-                    <ul class="impact-list">
-                        <li>**Design Agentic Architectures**: Move beyond simple prompt engineering to build robust, multi-agent systems using Google ADK and CX Agent Studio.</li>
-                        <li>**Scale Data Platforms**: Leverage massive-scale data architecture to power high-performance, low-latency AI systems.</li>
-                        <li>**Optimize Customer Journeys**: Build conversational agents focused on Customer User Journeys (CUJs) rather than legacy intents.</li>
-                    </ul>
-                    <p>My expertise is backed by **15 Granted patents** in AI and authoring the book *"PySpark SQL Recipes"*. I am currently sharing this knowledge through open challenges and deep-dive articles to help other engineers level up.</p>
-                    <div class="stats">
-                        <div class="stat-item">
-                            <span class="stat-num">15</span>
-                            <span class="stat-label">Patents Granted</span>
+        <!-- CORE PRACTICE PILLARS -->
+        <section id="practice" class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="kicker">Specialized Practice</span>
+                    <h2>Three Roles We Own</h2>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card">
+                        <span class="card-num blue">01 / FDE</span>
+                        <h3>Forward Deployed Engineers</h3>
+                        <p>High-agency engineers who embed with enterprise customers to take complex workflows from whiteboard to production AI deployment.</p>
+                        <div class="chip-row">
+                            <span>Python / TypeScript</span>
+                            <span>Enterprise RAG</span>
+                            <span>C-Suite Discovery</span>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-num">22+</span>
-                            <span class="stat-label">Years Experience</span>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-num green">02 / Agentic AI</span>
+                        <h3>Applied &amp; Agentic AI Engineers</h3>
+                        <p>Builders of deterministic multi-agent orchestrations, voice/multimodal agents, and automated evaluation harnesses.</p>
+                        <div class="chip-row">
+                            <span>Google ADK / LangGraph</span>
+                            <span>MCP &amp; A2A</span>
+                            <span>Production Evals</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <span class="card-num yellow">03 / Cloud Scale</span>
+                        <h3>Cloud &amp; AI Infra Architects</h3>
+                        <p>Principal architects designing multi-cloud foundations, Kubernetes GPU clusters, LLMOps pipelines, and cloud FinOps.</p>
+                        <div class="chip-row">
+                            <span>GCP / AWS / Azure</span>
+                            <span>GKE / EKS</span>
+                            <span>vLLM / Ray</span>
                         </div>
                     </div>
                 </div>
-                <div class="about-image">
-                    <!-- Placeholder or styled box until actual image is provided -->
-                    <div class="profile-placeholder">
-                        <span>Sundar</span>
+            </div>
+        </section>
+
+        <!-- THE STANDARD: WHY CTOS CHOOSE US -->
+        <section id="standard" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="kicker">Why Leaders Choose Us</span>
+                    <h2>Built for CTOs Tired of Keyword Recruiters</h2>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card minimal-card">
+                        <h3>Architect-to-Architect Vetting</h3>
+                        <p>Every candidate passes a rigorous 60-minute live architecture and code teardown before you ever see their profile.</p>
+                    </div>
+
+                    <div class="card minimal-card">
+                        <h3>3–5 Curated Profiles in 7 Days</h3>
+                        <p>Zero resume spam. You receive a tight shortlist accompanied by a 1-page architectural scorecard.</p>
+                    </div>
+
+                    <div class="card minimal-card">
+                        <h3>90-Day Deployment Mentorship</h3>
+                        <p>Every placed engineer is backed by 90 days of architecture office hours with our founder to de-risk your rollout.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- CTA / Contact Section -->
-        <section id="contact" class="contact-section">
-            <div class="glass-card contact-card">
-                <h2>Ready to Master Agents?</h2>
-                <p>Whether you want to read articles, follow the learning journey, or collaborate on educational content, let's connect.</p>
-                <div class="social-links">
-                    <a href="mailto:sundarrajan.raman@gmail.com" class="social-btn">Email</a>
-                    <a href="https://linkedin.com" class="social-btn">LinkedIn</a>
-                    <a href="https://twitter.com" class="social-btn">Twitter</a>
-                    <a href="https://github.com/sundarrajanr" class="social-btn">GitHub</a>
+        <!-- BLUEPRINTS & STANDARD REFERENCES -->
+        <section id="blueprints" class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="kicker">Knowledge &amp; Standards</span>
+                    <h2>Executive Blueprints &amp; Reference Links</h2>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card resource-card">
+                        <div>
+                            <span class="card-num blue">Executive Deck &bull; PDF</span>
+                            <h3>Toy RAG vs. Production Agentic RAG</h3>
+                            <p>Architectural blueprint for hybrid retrieval, query routing, semantic caching, and deterministic guardrails.</p>
+                        </div>
+                        <a href="assets/toy-vs-prod-rag.pdf" target="_blank" rel="noopener noreferrer" download class="link-arrow">Download PDF &rarr;</a>
+                    </div>
+
+                    <div class="card resource-card">
+                        <div>
+                            <span class="card-num green">System Design Guide &bull; PDF</span>
+                            <h3>Enterprise AI &amp; FAANG Architecture Traps</h3>
+                            <p>Key system design anti-patterns and evaluation benchmarks for Principal AI, FDE, and Cloud Architect loops.</p>
+                        </div>
+                        <a href="assets/faang-interview-traps.pdf" target="_blank" rel="noopener noreferrer" download class="link-arrow">Download PDF &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="ref-strip">
+                    <span class="ref-label">Standard References:</span>
+                    <a href="https://google.github.io/adk-docs/" target="_blank" rel="noopener noreferrer">Google ADK &nearr;</a>
+                    <a href="https://cloud.google.com/products/agent-builder" target="_blank" rel="noopener noreferrer">Vertex AI Agent Builder &nearr;</a>
+                    <a href="https://github.com/google/A2A" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) &nearr;</a>
+                    <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">MCP Protocol &nearr;</a>
+                    <a href="https://cloud.google.com/architecture/ai-ml" target="_blank" rel="noopener noreferrer">Google Cloud AI Architecture &nearr;</a>
+                    <a href="https://genai.owasp.org/" target="_blank" rel="noopener noreferrer">OWASP LLM Top 10 &nearr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOUNDER SECTION -->
+        <section id="founder" class="section">
+            <div class="container">
+                <div class="card founder-card">
+                    <div class="founder-left">
+                        <img src="assets/logo.jpg" alt="Sundarrajan Raman" class="founder-avatar">
+                        <div>
+                            <span class="kicker">Founder &amp; Principal Evaluator</span>
+                            <h2>Sundarrajan Raman</h2>
+                            <p>22+ years building enterprise Data, Cloud, and AI platforms. Holder of <strong>15 granted patents in AI</strong> and author of <em>"PySpark SQL Recipes."</em></p>
+                        </div>
+                    </div>
+                    <div class="founder-right">
+                        <a href="https://agenticmastery.substack.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Substack Insights &nearr;</a>
+                        <a href="mailto:sundarrajan.raman@gmail.com" class="btn btn-secondary btn-sm">Direct Email</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTRATION SECTION -->
+        <section id="register" class="section bg-light">
+            <div class="container">
+                <div class="reg-wrapper card">
+                    <div class="section-header compact">
+                        <span class="kicker">Get Started</span>
+                        <h2>Partner With AgenticMastery.ai</h2>
+                    </div>
+
+                    <div class="tab-switch" role="tablist">
+                        <button type="button" class="tab-btn active" data-tab="client" role="tab" aria-selected="true">For CTOs &amp; Founders (Hire Talent)</button>
+                        <button type="button" class="tab-btn" data-tab="engineer" role="tab" aria-selected="false">For Engineers (Join Vetted Network)</button>
+                    </div>
+
+                    <!-- CLIENT FORM -->
+                    <form id="client-form" class="minimal-form" novalidate>
+                        <div class="form-row">
+                            <input type="text" id="cli-name" required maxlength="80" placeholder="Your Name *">
+                            <input type="email" id="cli-email" required maxlength="120" placeholder="Work Email *">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="cli-company" required maxlength="100" placeholder="Company Name *">
+                            <select id="cli-need" required aria-label="Hiring Need">
+                                <option value="Hire Forward Deployed Engineers (FDE)">Hire Forward Deployed Engineers (FDE)</option>
+                                <option value="Hire Applied / Agentic AI Engineers">Hire Applied / Agentic AI Engineers</option>
+                                <option value="Hire Cloud & AI Infrastructure Architects">Hire Cloud &amp; AI Infrastructure Architects</option>
+                                <option value="Technical Interviewing / Advisory">Technical Interviewing / Advisory</option>
+                            </select>
+                        </div>
+                        <input type="text" id="cli-notes" maxlength="200" placeholder="Location (India / US / Remote) &amp; Target Timeline">
+                        <button type="submit" class="btn btn-primary full-width">Request Vetted Shortlist &rarr;</button>
+                        <p id="cli-status" class="status-msg" role="status" aria-live="polite"></p>
+                    </form>
+
+                    <!-- ENGINEER FORM -->
+                    <form id="engineer-form" class="minimal-form hidden" novalidate>
+                        <div class="form-row">
+                            <input type="text" id="eng-name" required maxlength="80" placeholder="Full Name *">
+                            <input type="email" id="eng-email" required maxlength="120" placeholder="Email Address *">
+                        </div>
+                        <div class="form-row">
+                            <select id="eng-role" required aria-label="Primary Track">
+                                <option value="Forward Deployed Engineer (FDE)">Forward Deployed Engineer (FDE)</option>
+                                <option value="Applied / Agentic AI Engineer">Applied / Agentic AI Engineer</option>
+                                <option value="Cloud & AI Infrastructure Architect">Cloud &amp; AI Infrastructure Architect</option>
+                            </select>
+                            <input type="url" id="eng-link" required maxlength="200" placeholder="LinkedIn or GitHub URL *">
+                        </div>
+                        <div class="form-actions-dual">
+                            <button type="submit" class="btn btn-primary">Apply for Architecture Vetting &rarr;</button>
+                            <a href="https://agenticmastery.substack.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Subscribe on Substack &nearr;</a>
+                        </div>
+                        <p id="eng-status" class="status-msg" role="status" aria-live="polite"></p>
+                    </form>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Agentic Mastery. All rights reserved.</p>
+    <footer class="footer">
+        <div class="container footer-row">
+            <span>&copy; 2026 AgenticMastery.ai &bull; AI, FDE &amp; Cloud Talent Partner</span>
+            <div class="footer-links">
+                <a href="https://agenticmastery.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a>
+                <a href="https://github.com/agenticmastery" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="mailto:sundarrajan.raman@gmail.com">Contact</a>
+            </div>
+        </div>
     </footer>
 </body>
 </html>
